@@ -1,0 +1,16 @@
+{
+  "name": "anarchitecture/pipe",
+  "type": "library",
+  "description": "Unary callable helpers to leverage PHP 8.5 pipes",
+  "require": {
+    "php": ">=8.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Anarchitecture\\pipe\\": "src"
+    },
+    "files": [
+      "src/pipe.php"
+      ]
+  }
+}
