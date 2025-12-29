@@ -50,6 +50,15 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
 }
 
 /**
+ * Return unary callable for explode
+ */
+function explode(string $d) : callable {
+    return function (string $s) use ($d) : array {
+        return \explode($d, $s);
+    };
+}
+
+/**
  * Return unary callable for usort
  */
 function usort(callable $c) : callable {

@@ -26,6 +26,38 @@ p\array_map(fn ($x) => $x * 2);
 // fn (array $input) => array_map(fn ($x) => $x * 2, $input)
 ```
 
+## Example
+This example uses `pipe` library functions to solve [Advent of Code 2025 Day 9 Part 1](https://adventofcode.com/2025/day/9):
+```php
+use Anarchitecture\pipe as p;
+
+function rectangles(array $tiles) : array {
+    $rectangles = [];
+    while ($current = array_pop($tiles)) {
+        foreach ($tiles as $tile) {
+            $rectangles[] = [$current, $tile];
+        }
+    }
+    return $rectangles;
+}
+
+function area(?array $tiles = null) : int {
+    [$a, $b] = $tiles;
+    if ($a === $b) { return 0; }
+    return array_map(fn ($da, $db) => abs($da - $db) + 1, $a, $b) |> array_product(...);
+}
+
+$largest_rectangle = file_get_contents('input')
+    |> p\explode(PHP_EOL)
+    |> p\array_map(p\explode(','))
+    |> rectangles(...)
+    |> p\array_map(area(...))
+    |> p\usort(fn ($a, $b) => $b <=> $a)
+    |> array_first(...);
+
+echo $largest_rectangle . PHP_EOL;
+```
+
 ## Philosophy
 * functions return unary callables
 * explicitly designed for pipe expressions
