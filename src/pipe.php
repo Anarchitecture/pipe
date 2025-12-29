@@ -68,6 +68,22 @@ function explode(string $d) : callable {
 }
 
 /**
+ * By-reference cleaning wrapper for rsort
+ */
+function rsort(array $a) : array {
+    \rsort($a);
+    return $a;
+}
+
+/**
+ * By-reference cleaning wrapper for sort
+ */
+function sort(array $a) : array {
+    \sort($a);
+    return $a;
+}
+
+/**
  * Return unary callable for usort
  */
 function usort(callable $c) : callable {
