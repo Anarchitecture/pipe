@@ -32,6 +32,15 @@ function array_chunk(int $length, bool $preserve_keys = false) : callable {
 }
 
 /**
+ * Return unary callable for array_filter
+ */
+function array_filter(?callable $c = null, int $m = 0) : callable {
+    return function (array $a) use ($c, $m) : array {
+        return \array_filter($a, $c, $m);
+    };
+}
+
+/**
  * Return unary callable for array_map
  */
 function array_map(callable $c) : callable {
