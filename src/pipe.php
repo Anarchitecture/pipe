@@ -50,6 +50,15 @@ function array_map(callable $c) : callable {
 }
 
 /**
+ * Return unary callable for array_reduce
+ */
+function array_reduce(callable $c, mixed $init = null) : callable {
+    return function (array $a) use ($c, $init) : mixed {
+        return \array_reduce($a, $c, $init);
+    };
+}
+
+/**
  * Return unary callable for array_slice
  */
 function array_slice(int $offset, ?int $length = null, bool $preserve_keys = false) : callable {
