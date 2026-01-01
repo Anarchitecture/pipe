@@ -42,9 +42,9 @@ function rectangles(array $tiles) : array {
 }
 
 function area(?array $tiles = null) : int {
-    [$a, $b] = $tiles;
-    if ($a === $b) { return 0; }
-    return array_map(fn ($da, $db) => abs($da - $db) + 1, $a, $b) |> array_product(...);
+    return $tiles
+        |> p\zip_map(fn ($da, $db) => abs($da - $db) + 1)
+        |> array_product(...);
 }
 
 $largest_rectangle = file_get_contents('input')
