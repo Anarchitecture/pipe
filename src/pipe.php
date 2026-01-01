@@ -105,3 +105,12 @@ function usort(callable $callback) : callable {
         return $array;
     };
 }
+
+/**
+ * Return unary callable for mapping over multiple arrays (zip semantics).
+ */
+function zip_map(callable $callback) : callable {
+    return function (array $arrays) use ($callback) : array {
+        return \array_map($callback, ...$arrays);
+    };
+}
