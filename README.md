@@ -52,7 +52,7 @@ $largest_rectangle = file_get_contents('input')
     |> p\array_map(p\explode(','))
     |> rectangles(...)
     |> p\array_map(area(...))
-    |> p\rsort(...)
+    |> p\rsort()
     |> array_first(...);
 
 echo $largest_rectangle . PHP_EOL;
