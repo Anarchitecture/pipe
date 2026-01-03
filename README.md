@@ -26,6 +26,14 @@ p\array_map(fn ($x) => $x * 2);
 // fn (array $input) => array_map(fn ($x) => $x * 2, $input)
 ```
 
+## Semantics
+
+A few helpers intentionally differ from the underlying PHP function behavior to make pipelines pleasant:
+
+- `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (instead of the native `true`).
+- `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
+- `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.
+
 ## Example
 This example uses `pipe` library functions to solve [Advent of Code 2025 Day 9 Part 1](https://adventofcode.com/2025/day/9):
 ```php

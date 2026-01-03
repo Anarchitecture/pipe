@@ -106,6 +106,15 @@ function sort(int $flags = SORT_REGULAR) : callable {
 }
 
 /**
+ * Return unary callable for str_replace
+ */
+function str_replace(string|array $search, string|array $replace) : callable {
+    return function (string|array $subject) use ($search, $replace) : string|array {
+        return \str_replace($search, $replace, $subject);
+    };
+}
+
+/**
  * Return unary callable for usort
  */
 function usort(callable $callback) : callable {
