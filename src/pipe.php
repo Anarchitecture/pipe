@@ -35,9 +35,7 @@ function array_chunk(int $length, bool $preserve_keys = false) : callable {
  * unary callable for array_first
  */
 function array_first() : callable {
-    return function (array $array) : mixed {
-        return \array_first($array);
-    };
+    return \array_first(...);
 }
 
 /**
@@ -53,9 +51,7 @@ function array_filter(?callable $callback = null, int $mode = 0) : callable {
  * unary callable for array_first
  */
 function array_last() : callable {
-    return function (array $array) : mixed {
-        return \array_last($array);
-    };
+    return \array_last(...);
 }
 
 
@@ -102,7 +98,7 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
  */
 function array_second() : callable {
     return function (array $array) : mixed {
-        return array_values($array)[1];
+        return array_values($array)[1] ?? null;
     };
 }
 
