@@ -86,6 +86,15 @@ function implode(string $separator = "") : callable {
 }
 
 /**
+ * Return unary callable for preg_replace
+ */
+function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1) : callable {
+    return function (string|array $subject) use ($pattern, $replacement, $limit) : string|array|null {
+        return \preg_replace($pattern, $replacement, $subject, $limit);
+    };
+}
+
+/**
  * Return unary callable for rsort
  */
 function rsort(int $flags = SORT_REGULAR) : callable {
