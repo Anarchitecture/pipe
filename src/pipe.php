@@ -77,6 +77,15 @@ function explode(string $separator, int $limit = PHP_INT_MAX) : callable {
 }
 
 /**
+ * Return unary callable for implode
+ */
+function implode(string $separator = "") : callable {
+    return function (array $array) use ($separator) : string {
+        return \implode($separator, $array);
+    };
+}
+
+/**
  * Return unary callable for rsort
  */
 function rsort(int $flags = SORT_REGULAR) : callable {
