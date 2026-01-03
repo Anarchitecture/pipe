@@ -41,14 +41,6 @@ function array_filter(?callable $callback = null, int $mode = 0) : callable {
 }
 
 /**
- * unary callable for array_first
- */
-function array_last() : callable {
-    return \array_last(...);
-}
-
-
-/**
  * Return unary callable for array_map
  */
 function array_map(callable $callback) : callable {
