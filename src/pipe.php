@@ -150,6 +150,28 @@ function iterable_filter(callable $callback) : callable {
 }
 
 /**
+ * Return unary callable for taking $count items from an iterable
+ */
+function iterable_take(int $count) : callable {
+    return static function (iterable $iterable) use ($count) : iterable {
+        if ($count <= 0) {
+            return; // empty iterator
+        }
+
+        $i = 0;
+        foreach ($iterable as $key => $value) {
+            yield $key => $value;
+
+            $i++;
+            if ($i >= $count) {
+                break;
+            }
+        }
+    };
+}
+
+
+/**
  * Return callable for a iterable ticket
  */
 function iterable_ticker($start = 0) : callable {
