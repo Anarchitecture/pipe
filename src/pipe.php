@@ -71,7 +71,7 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
  * Return unary callable for explode
  */
 function explode(string $separator, int $limit = PHP_INT_MAX) : callable {
-    return function (string $string) use ($separator, $limit) : false|array {
+    return function (string $string) use ($separator, $limit) : array {
         return \explode($separator, $string, $limit);
     };
 }
@@ -107,10 +107,20 @@ function usort(callable $callback) : callable {
 }
 
 /**
+ * Return unary callable for dumping the value in a pipe
+ */
+function var_dump() : callable {
+    return function (mixed $value) : mixed {
+        \var_dump($value);
+        return $value;
+    };
+}
+
+/**
  * Return unary callable for mapping over multiple arrays (zip semantics).
  */
 function zip_map(callable $callback) : callable {
     return function (array $arrays) use ($callback) : array {
-        return \array_map($callback, ...$arrays);
+        return $arrays === [] ? [] : \array_map($callback, ...$arrays);
     };
 }
