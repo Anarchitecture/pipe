@@ -137,6 +137,15 @@ function increment(int|float $by = 1) : callable {
 }
 
 /**
+ * return unary callable that returns the current element of an iterable
+ */
+function iterable_current() : callable {
+    return function (iterable $iterator) : mixed {
+        return $iterator |> iterable_take(1) |> iterator_to_array(...) |> array_first(...);
+    };
+}
+
+/**
  * Return unary callable for filtering over an iterator
  */
 function iterable_filter(callable $callback) : callable {
