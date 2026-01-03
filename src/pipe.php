@@ -59,6 +59,27 @@ function array_reduce(callable $callback, mixed $initial = null) : callable {
 }
 
 /**
+ * Reduce an array until $until is true.
+ * Returns: [$carry, $triggerKey] where $triggerKey is null if never triggered.
+ */
+function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : callable {
+    return function (array $array) use ($callback, $until, $initial) : array {
+        $carry = $initial;
+
+        foreach ($array as $key => $value) {
+            $carry = $callback($carry, $value);
+
+            if ($until($carry)) {
+                return [$carry, $key];
+            }
+        }
+
+        return [$carry, null];
+    };
+}
+
+
+/**
  * Return unary callable for array_slice
  */
 function array_slice(int $offset, ?int $length = null, bool $preserve_keys = false) : callable {
@@ -105,7 +126,7 @@ function rsort(int $flags = SORT_REGULAR) : callable {
 }
 
 /**
- * Return unary callable for rsort
+ * Return unary callable for sort
  */
 function sort(int $flags = SORT_REGULAR) : callable {
     return function (array $array) use ($flags) : array {
