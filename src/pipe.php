@@ -32,13 +32,6 @@ function array_chunk(int $length, bool $preserve_keys = false) : callable {
 }
 
 /**
- * unary callable for array_first
- */
-function array_first() : callable {
-    return \array_first(...);
-}
-
-/**
  * Return unary callable for array_filter
  */
 function array_filter(?callable $callback = null, int $mode = 0) : callable {
@@ -65,6 +58,19 @@ function array_map(callable $callback) : callable {
 }
 
 /**
+ * unary callable for returning the nth element of an array
+ */
+function array_nth(int $i) : callable {
+    return function (array $array) use ($i) : mixed {
+        return $array
+            |> array_slice($i, 1)
+            |> array_first(...)
+            ?? null;
+    };
+}
+
+
+/**
  * Return unary callable for array_reduce
  */
 function array_reduce(callable $callback, mixed $initial = null) : callable {
@@ -82,9 +88,9 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
         $carry = $initial;
 
         foreach ($array as $key => $value) {
-            $carry = $callback($carry, $key, $value);
+            $carry = $callback($carry, $value, $key);
 
-            if ($until($carry, $key, $value)) {
+            if ($until($carry, $value, $key)) {
                 return [$carry, $key, $value];
             }
         }
@@ -92,16 +98,6 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
         return [$carry, null, null];
     };
 }
-
-/**
- * unary callable for returning the nth element of an array
- */
-function array_nth(int $i) : callable {
-    return function (array $array) use ($i) : mixed {
-        return array_values($array)[$i] ?? null;
-    };
-}
-
 
 /**
  * Return unary callable for array_slice
