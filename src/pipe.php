@@ -32,6 +32,15 @@ function array_chunk(int $length, bool $preserve_keys = false) : callable {
 }
 
 /**
+ * unary callable for array_first
+ */
+function array_first() : callable {
+    return function (array $array) : mixed {
+        return \array_first($array);
+    };
+}
+
+/**
  * Return unary callable for array_filter
  */
 function array_filter(?callable $callback = null, int $mode = 0) : callable {
@@ -39,6 +48,16 @@ function array_filter(?callable $callback = null, int $mode = 0) : callable {
         return \array_filter($array, $callback, $mode);
     };
 }
+
+/**
+ * unary callable for array_first
+ */
+function array_last() : callable {
+    return function (array $array) : mixed {
+        return \array_last($array);
+    };
+}
+
 
 /**
  * Return unary callable for array_map
@@ -60,21 +79,30 @@ function array_reduce(callable $callback, mixed $initial = null) : callable {
 
 /**
  * Reduce an array until $until is true.
- * Returns: [$carry, $triggerKey] where $triggerKey is null if never triggered.
+ * Returns: [$carry, $value, $key] or [$carry, null, null] if never triggered.
  */
 function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : callable {
     return function (array $array) use ($callback, $until, $initial) : array {
         $carry = $initial;
 
         foreach ($array as $key => $value) {
-            $carry = $callback($carry, $value);
+            $carry = $callback($carry, $value, $key);
 
-            if ($until($carry)) {
-                return [$carry, $key];
+            if ($until($carry, $value, $key)) {
+                return [$carry, $value, $key];
             }
         }
 
-        return [$carry, null];
+        return [$carry, null, null];
+    };
+}
+
+/**
+ * unary callable for returning the second element of an array
+ */
+function array_second() : callable {
+    return function (array $array) : mixed {
+        return array_values($array)[1];
     };
 }
 
