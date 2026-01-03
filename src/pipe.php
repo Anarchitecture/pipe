@@ -139,16 +139,27 @@ function increment(int|float $by = 1) : callable {
 /**
  * Return unary callable for filtering over an iterator
  */
-function iterator_filter(callable $callback) : callable {
+function iterable_filter(callable $callback) : callable {
     return function (iterable $iterator) use ($callback) : iterable {
-        foreach ($iterator as $item) {
+        foreach ($iterator as $key => $item) {
             if ($callback($item) === true) {
-                yield $item;
+                yield $key => $item;
             }
         }
     };
 }
 
+/**
+ * Return callable for a iterable ticket
+ */
+function iterable_ticker($start = 0) : callable {
+    return function () use ($start) : iterable {
+        $i = $start;
+        while (++$i) {
+            yield $i;
+        }
+    };
+}
 
 /**
  * Return unary callable for preg_replace
