@@ -101,6 +101,15 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
 }
 
 /**
+ * Return unary callable for array_unique
+ */
+function array_unique(int $flags = SORT_STRING) : callable {
+    return function (array $array) use ($flags) : array {
+        return \array_unique($array, $flags);
+    };
+}
+
+/**
  * Return unary callable for explode
  */
 function explode(string $separator, int $limit = PHP_INT_MAX) : callable {
