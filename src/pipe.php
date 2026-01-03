@@ -94,11 +94,11 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
 }
 
 /**
- * unary callable for returning the second element of an array
+ * unary callable for returning the nth element of an array
  */
-function array_second() : callable {
-    return function (array $array) : mixed {
-        return array_values($array)[1] ?? null;
+function array_nth(int $i) : callable {
+    return function (array $array) use ($i) : mixed {
+        return array_values($array)[$i] ?? null;
     };
 }
 
