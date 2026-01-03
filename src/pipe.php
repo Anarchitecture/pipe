@@ -137,6 +137,20 @@ function increment(int|float $by = 1) : callable {
 }
 
 /**
+ * Return unary callable for filtering over an iterator
+ */
+function iterator_filter(callable $callback) : callable {
+    return function (iterable $iterator) use ($callback) : iterable {
+        foreach ($iterator as $item) {
+            if ($callback($item) === true) {
+                yield $item;
+            }
+        }
+    };
+}
+
+
+/**
  * Return unary callable for preg_replace
  */
 function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1) : callable {
