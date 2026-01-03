@@ -86,10 +86,10 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
         $carry = $initial;
 
         foreach ($array as $key => $value) {
-            $carry = $callback($carry, $value, $key);
+            $carry = $callback($carry, $key, $value);
 
-            if ($until($carry, $value, $key)) {
-                return [$carry, $value, $key];
+            if ($until($carry, $key, $value)) {
+                return [$carry, $key, $value];
             }
         }
 
