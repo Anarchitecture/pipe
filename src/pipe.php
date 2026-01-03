@@ -107,6 +107,15 @@ function implode(string $separator = "") : callable {
 }
 
 /**
+ * Return unary callable that increments by $by (default 1).
+ */
+function increment(int|float $by = 1) : callable {
+    return function (int|float $number) use ($by) : int|float {
+        return $number + $by;
+    };
+}
+
+/**
  * Return unary callable for preg_replace
  */
 function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1) : callable {
