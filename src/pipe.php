@@ -74,8 +74,8 @@ function array_reduce(callable $callback, mixed $initial = null) : callable {
 }
 
 /**
- * Reduce an array until $until is true.
- * Returns: [$carry, $value, $key] or [$carry, null, null] if never triggered.
+ * Reduce an array until $until returns true.
+ * Returns: [$carry, $key, $value] or [$carry, null, null] if never triggered.
  */
 function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : callable {
     return function (array $array) use ($callback, $until, $initial) : array {
