@@ -9,7 +9,11 @@ use Generator;
 
 /**
  * Return unary callable for array_any
- * @return Closure(array): bool
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @param callable(TValue, TKey): bool $callback
+ * @return Closure(array<TKey, TValue>): bool
  */
 function array_any(callable $callback) : Closure {
     return function (array $array) use ($callback) : bool {
@@ -19,7 +23,11 @@ function array_any(callable $callback) : Closure {
 
 /**
  * Return unary callable for array_all
- * @return Closure(array): bool
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @param callable(TValue, TKey): bool $callback
+ * @return Closure(array<TKey, TValue>): bool
  */
 function array_all(callable $callback) : Closure {
     return function (array $array) use ($callback) : bool {
@@ -29,8 +37,11 @@ function array_all(callable $callback) : Closure {
 
 /**
  * Return unary callable for array_chunk
- * @template T
- * @return Closure(array<T>): array<array<T>>
+ *
+ * @template TValue
+ * @param int<1, max> $length
+ * @param bool $preserve_keys
+ * @return Closure(array<array-key, TValue>): list<array<array-key, TValue>>
  */
 function array_chunk(int $length, bool $preserve_keys = false) : Closure {
     return function (array $array) use ($length, $preserve_keys) : array {
@@ -40,8 +51,12 @@ function array_chunk(int $length, bool $preserve_keys = false) : Closure {
 
 /**
  * Return unary callable for array_filter
- * @template T
- * @return Closure(array<T>): array<T>
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @param callable<TValue, TKey>|null $callback
+ * @param int $mode
+ * @return Closure(array<TKey, TValue>): array<TKey, TValue>
  */
 function array_filter(?callable $callback = null, int $mode = 0) : Closure {
     return function (array $array) use ($callback, $mode) : array {
@@ -51,7 +66,12 @@ function array_filter(?callable $callback = null, int $mode = 0) : Closure {
 
 /**
  * Return unary callable for array_map
- * @return Closure(array): array
+ *
+ * @template TKey of array-key
+ * @template TIn
+ * @template TOut
+ * @param callable(TIn): TOut $callback
+ * @return Closure(array<TKey, TIn>): array<TKey, TOut>
  */
 function array_map(callable $callback) : Closure {
     return function (array $array) use ($callback) : array {
@@ -62,21 +82,24 @@ function array_map(callable $callback) : Closure {
 /**
  * Return unary callable for returning the nth element of an array
  * @template T
- * @return Closure(array<T>): (T|null)
+ * @return Closure(array<array-key, T>): (T|null)
  */
 function array_nth(int $i) : Closure {
     return function (array $array) use ($i) : mixed {
         return $array
             |> array_slice($i, 1)
-            |> array_first(...)
-            ?? null;
+            |> array_first(...);
     };
 }
 
 
 /**
  * Return unary callable for array_reduce
- * @return Closure(array): mixed
+ *
+ * @template TCarry
+ * @param callable(TCarry, mixed): TCarry $callback
+ * @param TCarry $initial
+ * @return Closure(array<array-key, mixed>): TCarry
  */
 function array_reduce(callable $callback, mixed $initial = null) : Closure {
     return function (array $array) use ($callback, $initial) : mixed {
@@ -87,7 +110,14 @@ function array_reduce(callable $callback, mixed $initial = null) : Closure {
 /**
  * Return unary callable for reducing an array until $until returns true.
  * Returns: [$carry, $key, $value] or [$carry, null, null] if never triggered.
- * @return Closure(array): array
+ *
+ * @template TCarry
+ * @template TValue
+ * @template TKey of array-key
+ * @param callable(TCarry, TValue, TKey): TCarry $callback
+ * @param callable(TCarry, TValue, TKey): bool $until
+ * @param TCarry $initial
+ * @return Closure(array<TKey, TValue>): array{0:TCarry, 1:TKey|null, 2:TValue|null}
  */
 function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : Closure {
     return function (array $array) use ($callback, $until, $initial) : array {
@@ -107,7 +137,12 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
 
 /**
  * Return unary callable for array_slice
- * @return Closure(array): array
+ *
+ * @template TValue
+ * @param int $offset
+ * @param int|null $length
+ * @param bool $preserve_keys
+ * @return Closure(array<array-key, TValue>): array<array-key, TValue>
  */
 function array_slice(int $offset, ?int $length = null, bool $preserve_keys = false) : Closure {
     return function (array $array) use ($offset, $length, $preserve_keys) : array {
@@ -117,7 +152,10 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
 
 /**
  * Return unary callable for array_unique
- * @return Closure(array): array
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @return Closure(array<TKey, TValue>): array<TKey, TValue>
  */
 function array_unique(int $flags = SORT_STRING) : Closure {
     return function (array $array) use ($flags) : array {
@@ -127,7 +165,8 @@ function array_unique(int $flags = SORT_STRING) : Closure {
 
 /**
  * Return unary callable for explode
- * @return Closure(string): array
+ *
+ * @return Closure(string): list<string>
  */
 function explode(string $separator, int $limit = PHP_INT_MAX) : Closure {
     return function (string $string) use ($separator, $limit) : array {
@@ -137,7 +176,8 @@ function explode(string $separator, int $limit = PHP_INT_MAX) : Closure {
 
 /**
  * Return unary callable for implode
- * @return Closure(array): string
+ *
+ * @return Closure(array<array-key, string>): string
  */
 function implode(string $separator = "") : Closure {
     return function (array $array) use ($separator) : string {
@@ -147,17 +187,19 @@ function implode(string $separator = "") : Closure {
 
 /**
  * Return unary callable that increments by $by (default 1).
- * @return Closure(int): int
+ * @return Closure(int|float): (int|float)
  */
-function increment(int $by = 1) : Closure {
-    return function (int $number) use ($by) : int {
+function increment(int|float $by = 1) : Closure {
+    return function (int|float $number) use ($by) : int|float {
         return $number + $by;
     };
 }
 
 /**
  * Return unary callable that returns the current element of an iterable
- * @return Closure(iterable): mixed
+ *
+ * @template TValue
+ * @return Closure(iterable<array-key, TValue>): (TValue|null)
  */
 function iterable_current() : Closure {
     return function (iterable $iterable) : mixed {
@@ -171,7 +213,11 @@ function iterable_current() : Closure {
 
 /**
  * Return unary callable for filtering over an iterable
- * @return Closure(iterable): Generator
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @param callable(TValue, TKey): bool $callback
+ * @return Closure(iterable<TKey, TValue>): Generator<TKey, TValue>
  */
 function iterable_filter(callable $callback) : Closure {
     return function (iterable $iterable) use ($callback) : Generator {
@@ -186,7 +232,11 @@ function iterable_filter(callable $callback) : Closure {
 
 /**
  * Return unary callable for taking $count items from an iterable
- * @return Closure(iterable): Generator
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @param int<0, max> $count
+ * @return Closure(iterable<TKey, TValue>): Generator<TKey, TValue>
  */
 function iterable_take(int $count) : Closure {
     return static function (iterable $iterable) use ($count) : Generator {
@@ -209,7 +259,8 @@ function iterable_take(int $count) : Closure {
 
 /**
  * Return iterable ticker
- * @return Generator<int>
+ *
+ * @return Generator<int, int>
  */
 function iterable_ticker(int $start = 0) : Generator {
     for ($i = $start; ; $i++) {
@@ -219,8 +270,13 @@ function iterable_ticker(int $start = 0) : Generator {
 
 /**
  * Return unary callable for preg_replace
- * @template T of string|array
- * @return Closure(T): (T|null)
+ * $count is ignored
+ *
+ * @template TSubject of string|array
+ * @param string|array $pattern
+ * @param string|array $replacement
+ * @param int $limit
+ * @return Closure(TSubject): (TSubject|null)
  */
 function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1) : Closure {
     return function (string|array $subject) use ($pattern, $replacement, $limit) : string|array|null {
@@ -231,7 +287,8 @@ function preg_replace(string|array $pattern, string|array $replacement, int $lim
 /**
  * Return unary callable for rsort
  * @template T
- * @return Closure(array<T>): list<T>
+ * @param int $flags
+ * @return Closure(array<array-key, T>): list<T>
  */
 function rsort(int $flags = SORT_REGULAR) : Closure {
     return function (array $array) use ($flags) : array {
@@ -243,7 +300,8 @@ function rsort(int $flags = SORT_REGULAR) : Closure {
 /**
  * Return unary callable for sort
  * @template T
- * @return Closure(array<T>): list<T>
+ * @param int $flags
+ * @return Closure(array<array-key, T>): list<T>
  */
 function sort(int $flags = SORT_REGULAR) : Closure {
     return function (array $array) use ($flags) : array {
@@ -254,8 +312,8 @@ function sort(int $flags = SORT_REGULAR) : Closure {
 
 /**
  * Return unary callable for str_replace
- * @template T of string|array
- * @return Closure(T): T
+ * @template TSubject of string|array
+ * @return Closure(TSubject): TSubject
  */
 function str_replace(string|array $search, string|array $replace) : Closure {
     return function (string|array $subject) use ($search, $replace) : string|array {
@@ -265,8 +323,10 @@ function str_replace(string|array $search, string|array $replace) : Closure {
 
 /**
  * Return unary callable for usort
+ *
  * @template T
- * @return Closure(array<T>): list<T>
+ * @param callable(T, T): int $callback
+ * @return Closure(array<array-key, T>): list<T>
  */
 function usort(callable $callback) : Closure {
     return function (array $array) use ($callback) : array {
@@ -277,7 +337,9 @@ function usort(callable $callback) : Closure {
 
 /**
  * Return unary callable for dumping the value in a pipe
- * @return Closure(mixed): mixed
+ *
+ * @template T
+ * @return Closure(T): T
  */
 function var_dump() : Closure {
     return function (mixed $value) : mixed {
@@ -288,7 +350,10 @@ function var_dump() : Closure {
 
 /**
  * Return unary callable for mapping over multiple arrays (zip semantics).
- * @return Closure(array): array
+ *
+ * @template TResult
+ * @param callable(mixed...): TResult $callback
+ * @return Closure(list<array>): list<TResult>
  */
 function zip_map(callable $callback) : Closure {
     return function (array $arrays) use ($callback) : array {
