@@ -321,6 +321,19 @@ function str_replace(string|array $search, string|array $replace) : Closure {
 }
 
 /**
+ * Return unary callable for checking if a string starts with a prefix.
+ *
+ * @param string $prefix
+ * @return Closure(string): bool
+ */
+function str_starts_with(string $prefix) : Closure {
+    return function (string $haystack) use ($prefix) : bool {
+        return \str_starts_with($haystack, $prefix);
+    };
+}
+
+
+/**
  * Return unary callable for usort
  *
  * @template T
