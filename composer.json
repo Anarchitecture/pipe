@@ -9,5 +9,8 @@
     "files": [
       "src/pipe.php"
       ]
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1"
   }
 }
