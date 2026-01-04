@@ -141,7 +141,7 @@ function increment(int|float $by = 1) : callable {
  */
 function iterable_current() : callable {
     return function (iterable $iterator) : mixed {
-        return $iterator |> iterable_take(1) |> iterator_to_array(...) |> array_first(...);
+        return ($iterator) |> iterable_take(1) |> iterator_to_array(...) |> array_first(...);
     };
 }
 
@@ -181,15 +181,12 @@ function iterable_take(int $count) : callable {
 
 
 /**
- * Return callable for a iterable ticket
+ * Return iterable ticker
  */
-function iterable_ticker($start = 0) : callable {
-    return function () use ($start) : iterable {
-        $i = $start;
-        while (++$i) {
-            yield $i;
-        }
-    };
+function iterable_ticker($start = 0) : iterable {
+    while (++$start) {
+        yield $start;
+    }
 }
 
 /**
