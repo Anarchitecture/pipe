@@ -196,22 +196,6 @@ function increment(int|float $by = 1) : Closure {
 }
 
 /**
- * Return unary callable that returns the current element of an iterable
- *
- * @template TValue
- * @return Closure(iterable<array-key, TValue>): (TValue|null)
- */
-function iterable_current() : Closure {
-    return function (iterable $iterable) : mixed {
-        foreach ($iterable as $value) {
-            return $value;
-        }
-        return null;
-    };
-}
-
-
-/**
  * Return unary callable for filtering over an iterable
  *
  * @template TKey of array-key
@@ -229,6 +213,21 @@ function iterable_filter(callable $callback) : Closure {
     };
 }
 
+/**
+ * Return the first value of an iterable (or null if empty).
+ *
+ * Warning: for Generators/Iterators, this consumes one element.
+ *
+ * @template TValue
+ * @param iterable<array-key, TValue> $iterable
+ * @return TValue|null
+ */
+function iterable_first(iterable $iterable): mixed {
+    foreach ($iterable as $value) {
+        return $value;
+    }
+    return null;
+}
 
 /**
  * Return unary callable for taking $count items from an iterable
