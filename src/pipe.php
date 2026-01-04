@@ -98,7 +98,7 @@ function array_nth(int $i) : Closure {
  *
  * @template TCarry
  * @param callable(TCarry, mixed): TCarry $callback
- * @param TCarry $initial
+ * @param TCarry|null $initial
  * @return Closure(array<array-key, mixed>): TCarry
  */
 function array_reduce(callable $callback, mixed $initial = null) : Closure {
@@ -116,7 +116,7 @@ function array_reduce(callable $callback, mixed $initial = null) : Closure {
  * @template TKey of array-key
  * @param callable(TCarry, TValue, TKey): TCarry $callback
  * @param callable(TCarry, TValue, TKey): bool $until
- * @param TCarry $initial
+ * @param TCarry|null $initial
  * @return Closure(array<TKey, TValue>): array{0:TCarry, 1:TKey|null, 2:TValue|null}
  */
 function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : Closure {
