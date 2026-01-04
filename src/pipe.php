@@ -141,25 +141,27 @@ function increment(int|float $by = 1) : callable {
  */
 function iterable_current() : callable {
     return function (iterable $iterator) : mixed {
-        return $iterator
-            |> iterable_take(1)
-            |> iterator_to_array(...)
-            |> array_first(...);
+        foreach ($iterator as $value) {
+            return $value;
+        }
+        return null;
     };
 }
+
 
 /**
  * Return unary callable for filtering over an iterator
  */
 function iterable_filter(callable $callback) : callable {
     return function (iterable $iterator) use ($callback) : iterable {
-        foreach ($iterator as $key => $item) {
-            if ($callback($item) === true) {
-                yield $key => $item;
+        foreach ($iterator as $key => $value) {
+            if ($callback($value, $key)) {
+                yield $key => $value;
             }
         }
     };
 }
+
 
 /**
  * Return unary callable for taking $count items from an iterable
@@ -186,9 +188,9 @@ function iterable_take(int $count) : callable {
 /**
  * Return iterable ticker
  */
-function iterable_ticker($start = 0) : iterable {
-    while (++$start) {
-        yield $start;
+function iterable_ticker(int $start = 0) : iterable {
+    for ($i = $start; ; $i++) {
+        yield $i;
     }
 }
 
