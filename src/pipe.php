@@ -141,7 +141,10 @@ function increment(int|float $by = 1) : callable {
  */
 function iterable_current() : callable {
     return function (iterable $iterator) : mixed {
-        return ($iterator) |> iterable_take(1) |> iterator_to_array(...) |> array_first(...);
+        return $iterator
+            |> iterable_take(1)
+            |> iterator_to_array(...)
+            |> array_first(...);
     };
 }
 
