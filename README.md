@@ -1,12 +1,20 @@
-# pipe
+# anarchitecture/pipe
 
-`pipe` is a small PHP library that provides functions returning **unary callables**,
-designed to be used with the **PHP 8.5 pipe operator**.
+`anarchitecture/pipe` is a small PHP library that provides functions returning **unary callables**,
+designed to be used with the **PHP 8.5 pipe operator** (`|>`).
 
-The goal is to make it easy to **leverage existing functions in pipe expressions**
-without having to write inline closures.
+The goal is to make it easy to **leverage existing functions in pipe expressions** without having to write inline closures.
 
-## Usage
+## Requirements
+- PHP **8.5+** (pipe operator support)
+
+## Installation
+```bash
+composer config repositories.pipe vcs git@github.com:Anarchitecture/pipe.git
+composer require anarchitecture/pipe:dev-main
+```
+
+## Quick Start
 ```php
 use Anarchitecture\pipe as p;
 
@@ -15,56 +23,104 @@ $a = range(1, 8)
     |> p\array_chunk(4)
     |> p\array_map(array_sum(...));
 
-// $a === [288, 17650540]
+// [288, 17650540]
 ```
 
+### What a helper returns
 
-Each helper returns a unary callable that can be composed in a pipe:
+Each helper provices a **unary callable**:
 
 ```php
+use Anarchitecture\pipe as p;
+
 p\array_map(fn ($x) => $x * 2);
 // fn (array $input) => array_map(fn ($x) => $x * 2, $input)
 ```
 
-## Semantics
+## Helpers (by category)
 
-A few helpers intentionally differ from the underlying PHP function behavior to make pipelines pleasant:
+### Arrays
+- `p\array_all(callable $callback)`
+- `p\array_any(callable $callback)`
+- `p\array_chunk(int $length, bool $preserve_keys = false)`
+- `p\array_filter(callable $callback, int $mode = 0)`
+- `p\array_map(callable $mapper)`
+- `p\array_nth(int $i)` — nth element or `null`
+- `p\array_reduce(callable $reducer, mixed $initial = null)`
+- `p\array_reduce_until(callable $reducer, callable $until, mixed $initial = null)`
+- `p\array_slice(int $offset, ?int $length = null, bool $preserve_keys = false)`
+- `p\array_unique(int $flags = SORT_STRING)`
+- `p\sort(int $flags = SORT_REGULAR)`
+- `p\rsort(int $flags = SORT_REGULAR)`
+- `p\usort(callable $comparator)`
 
-- `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (instead of the native `true`).
+### Strings / regex
+- `p\explode(string $separator, int $limit = PHP_INT_MAX)`
+- `p\implode(string $separator = "")`
+- `p\str_replace(string|array $search, string|array $replace)`
+- `p\str_starts_with(string $prefix)`
+- `p\preg_replace(string|array $pattern, string|array $replacement, int $limit = -1)`
+
+### Iterables (Generators-friendly)
+- `p\iterable_filter(callable $callback)` — yields matching items
+- `p\iterable_map(callable $callback)` — yields mapped items
+- `p\iterable_take(int $count)` — yields first `$count` items
+- `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
+- `p\iterable_ticker(int $start = 0)` — infinite counter generator
+
+### Misc
+- `p\increment(int|float $by = 1)`
+- `p\var_dump()` — “tap” debugging helper (returns value unchanged)
+- `p\zip_map(?callable $callback)` — zip semantics over multiple arrays
+
+
+## Semantics (intentional differences)
+
+A few helpers differ from their underlying built-ins to make pipelines pleasant:
+
+- `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (native functions return `true`/`false`).
 - `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
 - `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.
 
-## Example
-This example uses `pipe` library functions to solve [Advent of Code 2025 Day 9 Part 1](https://adventofcode.com/2025/day/9):
+## Examples
+
+### Tap-debugging in a pipeline
+
 ```php
 use Anarchitecture\pipe as p;
 
-function rectangles(array $tiles) : array {
-    $rectangles = [];
-    while ($current = array_pop($tiles)) {
-        foreach ($tiles as $tile) {
-            $rectangles[] = [$current, $tile];
-        }
-    }
-    return $rectangles;
-}
+$out = "  Hello  "
+    |> trim(...)
+    |> p\var_dump()
+    |> strtoupper(...);
 
-function area(?array $tiles = null) : int {
-    return $tiles
-        |> p\zip_map(fn ($da, $db) => abs($da - $db) + 1)
-        |> array_product(...);
-}
-
-$largest_rectangle = file_get_contents('input')
-    |> p\explode(PHP_EOL)
-    |> p\array_map(p\explode(','))
-    |> rectangles(...)
-    |> p\array_map(area(...))
-    |> p\rsort()
-    |> array_first(...);
-
-echo $largest_rectangle . PHP_EOL;
+// HELLO
 ```
+
+### Working with iterables (lazy pipelines)
+
+```php
+use Anarchitecture\pipe as p;
+
+$values = p\iterable_ticker(1)
+    |> p\iterable_map(fn ($x) => $x * $x)
+    |> p\iterable_take(5)
+    |> iterator_to_array(...);
+
+// [1, 4, 9, 16, 25]
+```
+
+### Zip-map (multiple arrays)
+
+```php
+use Anarchitecture\pipe as p;
+
+$sumPairs = [[6, 7, 8], [10, 20, 30]]
+    |> p\zip_map(fn ($a, $b) => $a + $b);
+
+// [16, 27, 38]
+```
+
 
 ## Philosophy
 * functions return unary callables
