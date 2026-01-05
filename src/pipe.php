@@ -217,6 +217,20 @@ function iterable_first(iterable $iterable): mixed {
 }
 
 /**
+ * Return unary callable for mapping over an iterable
+ *
+ * @param callable(mixed, mixed) : mixed $callback
+ * @return Closure(iterable<array-key, mixed>) : Generator
+ */
+function iterable_map(callable $callback) : Closure {
+    return function (iterable $iterable) use ($callback) : Generator {
+        foreach ($iterable as $key => $value) {
+            yield $key => $callback($value, $key);
+        }
+    };
+}
+
+/**
  * Return unary callable for taking $count items from an iterable
  *
  * @param int<0, max> $count
