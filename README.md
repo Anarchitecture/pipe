@@ -10,8 +10,7 @@ The goal is to make it easy to **leverage existing functions in pipe expressions
 
 ## Installation
 ```bash
-composer config repositories.pipe vcs git@github.com:Anarchitecture/pipe.git
-composer require anarchitecture/pipe:dev-main
+composer require anarchitecture/pipe
 ```
 
 ## Quick Start

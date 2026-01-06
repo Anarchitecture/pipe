@@ -2,8 +2,9 @@
   "name": "anarchitecture/pipe",
   "type": "library",
   "description": "Unary callable helpers to leverage PHP 8.5 pipes",
+  "license": "MIT",
   "require": {
-    "php": ">=8.5"
+    "php": "^8.5"
   },
   "autoload": {
     "files": [
@@ -12,5 +13,11 @@
   },
   "require-dev": {
     "phpstan/phpstan": "^2.1"
+  },
+  "scripts": {
+    "analyse": "phpstan analyse -l 10 src",
+    "check": [
+      "@analyse"
+    ]
   }
 }
