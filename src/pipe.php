@@ -58,6 +58,14 @@ function array_filter(callable $callback, int $mode = 0) : Closure {
 }
 
 /**
+ * @param array<array<array-key, mixed>> $array
+ * @return array<array-key, mixed>
+ */
+function array_flatten(array $array) : array {
+    return array_merge(...$array);
+}
+
+/**
  * Return unary callable for array_map
  *
  * @param callable(mixed) : mixed $callback
