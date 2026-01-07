@@ -62,7 +62,7 @@ function array_filter(callable $callback, int $mode = 0) : Closure {
  * @return array<array-key, mixed>
  */
 function array_flatten(array $array) : array {
-    return $array === [] ? [] : array_merge(...$array);
+    return $array === [] ? [] : \array_merge(...$array);
 }
 
 /**
@@ -243,7 +243,7 @@ function iterable_map(callable $callback) : Closure {
  *
  * @template T
  * @param array<T> $array
- * @return Generator<array<T>>
+ * @return Generator<list<T>>
  */
 function iterable_permutation(array $array) : Generator {
 

@@ -43,6 +43,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_any(callable $callback)`
 - `p\array_chunk(int $length, bool $preserve_keys = false)`
 - `p\array_filter(callable $callback, int $mode = 0)`
+- `p\array_flatten(array $arrays)` — flattens one level (array of arrays to single array)
 - `p\array_map(callable $mapper)`
 - `p\array_nth(int $i)` — nth element or `null`
 - `p\array_reduce(callable $reducer, mixed $initial = null)`
@@ -63,7 +64,8 @@ p\array_map(fn ($x) => $x * 2);
 ### Iterables (Generators-friendly)
 - `p\iterable_filter(callable $callback)` — yields matching items
 - `p\iterable_map(callable $callback)` — yields mapped items
-- `p\iterable_reduce(callable $callback, $initial = 0)` — reduces an iterable to a single value
+- `p\iterable_permutation(array $array)` — yields all permutations of the input array
+- `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
