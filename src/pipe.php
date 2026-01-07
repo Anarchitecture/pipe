@@ -264,6 +264,26 @@ function iterable_permutation(array $array) : Generator {
 }
 
 /**
+ * Return unary callable for reducing an iterable to a single value
+ *
+ * @param callable(TCarry|null, mixed, mixed) : (TCarry|null) $callback
+ * @param TCarry|null $initial
+ * @return Closure(iterable<array-key, mixed>) : (TCarry|null)
+ *
+ * @template TCarry
+ */
+function iterable_reduce(callable $callback, mixed $initial = null) : Closure {
+    return function (iterable $iterable) use ($callback, $initial) : mixed {
+        $carry = $initial;
+        foreach ($iterable as $key => $value) {
+            $carry = $callback($carry, $value, $key);
+        }
+        return $carry;
+    };
+}
+
+
+/**
  * Return unary callable for taking $count items from an iterable
  *
  * @param int<0, max> $count

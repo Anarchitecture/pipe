@@ -63,6 +63,7 @@ p\array_map(fn ($x) => $x * 2);
 ### Iterables (Generators-friendly)
 - `p\iterable_filter(callable $callback)` — yields matching items
 - `p\iterable_map(callable $callback)` — yields mapped items
+- `p\iterable_reduce(callable $callback, $initial = 0)` — reduces an iterable to a single value
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
