@@ -239,6 +239,31 @@ function iterable_map(callable $callback) : Closure {
 }
 
 /**
+ * Generate permutation of an array
+ *
+ * @template T
+ * @param array<T> $array
+ * @return Generator<array<T>>
+ */
+function iterable_permutation(array $array) : Generator {
+
+    if (count($array) === 0) {
+        yield [];
+    }
+
+    foreach ($array as $key => $item) {
+
+        $rest = $array;
+        unset($rest[$key]);
+
+        foreach (iterable_permutation($rest) as $permutation) {
+            yield [$item, ...$permutation];
+        }
+
+    }
+}
+
+/**
  * Return unary callable for taking $count items from an iterable
  *
  * @param int<0, max> $count
