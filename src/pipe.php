@@ -62,7 +62,7 @@ function array_filter(callable $callback, int $mode = 0) : Closure {
  * @return array<array-key, mixed>
  */
 function array_flatten(array $array) : array {
-    return array_merge(...$array);
+    return $array === [] ? [] : array_merge(...$array);
 }
 
 /**
