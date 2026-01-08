@@ -71,7 +71,9 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
-- `p\iterable_window($size)` – sliding windows over iterables
+- `p\iterable_window(int $size)` – sliding windows over iterables
+- `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
+
 
 ### Misc
 - `p\apply(callable $callback)` — applies an array of arguments to a callable (numeric keys => positional, string keys => named; mixed keys rejected)
@@ -126,12 +128,12 @@ $out = "  Hello  "
 ```php
 use Anarchitecture\pipe as p;
 
-$values = p\iterable_ticker(1)
-    |> p\iterable_map(fn ($x) => $x * $x)
-    |> p\iterable_take(5)
+$result = 0
+    |> p\iterate(static fn(int $x) : int => $x + 1)
+    |> p\iterable_take(4)
     |> iterator_to_array(...);
 
-// [1, 4, 9, 16, 25]
+// [0, 1, 2, 3]
 ```
 
 ### Zip-map (multiple arrays)

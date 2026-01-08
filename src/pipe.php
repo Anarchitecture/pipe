@@ -447,6 +447,30 @@ function iterable_window(int $size) : Closure {
 }
 
 /**
+ * Lazily generate an (infinite) sequence by repeatedly applying a callback.
+ *
+ * If $include_seed is true (default), yields: seed, f(seed), f(f(seed)), ...
+ * If false, yields: f(seed), f(f(seed)), ...
+ *
+ * @template T
+ * @param callable(T) : T $callback
+ * @return Closure(T) : Generator<int, T>
+ */
+function iterate(callable $callback, bool $include_seed = true) : Closure
+{
+    return static function (mixed $value) use ($callback, $include_seed) : Generator {
+        if ($include_seed) {
+            yield $value;
+        }
+
+        for (;;) {
+            $value = $callback($value);
+            yield $value;
+        }
+    };
+}
+
+/**
  * Return unary callable for preg_replace
  * $count is ignored
  *
