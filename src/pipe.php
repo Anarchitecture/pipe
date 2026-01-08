@@ -283,6 +283,35 @@ function iterable_reduce(callable $callback, mixed $initial = null) : Closure {
     };
 }
 
+/**
+ * Lazily iterate over a string as bytes or byte-chunks of the provided size.
+ *
+ * @return Closure(string) : Generator<int, string>
+ */
+function iterable_string(int $size = 1) : Closure {
+    if ($size < 1) {
+        throw new InvalidArgumentException('size must be >= 1');
+    }
+
+    return static function (string $string) use ($size) : Generator {
+
+        $length = \strlen($string);
+
+        if ($size === 1) {
+            for ($i = 0; $i < $length; $i++) {
+                yield $i => $string[$i];
+            }
+        }
+
+        else {
+            for ($i = 0; $i < $length; $i += $size) {
+                yield $i => \substr($string, $i, $size);
+            }
+        }
+    };
+}
+
+
 
 /**
  * Return unary callable for taking $count items from an iterable

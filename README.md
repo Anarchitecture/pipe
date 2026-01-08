@@ -66,6 +66,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_map(callable $callback)` — yields mapped items
 - `p\iterable_permutation(array $array)` — yields all permutations of the input array
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
+- `p\iterable_string(int $size = 1)` Lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
@@ -86,6 +87,22 @@ A few helpers differ from their underlying built-ins to make pipelines pleasant:
 - `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.
 
 ## Examples
+
+### Iterate a string as bytes
+
+```php
+use function Anarchitecture\pipe as p;
+
+$chunks = "abcdef"
+    |> p\iterable_string(2)
+    |> iterator_to_array(...);
+
+// [
+//   0 => "ab",
+//   2 => "cd",
+//   4 => "ef",
+// ]
+````
 
 ### Tap-debugging in a pipeline
 
