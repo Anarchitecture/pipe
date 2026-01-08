@@ -66,13 +66,14 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_map(callable $callback)` — yields mapped items
 - `p\iterable_permutation(array $array)` — yields all permutations of the input array
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
-- `p\iterable_string(int $size = 1)` Lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
+- `p\iterable_string(int $size = 1)` — lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
 - `p\iterable_window($size)` – sliding windows over iterables
 
 ### Misc
+- `p\apply(callable $callback)` — applies an array of arguments to a callable (numeric keys => positional, string keys => named; mixed keys rejected)
 - `p\increment(int|float $by = 1)`
 - `p\var_dump()` — “tap” debugging helper (returns value unchanged)
 - `p\zip_map(?callable $callback)` — zip semantics over multiple arrays
@@ -81,28 +82,30 @@ p\array_map(fn ($x) => $x * 2);
 ## Semantics (intentional differences)
 
 A few helpers differ from their underlying built-ins to make pipelines pleasant:
-
+- `p\apply($callback)` rejects arrays with mixed numeric and string keys (to avoid PHP’s “positional after named” edge cases).
 - `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (native functions return `true`/`false`).
 - `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
 - `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.
 
 ## Examples
 
-### Iterate a string as bytes
+### Apply (spread arguments)
 
 ```php
-use function Anarchitecture\pipe as p;
+use Anarchitecture\pipe as p;
 
-$chunks = "abcdef"
-    |> p\iterable_string(2)
-    |> iterator_to_array(...);
+// numeric keys => positional
+$out1 = [10 => "a", 20 => "b", 30 => "c"]
+    |> p\apply(fn (string $a, string $b, string $c) => $a . $b . $c);
 
-// [
-//   0 => "ab",
-//   2 => "cd",
-//   4 => "ef",
-// ]
-````
+// "abc"
+
+// string keys => named
+$out2 = ["b" => 2, "a" => 1]
+    |> p\apply(fn (int $a, int $b) => $a - $b);
+
+// -1
+```
 
 ### Tap-debugging in a pipeline
 

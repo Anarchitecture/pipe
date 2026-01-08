@@ -9,6 +9,41 @@ use Generator;
 use InvalidArgumentException;
 
 /**
+ * Apply a callback to an array of arguments.
+ *
+ * - Integer-keyed arrays (including sparse) are applied positionally in iteration order.
+ * - String-keyed arrays are applied as named arguments.
+ * - Mixed integer and string keys are not supported. The returned closure will throw InvalidArgumentException
+ *
+ * @param callable $callback
+ * @return Closure(array<int, mixed>|array<string, mixed>): mixed
+ */
+function apply(callable $callback) : Closure {
+    return static function (array $array) use ($callback) : mixed {
+
+        $has_int = false;
+        $has_string = false;
+
+        foreach ($array as $k => $_) {
+
+            if (\is_int($k)) {
+                $has_int = true;
+            }
+
+            else {
+                $has_string = true;
+            }
+
+            if ($has_int && $has_string) {
+                throw new InvalidArgumentException('mixed numeric and associative keys are not supported');
+            }
+        }
+
+        return $callback(...$array);
+    };
+}
+
+/**
  * Return unary callable for array_any
  *
  * @param callable(mixed, array-key) : bool $callback

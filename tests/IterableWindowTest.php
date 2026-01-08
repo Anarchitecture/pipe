@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Anarchitecture\pipe\Tests;
 
 use Generator;
 use InvalidArgumentException;
