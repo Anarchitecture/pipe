@@ -62,6 +62,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\preg_replace(string|array $pattern, string|array $replacement, int $limit = -1)`
 
 ### Iterables (Generators-friendly)
+- `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
 - `p\iterable_filter(callable $callback)` — yields matching items
 - `p\iterable_map(callable $callback)` — yields mapped items
 - `p\iterable_permutation(array $array)` — yields all permutations of the input array

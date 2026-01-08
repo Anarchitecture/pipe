@@ -229,6 +229,38 @@ function increment(int|float $by = 1) : Closure {
 }
 
 /**
+ * Return true if any item in an iterable matches the predicate (or is true if predicate is null).
+ *
+ * Short-circuits: stops iterating as soon as a match is found.
+ *
+ * @param callable|null $callback
+ * @return Closure(iterable<array-key, mixed>) : bool
+ */
+function iterable_any(?callable $callback = null) : Closure {
+    return static function (iterable $iterable) use ($callback) : bool {
+
+        if ($callback === null) {
+            foreach ($iterable as $value) {
+                if ($value === true) {
+                    return true;
+                }
+            }
+        }
+
+        else {
+            foreach ($iterable as $value) {
+                if ($callback($value) === true) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    };
+}
+
+
+/**
  * Return unary callable for filtering over an iterable
  *
  * @param callable(mixed, mixed) : bool $callback
