@@ -6,6 +6,7 @@ namespace Anarchitecture\pipe;
 
 use Closure;
 use Generator;
+use InvalidArgumentException;
 
 /**
  * Return unary callable for array_any
@@ -317,6 +318,36 @@ function iterable_ticker(int $start = 0) : Generator {
     for ($i = $start; ; $i++) {
         yield $i;
     }
+}
+
+/**
+ * Return unary callable for yielding windows of $size items from an iterable as an array.
+ * Full windows only. Input keys are ignored.
+ *
+ * @param int $size The desired window size (>0)
+ * @return Closure(iterable<array-key, mixed>): Generator<int, list<mixed>>
+ * @throws InvalidArgumentException
+ */
+function iterable_window(int $size) : Closure {
+
+    if ($size <= 0) {
+        throw new InvalidArgumentException('$size must be > 0');
+    }
+
+    return static function (iterable $iterable) use ($size) : Generator {
+
+        $buffer = [];
+
+        foreach ($iterable as $value) {
+
+            $buffer[] = $value;
+
+            if (\count($buffer) === $size) {
+                yield $buffer;
+                $buffer = \array_slice($buffer, 1);
+            }
+        }
+    };
 }
 
 /**

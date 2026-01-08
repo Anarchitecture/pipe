@@ -27,7 +27,7 @@ $a = range(1, 8)
 
 ### What a helper returns
 
-Each helper provices a **unary callable**:
+Each helper provides a **unary callable**:
 
 ```php
 use Anarchitecture\pipe as p;
@@ -69,6 +69,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
+- `p\iterable_window($size)` – sliding windows over iterables
 
 ### Misc
 - `p\increment(int|float $by = 1)`
@@ -123,6 +124,22 @@ $sumPairs = [[6, 7, 8], [10, 20, 30]]
 // [16, 27, 38]
 ```
 
+### Sliding windows (iterables)
+
+```php
+use Anarchitecture\pipe as p;
+
+$windows = [1, 2, 3, 4, 5, 6]
+    |> p\iterable_window(3)
+    |> iterator_to_array(...);
+
+// [
+//   [1, 2, 3],
+//   [2, 3, 4],
+//   [3, 4, 5],
+//   [4, 5, 6],
+// ]
+```
 
 ## Philosophy
 * functions return unary callables

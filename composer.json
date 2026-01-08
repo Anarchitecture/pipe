@@ -12,12 +12,15 @@
       ]
   },
   "require-dev": {
-    "phpstan/phpstan": "^2.1"
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^12.5"
   },
   "scripts": {
-    "analyse": "phpstan analyse -l 10 src",
+    "analyse": "phpstan analyse -l 10 src tests",
+    "test": "phpunit",
     "check": [
-      "@analyse"
+      "@analyse",
+      "@test"
     ]
   }
 }
