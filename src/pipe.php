@@ -564,6 +564,22 @@ function var_dump() : Closure {
 }
 
 /**
+ * Apply $callback only when $predicate($value) is true; otherwise return $value unchanged.
+ *
+ * Example:
+ *   $s |> when(is_string(...), trim(...))
+ *
+ * @param callable $predicate
+ * @param callable $callback
+ * @return Closure(mixed) : mixed
+ */
+function when(callable $predicate, callable $callback) : Closure {
+    return static function (mixed $value) use ($predicate, $callback) : mixed {
+        return $predicate($value) ? $callback($value) : $value;
+    };
+}
+
+/**
  * Return unary callable for mapping over multiple arrays (zip semantics).
  *
  * @param (callable(): mixed)|null $callback

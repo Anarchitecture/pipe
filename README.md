@@ -74,6 +74,8 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_window(int $size)` – sliding windows over iterables
 - `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
 
+### Control flow
+- `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value)` is `true` (otherwise returns the input unchanged)
 
 ### Misc
 - `p\apply(callable $callback)` — applies an array of arguments to a callable (numeric keys => positional, string keys => named; mixed keys rejected)
@@ -110,18 +112,18 @@ $out2 = ["b" => 2, "a" => 1]
 // -1
 ```
 
-### Tap-debugging in a pipeline
+### Conditional transform
 
 ```php
 use Anarchitecture\pipe as p;
 
 $out = "  Hello  "
-    |> trim(...)
-    |> p\var_dump()
-    |> strtoupper(...);
+    |> p\when(is_string(...), trim(...))
+    |> p\when(p\str_starts_with("H"), strtolower(...));
 
-// HELLO
+// "hello"
 ```
+
 
 ### Working with iterables (lazy pipelines)
 
