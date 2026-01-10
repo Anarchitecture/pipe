@@ -77,6 +77,10 @@ p\array_map(fn ($x) => $x * 2);
 ### Control flow
 - `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value)` is `true` (otherwise returns the input unchanged)
 
+### Predicates / functional
+
+- `p\equals(mixed $value)` — returns true if the item === $value`
+
 ### Misc
 - `p\apply(callable $callback)` — applies an array of arguments to a callable (numeric keys => positional, string keys => named; mixed keys rejected)
 - `p\increment(int|float $by = 1)`
@@ -119,7 +123,7 @@ use Anarchitecture\pipe as p;
 
 $out = "  Hello  "
     |> p\when(is_string(...), trim(...))
-    |> p\when(p\str_starts_with("H"), strtolower(...));
+    |> p\when(p\equals("Hello"), strtolower(...));
 
 // "hello"
 ```

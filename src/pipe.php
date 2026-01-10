@@ -208,6 +208,18 @@ function explode(string $separator, int $limit = PHP_INT_MAX) : Closure {
 }
 
 /**
+ * Returns a predicate: $x === $value
+ *
+ * @param mixed $value
+ * @return Closure(mixed) : bool
+ */
+function equals(mixed $value)  : Closure {
+    return function (mixed $x) use ($value) : bool {
+        return $x === $value;
+    };
+}
+
+/**
  * Return unary callable for implode
  *
  * @return Closure(array<array-key, string>): string
@@ -575,7 +587,7 @@ function var_dump() : Closure {
  */
 function when(callable $predicate, callable $callback) : Closure {
     return static function (mixed $value) use ($predicate, $callback) : mixed {
-        return $predicate($value) ? $callback($value) : $value;
+        return $predicate($value) === true ? $callback($value) : $value;
     };
 }
 
