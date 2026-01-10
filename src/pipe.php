@@ -183,6 +183,30 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
 }
 
 /**
+ * Return unary callable for mapping over an array and summing the results.
+ *
+ * Equivalent to:
+ *   fn(array $xs) => array_reduce($xs, fn($sum, $x) => $sum + $callback($x), 0)
+ *
+ * @param callable $callback
+ * @return Closure
+ */
+function array_sum(callable $callback) : Closure {
+    return function (array $array) use ($callback) {
+        $sum = 0;
+
+        foreach ($array as $value) {
+            /** @var int|float $result */
+            $result = $callback($value);
+            $sum += $result;
+        }
+
+        return $sum;
+    };
+}
+
+
+/**
  * Return unary callable for array_unique
  *
  * @param int $flags

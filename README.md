@@ -49,6 +49,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_reduce(callable $reducer, mixed $initial = null)`
 - `p\array_reduce_until(callable $reducer, callable $until, mixed $initial = null)`
 - `p\array_slice(int $offset, ?int $length = null, bool $preserve_keys = false)`
+- `p\array_sum(callable $callback)` — map each element over $callback then sum numeric results
 - `p\array_unique(int $flags = SORT_STRING)`
 - `p\sort(int $flags = SORT_REGULAR)`
 - `p\rsort(int $flags = SORT_REGULAR)`
