@@ -456,17 +456,19 @@ function iterable_ticker(int $start = 0) : Generator {
  * Return unary callable for yielding windows of $size items from an iterable as an array.
  * Full windows only. Input keys are ignored.
  *
+ * If $circular is true, windows are treated as circular: after reaching the end,
+ *
  * @param int $size The desired window size (>0)
+ * @param bool $circular Whether to yield circular (wraparound) windows
  * @return Closure(iterable<array-key, mixed>): Generator<int, list<mixed>>
- * @throws InvalidArgumentException
  */
-function iterable_window(int $size) : Closure {
+function iterable_window(int $size, bool $circular = false) : Closure {
 
     if ($size <= 0) {
         throw new InvalidArgumentException('$size must be > 0');
     }
 
-    return static function (iterable $iterable) use ($size) : Generator {
+    return static function (iterable $iterable) use ($size, $circular) : Generator {
 
         $buffer = [];
 
@@ -475,8 +477,23 @@ function iterable_window(int $size) : Closure {
             $buffer[] = $value;
 
             if (\count($buffer) === $size) {
+
+                if ($circular === true) {
+                    $prefix ??= \array_slice($buffer, 0, $size - 1);
+                }
+
                 yield $buffer;
                 $buffer = \array_slice($buffer, 1);
+            }
+        }
+
+        if ($circular === true && isset($prefix)) {
+
+            $wrapped = array_merge($buffer, $prefix)
+                |> iterable_window($size);
+
+            foreach ($wrapped as $window) {
+                yield $window;
             }
         }
     };

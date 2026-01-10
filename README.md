@@ -72,7 +72,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
-- `p\iterable_window(int $size)` – sliding windows over iterables
+- `p\iterable_window(int $size, bool $circular = false)` – sliding windows over iterables (optionally circular)
 - `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
 
 ### Control flow
@@ -159,7 +159,8 @@ $sumPairs = [[6, 7, 8], [10, 20, 30]]
 ```php
 use Anarchitecture\pipe as p;
 
-$windows = [1, 2, 3, 4, 5, 6]
+// linear (default): full windows only, no wraparound
+$linear = [1, 2, 3, 4, 5, 6]
     |> p\iterable_window(3)
     |> iterator_to_array(...);
 
@@ -168,6 +169,19 @@ $windows = [1, 2, 3, 4, 5, 6]
 //   [2, 3, 4],
 //   [3, 4, 5],
 //   [4, 5, 6],
+// ]
+
+// circular: adds the boundary-crossing windows (end -> start)
+$circular = [0, 1, 2, -2, -1]
+    |> p\iterable_window(size: 4, circular: true)
+    |> iterator_to_array(...);
+
+// [
+//   [0, 1, 2, -2],
+//   [1, 2, -2, -1],
+//   [2, -2, -1, 0],
+//   [-2, -1, 0, 1],
+//   [-1, 0, 1, 2],
 // ]
 ```
 
