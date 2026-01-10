@@ -564,6 +564,19 @@ function usort(callable $callback) : Closure {
 }
 
 /**
+ * Returns a constant function: fn($_) => $value
+ *
+ * @template T
+ * @param T $value
+ * @return Closure(mixed) : T
+ */
+function value(mixed $value) : Closure {
+    return function ($_) use ($value) {
+        return $value;
+    };
+}
+
+/**
  * Return unary callable for dumping the value in a pipe
  *
  * @return Closure(mixed) : mixed
