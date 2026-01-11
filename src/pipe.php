@@ -265,6 +265,50 @@ function increment(int|float $by = 1) : Closure {
 }
 
 /**
+ * @param int $total
+ * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<array-key, int>>
+ */
+function iterable_allocate(int $total): \Closure {
+
+    if ($total < 0) {
+        throw new \InvalidArgumentException('iterable_allocate(): $total must be >= 0');
+    }
+
+    return function (iterable $items) use ($total): \Generator {
+
+        $items = \is_array($items) ? $items : \iterator_to_array($items, true);
+
+        $iterable_allocate = function (array $items, int $remaining) use (&$iterable_allocate): \Generator {
+            if ($items === []) {
+                if ($remaining === 0) {
+                    yield [];
+                }
+
+                return;
+            }
+
+            $current = \array_key_first($items);
+            unset($items[$current]);
+
+            if ($items === []) {
+                yield [$current => $remaining];
+                return;
+            }
+
+            for ($i = 0; $i <= $remaining; $i++) {
+
+                foreach ($iterable_allocate($items, $remaining - $i) as $allocations) {
+
+                    yield [$current => $i] + $allocations;
+                }
+            }
+        };
+
+        yield from $iterable_allocate($items, $total);
+    };
+}
+
+/**
  * Return true if any item in an iterable matches the predicate (or is true if predicate is null).
  *
  * Short-circuits: stops iterating as soon as a match is found.
