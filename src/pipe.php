@@ -525,6 +525,24 @@ function iterate(callable $callback, bool $include_seed = true) : Closure
 
 /**
  * Return unary callable for preg_replace
+ *
+ * @template TFlags of 0|256|512|768
+ * @template TFlags of int
+ * @param string $pattern
+ * @param TFlags $flags
+ * @param int $offset
+ * @return Closure(string): array<array{string|null, int<-1, max>}|string|null>
+ */
+function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure {
+    return function (string $subject) use ($pattern, $flags, $offset) {
+        \preg_match($pattern, $subject, $matches, $flags, $offset);
+        return $matches;
+    };
+}
+
+
+/**
+ * Return unary callable for preg_replace
  * $count is ignored
  *
  * @param string|array<string> $pattern
