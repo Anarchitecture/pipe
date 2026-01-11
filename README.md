@@ -61,6 +61,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\str_replace(string|array $search, string|array $replace)`
 - `p\str_starts_with(string $prefix)`
 - `p\preg_match(string $pattern, int $flags = 0, int $offset = 0)` — returns the `$matches` array (empty array when no match)
+- `p\preg_match_all(string $pattern, int $flags = 0, int $offset = 0)` — returns the `$matches` array (empty array when no match)
 - `p\preg_replace(string|array $pattern, string|array $replacement, int $limit = -1)`
 
 ### Iterables (Generators-friendly)
@@ -89,12 +90,11 @@ p\array_map(fn ($x) => $x * 2);
 - `p\var_dump()` — “tap” debugging helper (returns value unchanged)
 - `p\zip_map(?callable $callback)` — zip semantics over multiple arrays
 
-
 ## Semantics (intentional differences)
 
 A few helpers differ from their underlying built-ins to make pipelines pleasant:
 - `p\apply($callback)` rejects arrays with mixed numeric and string keys (to avoid PHP’s “positional after named” edge cases).
-- `p\preg_match()` returns the `$matches` array (like the third arg of `\preg_match()`), not the match count; no match => `[]`.
+- `p\preg_match()` and `p\preg_match_all()` return the `$matches` array (like the third arg of `\preg_match()`), not the match count; no match => `[]`.
 - `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (native functions return `true`/`false`).
 - `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
 - `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.

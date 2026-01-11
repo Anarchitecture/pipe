@@ -540,6 +540,20 @@ function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure {
     };
 }
 
+/**
+ * @template TFlags of int
+ * @param string $pattern
+ * @param TFlags $flags
+ * @param int $offset
+ * @return Closure(string) : array<array-key, mixed>
+ */
+function preg_match_all(string $pattern, int $flags = 0, int $offset = 0): Closure {
+    return function (string $subject) use ($pattern, $flags, $offset) {
+        \preg_match_all($pattern, $subject, $matches, $flags, $offset);
+        return $matches;
+    };
+}
+
 
 /**
  * Return unary callable for preg_replace
