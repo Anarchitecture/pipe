@@ -244,6 +244,23 @@ function equals(mixed $value)  : Closure {
 }
 
 /**
+ * Apply $then($value) when $predicate($value) is true; otherwise apply $else($value).
+ *
+ * Note: for constant branches, use value(...), e.g.
+ *   $x |> if_else(is_int(...), value('int'), value('other'))
+ *
+ * @param callable $predicate
+ * @param callable $then
+ * @param callable $else
+ * @return Closure(mixed) : mixed
+ */
+function if_else(callable $predicate, callable $then, callable $else) : Closure {
+    return static function (mixed $value) use ($predicate, $then, $else) : mixed {
+        return $predicate($value) === true ? $then($value) : $else($value);
+    };
+}
+
+/**
  * Return unary callable for implode
  *
  * @return Closure(array<array-key, string>): string

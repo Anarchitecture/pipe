@@ -79,7 +79,8 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
 
 ### Control flow
-- `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value)` is `true` (otherwise returns the input unchanged)
+- `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value) === true` (otherwise returns the input unchanged)
+- `p\if_else(callable $predicate, callable $then, callable $else)` — applies `$then($value)` when `$predicate($value) === true`, otherwise `$else($value)`
 
 ### Predicates / functional
 - `p\equals(mixed $value)` — returns true if `item === $value`
@@ -132,6 +133,20 @@ $out = "  Hello  "
 // "bye"
 ```
 
+### If / else branching
+
+```php
+use Anarchitecture\pipe as p;
+
+$out = "Hello"
+    |> p\if_else(
+        p\equals("Hello"),
+        p\value("bye"),
+        p\value("unknown")
+    );
+
+// "bye"
+```
 
 ### Working with iterables (lazy pipelines)
 
