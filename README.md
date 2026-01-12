@@ -53,7 +53,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_unique(int $flags = SORT_STRING)`
 - `p\sort(int $flags = SORT_REGULAR)`
 - `p\rsort(int $flags = SORT_REGULAR)`
-- `p\array_transpose()` — transpose a 2D array (matrix)
+- `p\array_transpose()` — transpose a 2D array (matrix), preserving row/column keys (pads missing values with `null`)
 - `p\usort(callable $comparator)`
 
 ### Strings / regex
@@ -175,6 +175,7 @@ $sumPairs = [[6, 7, 8], [10, 20, 30]]
 ```
 
 ### Array transpose (matrix)
+For numeric matrices it behaves like a regular transpose:
 ```php
 use Anarchitecture\pipe as p;
 
@@ -191,6 +192,24 @@ $t = $matrix
 //  [2, 5],
 //  [3, 6]
 //]
+```
+For string keyed matrices, it pads missing cells with null:
+```php
+use Anarchitecture\pipe as p;
+
+$matrix = [
+    'r1' => ['a' => 1, 'b' => 2],
+    'r2' => ['a' => 3, 'c' => 4],
+];
+
+$t = $matrix
+    |> p\array_transpose();
+
+// [
+//   'a' => ['r1' => 1,    'r2' => 3],
+//   'b' => ['r1' => 2,    'r2' => null],
+//   'c' => ['r1' => null, 'r2' => 4],
+// ]
 ```
 
 ### Iterable zip

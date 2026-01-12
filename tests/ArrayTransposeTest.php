@@ -73,4 +73,67 @@ final class ArrayTransposeTest extends TestCase {
             [2, null],
         ], $result);
     }
+
+    public function test_preserves_row_and_column_keys() : void {
+
+        $stage = [
+            'r1' => ['a' => 1, 'b' => 2],
+            'r2' => ['a' => 3, 'c' => 4],
+        ];
+
+        $result = $stage
+            |> array_transpose();
+
+        self::assertSame([
+            'a' => ['r1' => 1,    'r2' => 3],
+            'b' => ['r1' => 2,    'r2' => null],
+            'c' => ['r1' => null, 'r2' => 4],
+        ], $result);
+    }
+
+    public function test_single_row_preserves_column_keys_and_maps_to_row_keys() : void {
+
+        $stage = [
+            'r1' => ['a' => 10, 'b' => 20, 'c' => 30],
+        ];
+
+        $result = $stage
+            |> array_transpose();
+
+        self::assertSame([
+            'a' => ['r1' => 10],
+            'b' => ['r1' => 20],
+            'c' => ['r1' => 30],
+        ], $result);
+    }
+
+    public function test_ragged_rows_are_padded_with_null_and_keys_preserved() : void {
+
+        $stage = [
+            10 => [0 => 1, 1 => 2],
+            20 => [0 => 3],
+        ];
+
+        $result = $stage
+            |> array_transpose();
+
+        self::assertSame([
+            0 => [10 => 1, 20 => 3],
+            1 => [10 => 2, 20 => null],
+        ], $result);
+    }
+
+    public function test_column_key_order_is_first_seen_order() : void {
+
+        $stage = [
+            'r1' => ['b' => 2, 'a' => 1],
+            'r2' => ['c' => 3, 'b' => 20],
+        ];
+
+        $result = $stage
+            |> array_transpose()
+            |> array_keys(...);
+
+        self::assertSame(['b', 'a', 'c'], $result);
+    }
 }

@@ -207,23 +207,58 @@ function array_sum(callable $callback) : Closure {
 
 /**
  * Return unary callable for transposing a 2D array (matrix).
- * Equivalent to: \array_map(null, ...$arrays) if arrays count >= 2)
  *
- * @return Closure(array<array<array-key, mixed>>): array<array-key, array<array-key, mixed>>
+ * This is similar to `\array_map(null, ...$arrays)` for rectangular numeric matrices,
+ * but it *preserves keys*:
+ * - Column keys from the input rows become row keys in the result.
+ * - Row keys from the input become column keys in the result.
+ *
+ * Missing cells are padded with null.
+ * Column key order is the "first-seen" order while scanning rows top-to-bottom.
+ *
+ * @return Closure(array<array-key, array<array-key, mixed>>): array<array-key, array<array-key, mixed>>
  */
 function array_transpose() : Closure {
-    return static function (array $arrays) : array {
 
-        /** @var array<array<array-key, mixed>> $arrays */
+    return static function (array $arrays) : array {
+        /** @var array<array-key, array<array-key, mixed>> $arrays */
+
         if ($arrays === []) {
             return [];
         }
 
-        if (count($arrays) === 1) {
-            return \array_map(fn ($value) => [$value], array_first($arrays));
+        $row_keys = array_keys($arrays);
+
+        $column_keys = [];
+
+        /** @var array<array-key, mixed> $row */
+        foreach ($arrays as $row) {
+            foreach (array_keys($row) as $column_key) {
+                $column_keys[$column_key] = true;
+            }
         }
 
-        return \array_map(null, ...$arrays);
+        $column_keys = array_keys($column_keys);
+
+        $matrix = [];
+
+        /** @var array-key $column_key */
+        foreach ($column_keys as $column_key) {
+
+            $row = [];
+
+            /** @var array-key $row_key */
+            foreach ($row_keys as $row_key) {
+
+                $var = $arrays[$row_key][$column_key] ?? null;
+
+                $row[$row_key] = $var;
+            }
+
+            $matrix[$column_key] = $row;
+        }
+
+        return $matrix;
     };
 }
 
