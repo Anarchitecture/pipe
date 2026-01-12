@@ -413,7 +413,7 @@ function iterable_first(iterable $iterable): mixed {
 /**
  * Return unary callable for mapping over an iterable
  *
- * @param callable(mixed) : mixed $callback
+ * @param callable $callback
  * @return Closure(iterable<array-key, mixed>) : Generator
  */
 function iterable_map(callable $callback) : Closure {
@@ -576,6 +576,66 @@ function iterable_window(int $size, bool $circular = false) : Closure {
 
             foreach ($wrapped as $window) {
                 yield $window;
+            }
+        }
+    };
+}
+
+/**
+ *  Lazily zip the left iterable with one or more right iterables.
+ *
+ *  Yields arrays (tuples) of values:
+ *    [leftValue, right1Value, right2Value, ...]
+ *
+ *  - Preserves keys from the left iterable.
+ *  - Stops when the left ends or when any right iterable is exhausted (shortest wins).
+ *  - With zero right iterables, yields single-element tuples: [leftValue].
+ *
+ *  Note: Right iterables are consumed; if you pass rewindable Iterators, they are rewound at start.
+ *
+ * @param iterable<array-key, mixed> ...$right
+ * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<int, mixed>>
+ */
+function iterable_zip(iterable ...$right) : \Closure {
+
+    $mapper = static function (iterable $iterable): \Iterator {
+
+        if (is_array($iterable)) {
+            return new \ArrayIterator($iterable);
+        }
+
+        if ($iterable instanceof \Iterator) {
+            return $iterable;
+
+        }
+
+        return new \IteratorIterator($iterable);
+    };
+
+    return static function(iterable $left) use ($right, $mapper) : \Generator {
+
+        $right = \array_map($mapper, $right);
+
+        foreach ($right as $iterator) {
+            $iterator->rewind();
+        }
+
+        foreach ($left as $key => $value) {
+
+            if (\array_any($right, fn($iterator) => !$iterator->valid())) {
+                return;
+            }
+
+            $buffer = [$value];
+
+            foreach ($right as $iterator) {
+                $buffer[] = $iterator->current();
+            }
+
+            yield $key => $buffer;
+
+            foreach ($right as $iterator) {
+                $iterator->next();
             }
         }
     };

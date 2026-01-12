@@ -77,6 +77,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
 - `p\iterable_window(int $size, bool $circular = false)` – sliding windows over iterables (optionally circular)
+- `p\iterable_zip(iterable ...$right)` — lazily zips the left iterable with one or more right iterables; yields tuples and stops at the shortest (preserves left keys)
 - `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
 
 ### Control flow
@@ -189,6 +190,21 @@ $t = $matrix
 //  [1, 4],
 //  [2, 5],
 //  [3, 6]
+//]
+```
+
+### Iterable zip
+
+```php
+use Anarchitecture\pipe as p;
+
+$result = [1, 2]
+    |> p\iterable_zip([10, 20], [100, 200])
+    |> iterator_to_array(...);
+
+// [
+//  [1, 10, 100],
+//  [2, 20, 200]
 //]
 ```
 
