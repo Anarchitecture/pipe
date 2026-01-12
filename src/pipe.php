@@ -205,6 +205,27 @@ function array_sum(callable $callback) : Closure {
     };
 }
 
+/**
+ * Return unary callable for transposing a 2D array (matrix).
+ * Equivalent to: \array_map(null, ...$arrays) if arrays count >= 2)
+ *
+ * @return Closure(array<array<array-key, mixed>>): array<array-key, array<array-key, mixed>>
+ */
+function array_transpose() : Closure {
+    return static function (array $arrays) : array {
+
+        /** @var array<array<array-key, mixed>> $arrays */
+        if ($arrays === []) {
+            return [];
+        }
+
+        if (count($arrays) === 1) {
+            return \array_map(fn ($value) => [$value], array_first($arrays));
+        }
+
+        return \array_map(null, ...$arrays);
+    };
+}
 
 /**
  * Return unary callable for array_unique
@@ -682,7 +703,6 @@ function str_starts_with(string $prefix) : Closure {
         return \str_starts_with($haystack, $prefix);
     };
 }
-
 
 /**
  * Return unary callable for usort

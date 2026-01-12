@@ -53,6 +53,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_unique(int $flags = SORT_STRING)`
 - `p\sort(int $flags = SORT_REGULAR)`
 - `p\rsort(int $flags = SORT_REGULAR)`
+- `p\array_transpose()` — transpose a 2D array (matrix)
 - `p\usort(callable $comparator)`
 
 ### Strings / regex
@@ -170,6 +171,25 @@ $sumPairs = [[6, 7, 8], [10, 20, 30]]
     |> p\zip_map(fn ($a, $b) => $a + $b);
 
 // [16, 27, 38]
+```
+
+### Array transpose (matrix)
+```php
+use Anarchitecture\pipe as p;
+
+$matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+];
+
+$t = $matrix
+    |> p\array_transpose();
+
+// [
+//  [1, 4],
+//  [2, 5],
+//  [3, 6]
+//]
 ```
 
 ### Sliding windows (iterables)
