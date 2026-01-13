@@ -66,6 +66,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\preg_replace(string|array $pattern, string|array $replacement, int $limit = -1)`
 
 ### Iterables (Generators-friendly)
+- `p\iterable_all(?callable $callback = null)` — returns `true` if all items match (or no item is `!== true` when callback is `null`); short-circuits
 - `p\iterable_allocate(int $total)` — yields all non-negative integer allocations of `$total` across the input iterable (preserves keys; `$total < 0` throws)
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
 - `p\iterable_filter(callable $callback)` — yields matching items

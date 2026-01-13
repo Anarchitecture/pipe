@@ -338,6 +338,38 @@ function increment(int|float $by = 1) : Closure {
 }
 
 /**
+ * Return true if all items in an iterable match the predicate (or are true if predicate is null).
+ * Comparison is strict.
+ *
+ * Short-circuits: stops iterating as soon as false (or actually !== true) is found.
+ *
+ * @param callable|null $callback
+ * @return Closure(iterable<array-key, mixed>) : bool
+ */
+function iterable_all(?callable $callback = null) : Closure {
+    return static function (iterable $iterable) use ($callback) : bool {
+
+        if ($callback === null) {
+            foreach ($iterable as $value) {
+                if ($value !== true) {
+                    return false;
+                }
+            }
+        }
+
+        else {
+            foreach ($iterable as $value) {
+                if ($callback($value) !== true) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    };
+}
+
+/**
  * @param int $total
  * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<array-key, int>>
  */
@@ -383,6 +415,7 @@ function iterable_allocate(int $total): \Closure {
 
 /**
  * Return true if any item in an iterable matches the predicate (or is true if predicate is null).
+ * Comparison is strict.
  *
  * Short-circuits: stops iterating as soon as a match is found.
  *
