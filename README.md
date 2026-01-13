@@ -67,6 +67,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\preg_replace(string|array $pattern, string|array $replacement, int $limit = -1)`
 
 ### Iterables (Generators-friendly)
+- `p\collect(iterable $iterable)` — **terminal**: collect any iterable into an array (preserves keys)
 - `p\iterable_all(?callable $callback = null)` — returns `true` if all items match (or no item is `!== true` when callback is `null`); short-circuits
 - `p\iterable_allocate(int $total)` — yields all non-negative integer allocations of `$total` across the input iterable (preserves keys; `$total < 0` throws)
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
@@ -83,7 +84,6 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
 
 ### Control flow
-
 - `p\if_else(callable $predicate, callable $then, callable $else)` — applies `$then($value)` when `$predicate($value) === true`, otherwise `$else($value)`
 - `p\unless(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value) !== true` (otherwise returns the input unchanged)
 - `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value) === true` (otherwise returns the input unchanged)
@@ -163,7 +163,7 @@ use Anarchitecture\pipe as p;
 $result = 0
     |> p\iterate(static fn(int $x) : int => $x + 1)
     |> p\iterable_take(4)
-    |> iterator_to_array(...);
+    |> p\collect(...);
 
 // [0, 1, 2, 3]
 ```
@@ -241,7 +241,7 @@ use Anarchitecture\pipe as p;
 
 $result = [1, 2]
     |> p\iterable_zip([10, 20], [100, 200])
-    |> iterator_to_array(...);
+    |> p\collect(...);
 
 // [
 //  [1, 10, 100],
@@ -257,7 +257,7 @@ use Anarchitecture\pipe as p;
 // linear (default): full windows only, no wraparound
 $linear = [1, 2, 3, 4, 5, 6]
     |> p\iterable_window(3)
-    |> iterator_to_array(...);
+    |> p\collect(...);
 
 // [
 //   [1, 2, 3],
@@ -269,7 +269,7 @@ $linear = [1, 2, 3, 4, 5, 6]
 // circular: adds the boundary-crossing windows (end -> start)
 $circular = [0, 1, 2, -2, -1]
     |> p\iterable_window(size: 4, circular: true)
-    |> iterator_to_array(...);
+    |> p\collect(...);
 
 // [
 //   [0, 1, 2, -2],
@@ -289,7 +289,7 @@ use Anarchitecture\pipe as p;
 
 $allocations = ['a' => null, 'b' => null, 'c' => null]
     |> p\iterable_allocate(2)
-    |> iterator_to_array(...);
+    |> p\collect(...);
 
 // [
 //   ['a' => 0, 'b' => 0, 'c' => 2],

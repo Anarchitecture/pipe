@@ -293,6 +293,22 @@ function array_unique(int $flags = SORT_STRING) : Closure {
 }
 
 /**
+ * Collect an iterable into an array while preserving keys.
+ *
+ * This is a terminal helper intended for use at the end of a pipe. It accepts any
+ * iterable (arrays or Traversable) and returns a plain PHP array with the same
+ * keys and values.
+ *
+ * Useful with first-class callables in pipelines: `|> collect(...)`.
+ *
+ * @param iterable<array-key, mixed> $iterable
+ * @return array<array-key, mixed>
+ */
+function collect(iterable $iterable) : array {
+    return is_array($iterable) ? $iterable : iterator_to_array($iterable, true);
+}
+
+/**
  * Return unary callable for explode
  *
  * @param non-empty-string $separator
