@@ -833,6 +833,23 @@ function str_starts_with(string $prefix) : Closure {
 }
 
 /**
+ * Apply $callback only when $predicate($value) !== true; otherwise return $value unchanged.
+ * Strict comparison
+ *
+ * Example:
+ *   $s |> unless(is_string(...), trim(...))
+ *
+ * @param callable $predicate
+ * @param callable $callback
+ * @return Closure(mixed) : mixed
+ */
+function unless(callable $predicate, callable $callback) : Closure {
+    return static function (mixed $value) use ($predicate, $callback) : mixed {
+        return $predicate($value) !== true ? $callback($value) : $value;
+    };
+}
+
+/**
  * Return unary callable for usort
  *
  * @param callable(mixed, mixed): int $callback

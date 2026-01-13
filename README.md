@@ -49,11 +49,11 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_reduce(callable $reducer, mixed $initial = null)`
 - `p\array_reduce_until(callable $reducer, callable $until, mixed $initial = null)`
 - `p\array_slice(int $offset, ?int $length = null, bool $preserve_keys = false)`
+- `p\array_transpose()` — transpose a 2D array (matrix), preserving row/column keys (pads missing values with `null`)
 - `p\array_sum(callable $callback)` — map each element over $callback then sum numeric results
 - `p\array_unique(int $flags = SORT_STRING)`
 - `p\sort(int $flags = SORT_REGULAR)`
 - `p\rsort(int $flags = SORT_REGULAR)`
-- `p\array_transpose()` — transpose a 2D array (matrix), preserving row/column keys (pads missing values with `null`)
 - `p\usort(callable $comparator)`
 
 ### Strings / regex
@@ -82,8 +82,10 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterate(callable $callback, bool $include_seed = true)` — infinite sequence by repeated application (yields seed first by default)
 
 ### Control flow
-- `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value) === true` (otherwise returns the input unchanged)
+
 - `p\if_else(callable $predicate, callable $then, callable $else)` — applies `$then($value)` when `$predicate($value) === true`, otherwise `$else($value)`
+- `p\unless(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value) !== true` (otherwise returns the input unchanged)
+- `p\when(callable $predicate, callable $callback)` — applies `$callback` only when `$predicate($value) === true` (otherwise returns the input unchanged)
 
 ### Predicates / functional
 - `p\equals(mixed $value)` — returns true if `item === $value`

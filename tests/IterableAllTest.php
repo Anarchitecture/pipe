@@ -96,5 +96,6 @@ final class IterableAllTest extends TestCase {
             |> iterable_all();
 
         self::assertTrue($result);
+
     }
 }
