@@ -81,6 +81,24 @@ function array_chunk(int $length, bool $preserve_keys = false) : Closure {
 }
 
 /**
+ * Return unary callable for removing one or more keys from an array.
+ *
+ * This is the associative-array equivalent of a "remove" operation:
+ * it returns a new array value with the given keys removed.
+ *
+ * @param array-key ...$keys
+ * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ */
+function array_dissoc(string|int ...$keys) : Closure {
+    return static function (array $array) use ($keys) : array {
+        foreach ($keys as $key) {
+            unset($array[$key]);
+        }
+        return $array;
+    };
+}
+
+/**
  * Return unary callable for array_filter
  *
  * @param callable(mixed) : bool $callback

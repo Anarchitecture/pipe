@@ -42,6 +42,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_all(callable $callback)`
 - `p\array_any(callable $callback)`
 - `p\array_chunk(int $length, bool $preserve_keys = false)`
+- `p\array_dissoc(string|int ...$keys)` — returns a copy of the array without the given key(s)
 - `p\array_filter(callable $callback, int $mode = 0)`
 - `p\array_flatten(array $arrays)` — flattens one level (array of arrays to single array)
 - `p\array_map(callable $mapper)`
@@ -98,9 +99,10 @@ p\array_map(fn ($x) => $x * 2);
 - `p\zip_map(?callable $callback)` — zip semantics over multiple arrays
 
 ## Semantics (intentional differences)
-
 A few helpers differ from their underlying built-ins to make pipelines pleasant:
+
 - `p\apply($callback)` rejects arrays with mixed numeric and string keys (to avoid PHP’s “positional after named” edge cases).
+- `p\array_dissoc()` removes one or more keys and returns the modified array (missing keys are ignored).
 - `p\preg_match()` and `p\preg_match_all()` return the `$matches` array (like the third arg of `\preg_match()`), not the match count; no match => `[]`.
 - `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (native functions return `true`/`false`).
 - `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
@@ -175,6 +177,23 @@ $sumPairs = [[6, 7, 8], [10, 20, 30]]
     |> p\zip_map(fn ($a, $b) => $a + $b);
 
 // [16, 27, 38]
+```
+
+### Array dissoc (remove keys)
+
+```php
+use Anarchitecture\pipe as p;
+
+$user = [
+    'id' => 123,
+    'email' => 'a@example.com',
+    'password_hash' => '...',
+];
+
+$public = $user
+    |> p\array_dissoc('password_hash');
+
+// ['id' => 123, 'email' => 'a@example.com']
 ```
 
 ### Array transpose (matrix)
