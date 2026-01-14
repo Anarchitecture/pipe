@@ -74,6 +74,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_all(?callable $callback = null)` — returns `true` if all items match (or no item is `!== true` when callback is `null`); short-circuits
 - `p\iterable_allocate(int $total)` — yields all non-negative integer allocations of `$total` across the input iterable (preserves keys; `$total < 0` throws)
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
+- `p\iterable_combinations_all()` — yields all subsets (power set) of the input iterable (**includes `[]`**; output is lazy but input is collected)
 - `p\iterable_filter(callable $callback)` — yields matching items
 - `p\iterable_map(callable $callback)` — yields mapped items
 - `p\iterable_permutation(array $array)` — yields all permutations of the input array
@@ -282,6 +283,22 @@ $circular = [0, 1, 2, -2, -1]
 //   [2, -2, -1, 0],
 //   [-2, -1, 0, 1],
 //   [-1, 0, 1, 2],
+// ]
+```
+
+### Generate all possible combinations of items
+```php
+use function anarchitecture\pipe as p;
+
+['a' => 1, 'b' => 2]
+    |> p\iterable_combinations_all()
+    |> p\collect(...);
+
+// [
+//   [],
+//   ['a' => 1],
+//   ['b' => 2],
+//   ['a' => 1, 'b' => 2],
 // ]
 ```
 

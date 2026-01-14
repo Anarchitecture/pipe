@@ -479,6 +479,38 @@ function iterable_any(?callable $callback = null) : Closure {
     };
 }
 
+/**
+ * Yield all possible combinations (subsets) of the given items (lazy).
+ *
+ * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<array-key, mixed>>
+ */
+function iterable_combinations_all() : \Closure {
+
+    return static function (iterable $items) : \Generator {
+
+        $items = \is_array($items) ? $items : \iterator_to_array($items, true);
+
+        $gen = static function (array $items) use (&$gen): \Generator {
+
+            if ($items === []) {
+                yield [];
+                return;
+            }
+
+            $k = \array_key_first($items);
+            $v = $items[$k];
+            unset($items[$k]);
+
+            /** @var array<array-key, mixed> $subset */
+            foreach ($gen($items) as $subset) {
+                yield $subset;
+                yield [$k => $v] + $subset;
+            }
+        };
+
+        yield from $gen($items);
+    };
+}
 
 /**
  * Return unary callable for filtering over an iterable
