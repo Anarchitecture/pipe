@@ -968,11 +968,11 @@ function zip_map(?callable $callback) : Closure {
 /**
  * Return unary callable for negating the boolean result of the given callback
  *
- * @param callable(mixed ...$args): bool $callback
- * @return callable(mixed ...$args): bool
+ * @param callable(mixed): bool $callback
+ * @return callable(mixed): bool
  */
 function not(callable $callback) : Closure {
-    return static function () use ($callback) : bool {
-        return !$callback(...func_get_args());
+    return static function ($value) use ($callback) : bool {
+        return true !== $callback($value);
     };
 }
