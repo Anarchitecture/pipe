@@ -44,18 +44,6 @@ function apply(callable $callback) : Closure {
 }
 
 /**
- * Return unary callable for array_any
- *
- * @param callable $callback
- * @return Closure(array<array-key, mixed>) : bool
- */
-function array_any(callable $callback) : Closure {
-    return function (array $array) use ($callback) : bool {
-        return \array_any($array, $callback);
-    };
-}
-
-/**
  * Return unary callable for array_all
  *
  * @param callable $callback
@@ -64,6 +52,18 @@ function array_any(callable $callback) : Closure {
 function array_all(callable $callback) : Closure {
     return function (array $array) use ($callback) : bool {
         return \array_all($array, $callback);
+    };
+}
+
+/**
+ * Return unary callable for array_any
+ *
+ * @param callable $callback
+ * @return Closure(array<array-key, mixed>) : bool
+ */
+function array_any(callable $callback) : Closure {
+    return function (array $array) use ($callback) : bool {
+        return \array_any($array, $callback);
     };
 }
 
