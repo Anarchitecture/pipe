@@ -122,7 +122,7 @@ function array_flatten(array $array) : array {
 /**
  * Return unary callable for array_map
  *
- * @param callable(mixed) : mixed $callback
+ * @param callable $callback
  * @return Closure(array<array-key, mixed>) : array<array-key, mixed>
  */
 function array_map(callable $callback) : Closure {
