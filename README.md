@@ -92,6 +92,7 @@ p\array_map(fn ($x) => $x * 2);
 ### Predicates / functional
 - `p\equals(mixed $value)` — returns true if `item === $value`
 - `p\value(mixed $value)` — constant function returns `$value`
+- `p\not(callable $callable` — boolean invert the function's return value
 
 ### Misc
 - `p\apply(callable $callback)` — applies an array of arguments to a callable (numeric keys => positional, string keys => named; mixed keys rejected)
