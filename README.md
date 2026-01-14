@@ -55,7 +55,8 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_unique(int $flags = SORT_STRING)`
 - `p\sort(int $flags = SORT_REGULAR)`
 - `p\rsort(int $flags = SORT_REGULAR)`
-- `p\usort(callable $comparator)`
+- `p\uasort(callable $comparator)` — sorts values and **preserves keys** (like PHP\uasort)
+- `p\usort(callable $comparator)` — sorts values and **reindexes keys** (like PHP\usort)
 
 ### Strings / regex
 - `p\explode(string $separator, int $limit = PHP_INT_MAX)`
@@ -104,7 +105,8 @@ A few helpers differ from their underlying built-ins to make pipelines pleasant:
 - `p\apply($callback)` rejects arrays with mixed numeric and string keys (to avoid PHP’s “positional after named” edge cases).
 - `p\array_dissoc()` removes one or more keys and returns the modified array (missing keys are ignored).
 - `p\preg_match()` and `p\preg_match_all()` return the `$matches` array (like the third arg of `\preg_match()`), not the match count; no match => `[]`.
-- `p\sort()`, `p\rsort()`, `p\usort()` **return the sorted array** (native functions return `true`/`false`).
+- `p\sort()`, `p\rsort()`, `p\usort()`, `p\uasort()` **return the sorted array** (native functions return `true`/`false`).
+- `p\usort()` reindexes keys (it returns a list). Use `p\uasort()` when you need to preserve key associations.
 - `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
 - `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.
 

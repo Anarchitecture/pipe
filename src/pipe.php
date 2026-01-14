@@ -885,6 +885,7 @@ function unless(callable $predicate, callable $callback) : Closure {
 
 /**
  * Return unary callable for usort
+ * Reindexes keys
  *
  * @param callable(mixed, mixed): int $callback
  * @return Closure(array<array-key, mixed>): list<mixed>
@@ -892,6 +893,20 @@ function unless(callable $predicate, callable $callback) : Closure {
 function usort(callable $callback) : Closure {
     return function (array $array) use ($callback) : array {
         \usort($array, $callback);
+        return $array;
+    };
+}
+
+/**
+ * Return unary callable for uasort
+ * Preserves keys
+ *
+ * @param callable(mixed, mixed): int $callback
+ * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ */
+function uasort(callable $callback) : Closure {
+    return function (array $array) use ($callback) : array {
+        \uasort($array, $callback);
         return $array;
     };
 }
