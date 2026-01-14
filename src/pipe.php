@@ -964,3 +964,15 @@ function zip_map(?callable $callback) : Closure {
         return $arrays === [] ? [] : \array_map($callback, ...$arrays);
     };
 }
+
+/**
+ * Return unary callable for negating the boolean result of the given callback
+ *
+ * @param callable(mixed ...$args): bool $callback
+ * @return callable(mixed ...$args): bool
+ */
+function not(callable $callback) : Closure {
+    return static function () use ($callback) : bool {
+        return !$callback(...func_get_args());
+    };
+}
