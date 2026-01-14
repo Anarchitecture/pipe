@@ -41,5 +41,5 @@ jobs:
 
       - name: Static analysis phpstan
         run: composer analyse
-      - name: Static analysis phpunit
+      - name: Tests phpunit
         run: composer test
