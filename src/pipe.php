@@ -58,7 +58,7 @@ function array_any(callable $callback) : Closure {
 /**
  * Return unary callable for array_all
  *
- * @param callable(mixed, array-key) : bool $callback
+ * @param callable $callback
  * @return Closure(array<array-key, mixed>) : bool
  */
 function array_all(callable $callback) : Closure {
