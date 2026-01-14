@@ -1,5 +1,7 @@
 # anarchitecture/pipe
 
+[![CI](https://github.com/Anarchitecture/pipe/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Anarchitecture/pipe/actions/workflows/ci.yml) [![Latest Version](https://img.shields.io/packagist/v/anarchitecture/pipe)](https://packagist.org/packages/anarchitecture/pipe) [![License](https://img.shields.io/packagist/l/anarchitecture/pipe)](https://github.com/Anarchitecture/pipe/blob/main/LICENSE)
+
 `anarchitecture/pipe` is a small PHP library that provides functions returning **unary callables**,
 designed to be used with the **PHP 8.5 pipe operator** (`|>`).
 
