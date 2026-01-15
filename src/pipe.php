@@ -112,6 +112,14 @@ function array_filter(callable $callback, int $mode = 0) : Closure {
 }
 
 /**
+ *  Flatten an array of arrays by one level.
+ *
+ *  Semantics match \array_merge(...$arrays):
+ *  - String keys are preserved; if the same string key appears multiple times, the *later* value wins.
+ *  - Numeric keys are reindexed.
+ *  - The input must be a list/array of arrays (non-arrays will cause a TypeError via the spread).
+ *  - Empty input array returns empty output array
+ *
  * @param array<array<array-key, mixed>> $array
  * @return array<array-key, mixed>
  */
