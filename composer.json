@@ -16,7 +16,7 @@
     "phpunit/phpunit": "^12.5"
   },
   "scripts": {
-    "analyse": "phpstan analyse -l 10 src tests",
+    "analyse": "php -d xdebug.mode=off vendor/bin/phpstan analyse -l 10 src tests",
     "test": "phpunit",
     "check": [
       "@analyse",

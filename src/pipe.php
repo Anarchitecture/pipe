@@ -177,14 +177,19 @@ function array_reduce(callable $callback, mixed $initial = null) : Closure {
 
 /**
  * Return unary callable for reducing an array until $until returns true.
- * Returns: [$carry, $key, $value] or [$carry, null, null] if never triggered.
  *
- * @template TCarry
- * @template TValue
- * @param callable(TCarry|null, TValue, array-key): (TCarry|null) $callback
- * @param callable(TCarry|null, TValue, array-key): bool $until
- * @param TCarry|null $initial
- * @return Closure(array<array-key, TValue>): array{0:TCarry|null, 1:array-key|null, 2:TValue|null}
+ *  On each element (left-to-right):
+ *    $carry = $callback($carry, $value, $key);
+ *    if ($until($carry, $value, $key)) stop and return [$carry, $key, $value].
+ *
+ *  Short-circuits: once triggered, no further elements are processed.
+ *  If never triggered (including empty input), returns [$carry, null, null]
+ *  where $carry is the final carry (or $initial for empty input).
+ *
+ * @param callable $callback
+ * @param callable $until
+ * @param mixed $initial
+ * @return Closure(array<array-key, mixed>): array{0:mixed, 1:array-key|null, 2:mixed|null}
  */
 function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : Closure {
     return function (array $array) use ($callback, $until, $initial) : array {
@@ -193,7 +198,7 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
         foreach ($array as $key => $value) {
             $carry = $callback($carry, $value, $key);
 
-            if ($until($carry, $value, $key)) {
+            if ($until($carry, $value, $key) === true) {
                 return [$carry, $key, $value];
             }
         }
