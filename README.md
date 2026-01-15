@@ -45,7 +45,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_any(callable $callback)`
 - `p\array_chunk(int $length, bool $preserve_keys = false)`
 - `p\array_dissoc(string|int ...$keys)` — returns a copy of the array without the given key(s)
-- `p\array_filter(callable $callback, int $mode = 0)`
+- `p\array_filter(callable $callback)` — filters an array, callback takes array values as single argument
 - `p\array_flatten(array $arrays)` — flattens one level (array of arrays to single array)
 - `p\array_map(callable $mapper)`
 - `p\array_nth(int $i)` — nth element or `null`

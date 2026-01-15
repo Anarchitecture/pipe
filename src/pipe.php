@@ -99,9 +99,9 @@ function array_dissoc(string|int ...$keys) : Closure {
 }
 
 /**
- * Return unary callable for array_filter
+ * Return unary callable for array_filter - values only
  *
- * @param callable(mixed) : bool $callback
+ * @param callable $callback
  * @param int $mode
  * @return Closure(array<array-key, mixed>) : array<array-key, mixed>
  */
