@@ -140,6 +140,29 @@ function array_map(callable $callback) : Closure {
 }
 
 /**
+ * Return unary callable for recursively mapping an array (leaves only).
+ *
+ * Traverses arrays only. The mapper is applied to non-array leaf values.
+ * Preserves keys at every level.
+ *
+ * @param callable $callback
+ * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ */
+function array_map_recursive(callable $callback) : Closure {
+
+    return static function (array $array) use ($callback) : array {
+
+        $array_map_recursive = static function (array $array) use ($callback, &$array_map_recursive) : array {
+
+            return \array_map(fn ($value) => \is_array($value) ? $array_map_recursive($value) : $callback($value), $array);
+
+        };
+
+        return $array_map_recursive($array);
+    };
+}
+
+/**
  * Return unary callable for returning the nth element of an array.
  *
  * Semantics match `\array_slice($array, $i, 1)`:
