@@ -72,12 +72,9 @@ p\array_map(fn ($x) => $x * 2);
 ### Iterables (Generators-friendly)
 - `p\collect(iterable $iterable)` — **terminal**: collect any iterable into an array (preserves keys)
 - `p\iterable_all(?callable $callback = null)` — returns `true` if all items match (or no item is `!== true` when callback is `null`); short-circuits
-- `p\iterable_allocate(int $total)` — yields all non-negative integer allocations of `$total` across the input iterable (preserves keys; `$total < 0` throws)
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
-- `p\iterable_combinations_all()` — yields all subsets (power set) of the input iterable (**includes `[]`**; output is lazy but input is collected)
 - `p\iterable_filter(callable $callback)` — yields matching items
 - `p\iterable_map(callable $callback)` — yields mapped items
-- `p\iterable_permutation(array $array)` — yields all permutations of the input array
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
 - `p\iterable_string(int $size = 1)` — lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
 - `p\iterable_take(int $count)` — yields first `$count` items
@@ -283,43 +280,6 @@ $circular = [0, 1, 2, -2, -1]
 //   [2, -2, -1, 0],
 //   [-2, -1, 0, 1],
 //   [-1, 0, 1, 2],
-// ]
-```
-
-### Generate all possible combinations of items
-```php
-use function anarchitecture\pipe as p;
-
-['a' => 1, 'b' => 2]
-    |> p\iterable_combinations_all()
-    |> p\collect(...);
-
-// [
-//   [],
-//   ['a' => 1],
-//   ['b' => 2],
-//   ['a' => 1, 'b' => 2],
-// ]
-```
-
-### Allocate a total across items (integer compositions)
-
-Generate all non-negative integer allocations that sum to a fixed total.
-
-```php
-use Anarchitecture\pipe as p;
-
-$allocations = ['a' => null, 'b' => null, 'c' => null]
-    |> p\iterable_allocate(2)
-    |> p\collect(...);
-
-// [
-//   ['a' => 0, 'b' => 0, 'c' => 2],
-//   ['a' => 0, 'b' => 1, 'c' => 1],
-//   ['a' => 0, 'b' => 2, 'c' => 0],
-//   ['a' => 1, 'b' => 0, 'c' => 1],
-//   ['a' => 1, 'b' => 1, 'c' => 0],
-//   ['a' => 2, 'b' => 0, 'c' => 0],
 // ]
 ```
 

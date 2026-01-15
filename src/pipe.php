@@ -404,50 +404,6 @@ function iterable_all(?callable $callback = null) : Closure {
 }
 
 /**
- * @param int $total
- * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<array-key, int>>
- */
-function iterable_allocate(int $total): \Closure {
-
-    if ($total < 0) {
-        throw new \InvalidArgumentException('iterable_allocate(): $total must be >= 0');
-    }
-
-    return function (iterable $items) use ($total): \Generator {
-
-        $items = \is_array($items) ? $items : \iterator_to_array($items, true);
-
-        $iterable_allocate = function (array $items, int $remaining) use (&$iterable_allocate): \Generator {
-            if ($items === []) {
-                if ($remaining === 0) {
-                    yield [];
-                }
-
-                return;
-            }
-
-            $current = \array_key_first($items);
-            unset($items[$current]);
-
-            if ($items === []) {
-                yield [$current => $remaining];
-                return;
-            }
-
-            for ($i = 0; $i <= $remaining; $i++) {
-
-                foreach ($iterable_allocate($items, $remaining - $i) as $allocations) {
-
-                    yield [$current => $i] + $allocations;
-                }
-            }
-        };
-
-        yield from $iterable_allocate($items, $total);
-    };
-}
-
-/**
  * Return true if any item in an iterable matches the predicate (or is true if predicate is null).
  * Comparison is strict.
  *
@@ -476,39 +432,6 @@ function iterable_any(?callable $callback = null) : Closure {
         }
 
         return false;
-    };
-}
-
-/**
- * Yield all possible combinations (subsets) of the given items (lazy).
- *
- * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<array-key, mixed>>
- */
-function iterable_combinations_all() : \Closure {
-
-    return static function (iterable $items) : \Generator {
-
-        $items = \is_array($items) ? $items : \iterator_to_array($items, true);
-
-        $gen = static function (array $items) use (&$gen): \Generator {
-
-            if ($items === []) {
-                yield [];
-                return;
-            }
-
-            $k = \array_key_first($items);
-            $v = $items[$k];
-            unset($items[$k]);
-
-            /** @var array<array-key, mixed> $subset */
-            foreach ($gen($items) as $subset) {
-                yield $subset;
-                yield [$k => $v] + $subset;
-            }
-        };
-
-        yield from $gen($items);
     };
 }
 
@@ -556,31 +479,6 @@ function iterable_map(callable $callback) : Closure {
             yield $key => $callback($value);
         }
     };
-}
-
-/**
- * Generate permutation of an array
- *
- * @template T
- * @param array<T> $array
- * @return Generator<list<T>>
- */
-function iterable_permutation(array $array) : Generator {
-
-    if (count($array) === 0) {
-        yield [];
-    }
-
-    foreach ($array as $key => $item) {
-
-        $rest = $array;
-        unset($rest[$key]);
-
-        foreach (iterable_permutation($rest) as $permutation) {
-            yield [$item, ...$permutation];
-        }
-
-    }
 }
 
 /**
