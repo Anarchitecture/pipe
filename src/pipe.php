@@ -7,6 +7,7 @@ namespace Anarchitecture\pipe;
 use Closure;
 use Generator;
 use InvalidArgumentException;
+use OutOfBoundsException;
 
 /**
  * Apply a callback to an array of arguments.
@@ -574,6 +575,35 @@ function iterable_map(callable $callback) : Closure {
         }
     };
 }
+
+/**
+ * Return unary callable that returns the nth element (0-based) from an iterable.
+ * Returns 0 if n is out of bounds
+ *
+ * @param int $n 0-based index
+ * @return Closure(iterable<array-key, mixed>) : (mixed|null)
+ * @throws InvalidArgumentException if $n < 0
+ */
+function iterable_nth(int $n): \Closure
+{
+    if ($n < 0) {
+        throw new InvalidArgumentException("iterable_nth: n must be >= 0, got {$n}");
+    }
+
+    return static function (iterable $it) use ($n) {
+        $i = 0;
+
+        foreach ($it as $value) {
+            if ($i === $n) {
+                return $value;
+            }
+            $i++;
+        }
+
+        return null;
+    };
+}
+
 
 /**
  * Return unary callable for reducing an iterable to a single value
