@@ -49,6 +49,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_flatten(array $arrays)` — flattens one level (array of arrays to single array). String-key clashes: later arrays overwrite earlier; numeric keys are reindexed
 - `p\array_map(callable $mapper)` — maps each value to a new value (like \array_map); preserves keys for single-array mapping
 - `p\array_map_recursive(callable $mapper)` — recursively maps leaf values in nested arrays; preserves keys at every level
+- `p\array_map_recursive_with_path(callable $mapper)` — recursively maps leaf values in nested arrays; mapper is called as `$mapper($value, $path)` where `$path` is the list of keys from root to leaf (preserves keys)
 - `p\array_nth(int $i)` — nth element or `null` (supports negative indexes: `-1` is last, `-2` is second-last, etc.)
 - `p\array_reduce(callable $reducer, mixed $initial = null)` — reduces to a single value; reducer is called as `reducer($carry, $value)` (no key); empty input returns $initial (or `null` if omitted)
 - `p\array_reduce_until(callable $reducer, callable $until, mixed $initial = null)` — reduces left-to-right until `$until($carry, $value, $key) === true`; returns `[$carry, $key, $value]` or `[$carry, null, null]` if never triggered
