@@ -162,10 +162,12 @@ function array_nth(int $i) : Closure {
 /**
  * Return unary callable for array_reduce
  *
- * @template TCarry
- * @param callable(TCarry|null, mixed): (TCarry|null) $callback
- * @param TCarry|null $initial
- * @return Closure(array<array-key, mixed>): (TCarry|null)
+ * The reducer is called as: $callback($carry, $value) (no array key is provided).
+ * For an empty array, the result is $initial (or null if omitted).
+ *
+ * @param callable $callback
+ * @param mixed $initial
+ * @return Closure(array<array-key, mixed>): (mixed|null)
  */
 function array_reduce(callable $callback, mixed $initial = null) : Closure {
     return function (array $array) use ($callback, $initial) : mixed {

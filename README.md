@@ -49,7 +49,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\array_flatten(array $arrays)` — flattens one level (array of arrays to single array). String-key clashes: later arrays overwrite earlier; numeric keys are reindexed
 - `p\array_map(callable $mapper)`
 - `p\array_nth(int $i)` — nth element or `null` (supports negative indexes: `-1` is last, `-2` is second-last, etc.)
-- `p\array_reduce(callable $reducer, mixed $initial = null)`
+- `p\array_reduce(callable $reducer, mixed $initial = null)` — reduces to a single value; reducer is called as `reducer($carry, $value)` (no key); empty input returns $initial (or `null` if omitted)
 - `p\array_reduce_until(callable $reducer, callable $until, mixed $initial = null)`
 - `p\array_slice(int $offset, ?int $length = null, bool $preserve_keys = false)`
 - `p\array_transpose()` — transpose a 2D array (matrix), preserving row/column keys (pads missing values with `null`)
