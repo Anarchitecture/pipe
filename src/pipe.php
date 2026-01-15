@@ -140,15 +140,21 @@ function array_map(callable $callback) : Closure {
 }
 
 /**
- * Return unary callable for returning the nth element of an array
+ * Return unary callable for returning the nth element of an array.
  *
+ * Semantics match `\array_slice($array, $i, 1)`:
+ * - $i >= 0 selects from the start (0-based).
+ * - $i < 0 selects from the end (-1 = last, -2 = second-last, ...).
+ * - Out of bounds returns null.
+ *
+ * @param int $i
  * @return Closure(array<array-key, mixed>): (mixed|null)
  */
 function array_nth(int $i) : Closure {
     return function (array $array) use ($i) : mixed {
         return $array
             |> array_slice($i, 1)
-            |> array_first(...);
+            |> \array_first(...);
     };
 }
 
