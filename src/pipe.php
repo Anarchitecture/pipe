@@ -304,10 +304,25 @@ function array_transpose() : Closure {
 /**
  * Return unary callable for array_unique
  *
- * @param int $flags
+ * Removes duplicate values and preserves the key of the first occurrence.
+ * Value comparison depends on $flags (default: SORT_STRING).
+ *
+ * @param int $flags One of SORT_STRING, SORT_REGULAR, SORT_NUMERIC, SORT_LOCALE_STRING
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ * @throws \ValueError when $flags is not a supported SORT_* mode for array_unique
  */
-function array_unique(int $flags = SORT_STRING) : Closure {
+function array_unique(int $flags = \SORT_STRING) : Closure {
+    $allowed = [
+        \SORT_STRING,
+        \SORT_REGULAR,
+        \SORT_NUMERIC,
+        \SORT_LOCALE_STRING,
+    ];
+
+    if (!\in_array($flags, $allowed, true)) {
+        throw new \ValueError('Invalid $flags for array_unique');
+    }
+
     return function (array $array) use ($flags) : array {
         return \array_unique($array, $flags);
     };
