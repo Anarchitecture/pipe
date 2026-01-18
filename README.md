@@ -77,7 +77,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
 - `p\iterable_filter(callable $callback)` — yields matching items for which `$callback` returns `true`
 - `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
-- `p\iterable_map(callable $callback)` — yields mapped items
+- `p\iterable_map(callable $callback)` — yields items mapped over `$callback`. Preserves keys.
 - `p\iterable_nth(int $n)` — returns the nth item (0-based); consumes up to n+1 items; returns `null` if out of range 
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
 - `p\iterable_string(int $size = 1)` — lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
