@@ -654,10 +654,16 @@ function iterable_string(int $size = 1) : Closure {
 /**
  * Return unary callable for taking $count items from an iterable
  *
- * @param int<0, max> $count
+ * @param int $count count < 0 throws
  * @return Closure(iterable<array-key, mixed>): Generator<array-key, mixed>
+ * @throws InvalidArgumentException when $count < 0
  */
 function iterable_take(int $count) : Closure {
+
+    if ($count < 0) {
+        throw new \InvalidArgumentException('n must be >= 0');
+    }
+
     return static function (iterable $iterable) use ($count) : Generator {
         if ($count <= 0) {
             return;
