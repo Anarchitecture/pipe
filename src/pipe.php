@@ -944,7 +944,7 @@ function unless(callable $predicate, callable $callback) : Closure {
  * Return unary callable for usort
  * Reindexes keys
  *
- * @param callable(mixed, mixed): int $callback
+ * @param callable $callback
  * @return Closure(array<array-key, mixed>): list<mixed>
  */
 function usort(callable $callback) : Closure {
