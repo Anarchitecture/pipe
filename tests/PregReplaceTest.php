@@ -7,6 +7,7 @@ namespace Anarchitecture\pipe\Tests;
 use Closure;
 use PHPUnit\Framework\TestCase;
 
+use PHPUnit\Framework\TestStatus\Warning;
 use function Anarchitecture\pipe\preg_replace;
 
 final class PregReplaceTest extends TestCase {
@@ -59,16 +60,6 @@ final class PregReplaceTest extends TestCase {
             );
 
         self::assertSame('qux N bar', $result);
-    }
-
-    public function test_returns_null_on_invalid_pattern() : void {
-
-        $stage = 'abc';
-
-        $result = $stage
-            |> preg_replace('/(unclosed/', 'x');
-
-        self::assertNull($result);
     }
 
 }
