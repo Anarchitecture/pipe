@@ -1012,7 +1012,7 @@ function when(callable $predicate, callable $callback) : Closure {
 /**
  * Return unary callable for mapping over multiple arrays (zip semantics).
  *
- * @param (callable(): mixed)|null $callback
+ * @param callable|null $callback
  * @return Closure(array<array<array-key, mixed>>): array<array-key, mixed>
  */
 function zip_map(?callable $callback) : Closure {
