@@ -76,12 +76,12 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_all(?callable $callback = null)` — returns `true` if all items match (or no item is `!== true` when callback is `null`); short-circuits
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
 - `p\iterable_filter(callable $callback)` — yields matching items for which `$callback` returns `true`
+- `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_map(callable $callback)` — yields mapped items
 - `p\iterable_nth(int $n)` — returns the nth item (0-based); consumes up to n+1 items; returns `null` if out of range 
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
 - `p\iterable_string(int $size = 1)` — lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
 - `p\iterable_take(int $count)` — yields first `$count` items
-- `p\iterable_first(iterable $iterable)` — returns first item or `null` (**consumes one element**)
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
 - `p\iterable_window(int $size, bool $circular = false)` – sliding windows over iterables (optionally circular)
 - `p\iterable_zip(iterable ...$right)` — lazily zips the left iterable with one or more right iterables; yields tuples and stops at the shortest (preserves left keys)

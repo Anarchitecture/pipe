@@ -551,9 +551,8 @@ function iterable_filter(callable $callback) : Closure {
  *
  * Warning: for Generators/Iterators, this consumes one element.
  *
- * @template TValue
- * @param iterable<array-key, TValue> $iterable
- * @return TValue|null
+ * @param iterable<array-key, mixed> $iterable
+ * @return mixed
  */
 function iterable_first(iterable $iterable): mixed {
     foreach ($iterable as $value) {
