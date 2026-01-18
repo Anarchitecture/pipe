@@ -100,7 +100,7 @@ p\array_map(fn ($x) => $x * 2);
 ### Misc
 - `p\apply(callable $callback)` — applies an array of arguments to a callable (numeric keys => positional, string keys => named; mixed keys rejected)
 - `p\increment(int|float $by = 1)`
-- `p\var_dump()` — “tap” debugging helper (returns value unchanged)
+- `p\tap(callable $callback)` — “tap” helper: calls `$callback($value)` for side effects and returns `$value` unchanged
 - `p\zip_map(?callable $callback)` — zip semantics over multiple arrays
 
 ## Semantics (intentional differences)
@@ -112,8 +112,7 @@ A few helpers differ from their underlying built-ins to make pipelines pleasant:
 - `p\sort()`, `p\rsort()`, `p\usort()`, `p\uasort()` **return the sorted array** (native functions return `true`/`false`).
 - `p\usort()` reindexes keys (it returns a list). Use `p\uasort()` when you need to preserve key associations.
 - `p\zip_map($callback)([])` returns `[]` (avoids calling `array_map()` with no arrays).
-- `p\var_dump()` is a “tap”: it dumps the value and returns it unchanged.
-
+- For debugging, `p\tap(\var_dump(...))` is the direct replacement for the removed `p\var_dump()`.
 ## Examples
 
 ### Apply (spread arguments)
@@ -201,6 +200,20 @@ $public = $user
 
 // ['id' => 123, 'email' => 'a@example.com']
 ```
+
+### Tap (debug/log without breaking the pipeline)
+
+```php
+use Anarchitecture\pipe as p;
+
+$out = "  Hello  "
+    |> trim(...)
+    |> p\tap(\var_dump(...))      // debug
+    |> strtoupper(...);
+
+// prints "Hello", returns "HELLO"
+```
+
 
 ### Array transpose (matrix)
 For numeric matrices it behaves like a regular transpose:

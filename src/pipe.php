@@ -924,6 +924,25 @@ function str_starts_with(string $prefix) : Closure {
 }
 
 /**
+ * Call a callback with the current pipeline value and return the value unchanged.
+ *
+ * Useful for debugging, logging, metrics, and other side effects inside a pipe
+ * without breaking the data flow.
+ *
+ * @template T
+ *
+ * @param callable(T): mixed $callback Side effect function to run on the value.
+ * @return Closure(T): T Unary pipeline stage that returns the original value.
+ */
+function tap(callable $callback) : Closure {
+    return static function (mixed $value) use ($callback) : mixed {
+        $callback($value);
+        return $value;
+    };
+}
+
+
+/**
  * Apply $callback only when $predicate($value) !== true; otherwise return $value unchanged.
  * Strict comparison
  *
@@ -977,18 +996,6 @@ function uasort(callable $callback) : Closure {
  */
 function value(mixed $value) : Closure {
     return function ($_) use ($value) {
-        return $value;
-    };
-}
-
-/**
- * Return unary callable for dumping the value in a pipe
- *
- * @return Closure(mixed) : mixed
- */
-function var_dump() : Closure {
-    return function (mixed $value) : mixed {
-        \var_dump($value);
         return $value;
     };
 }
