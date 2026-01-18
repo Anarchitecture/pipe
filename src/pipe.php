@@ -607,11 +607,9 @@ function iterable_nth(int $n): \Closure
 /**
  * Return unary callable for reducing an iterable to a single value
  *
- * @param callable(TCarry|null, mixed, mixed) : (TCarry|null) $callback
- * @param TCarry|null $initial
- * @return Closure(iterable<array-key, mixed>) : (TCarry|null)
- *
- * @template TCarry
+ * @param callable $callback
+ * @param mixed $initial
+ * @return Closure(iterable<array-key, mixed>) : mixed
  */
 function iterable_reduce(callable $callback, mixed $initial = null) : Closure {
     return function (iterable $iterable) use ($callback, $initial) : mixed {
