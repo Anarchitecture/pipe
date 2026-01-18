@@ -533,7 +533,7 @@ function iterable_any(?callable $callback = null) : Closure {
 /**
  * Return unary callable for filtering over an iterable
  *
- * @param callable(mixed, mixed) : bool $callback
+ * @param callable $callback
  * @return Closure(iterable<array-key, mixed>) : Generator
  */
 function iterable_filter(callable $callback) : Closure {

@@ -75,7 +75,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\collect(iterable $iterable)` — **terminal**: collect any iterable into an array (preserves keys)
 - `p\iterable_all(?callable $callback = null)` — returns `true` if all items match (or no item is `!== true` when callback is `null`); short-circuits
 - `p\iterable_any(?callable $callback = null)` — returns `true` if any item matches (or is `=== true` when callback is `null`); short-circuits
-- `p\iterable_filter(callable $callback)` — yields matching items
+- `p\iterable_filter(callable $callback)` — yields matching items for which `$callback` returns `true`
 - `p\iterable_map(callable $callback)` — yields mapped items
 - `p\iterable_nth(int $n)` — returns the nth item (0-based); consumes up to n+1 items; returns `null` if out of range 
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
