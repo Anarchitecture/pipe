@@ -9,7 +9,9 @@
   "autoload": {
     "files": [
       "src/pipe.php"
-    ],
+    ]
+  },
+  "autoload-dev": {
     "psr-4": {
       "Anarchitecture\\pipe\\Tests\\": "tests/"
     }
