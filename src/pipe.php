@@ -562,6 +562,27 @@ function iterable_first(iterable $iterable): mixed {
 }
 
 /**
+ * Returns a unary callable that lazily flattens it's arguments.
+ *
+ * @param bool $preserve_keys
+ *
+ * @return callable(iterable) : Generator
+ */
+function iterable_flatten(bool $preserve_keys = true): callable {
+    return function (iterable $iterable) use ($preserve_keys) : Generator {
+        foreach ($iterable as $value) {
+            if ($preserve_keys) {
+                yield from $value;
+            } else {
+                foreach ($value as $inner) {
+                    yield $inner;
+                }
+            }
+        }
+    };
+}
+
+/**
  * Return unary callable for mapping over an iterable
  *
  * @param callable $callback
@@ -771,7 +792,7 @@ function iterable_zip(iterable ...$right) : \Closure {
         return new \IteratorIterator($iterable);
     };
 
-    return static function(iterable $left) use ($right, $mapper) : \Generator {
+    return static function(iterable $left) use ($right, $mapper) : Generator {
 
         $right = \array_map($mapper, $right);
 
