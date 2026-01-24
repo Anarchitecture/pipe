@@ -9,7 +9,12 @@
   "autoload": {
     "files": [
       "src/pipe.php"
-      ]
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Anarchitecture\\pipe\\Tests\\": "tests/"
+    }
   },
   "require-dev": {
     "phpstan/phpstan": "^2.1",
