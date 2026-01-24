@@ -566,9 +566,9 @@ function iterable_first(iterable $iterable): mixed {
  *
  * @param bool $preserve_keys
  *
- * @return callable(iterable<array-key, iterable<array-key, mixed>>) : Generator
+ * @return Closure(iterable<array-key, iterable<array-key, mixed>>) : Generator
  */
-function iterable_flatten(bool $preserve_keys = true): callable {
+function iterable_flatten(bool $preserve_keys = true) : Closure {
     return function (iterable $iterable) use ($preserve_keys) : Generator {
         /** @var iterable<array-key, mixed> $value */
         foreach ($iterable as $value) {
