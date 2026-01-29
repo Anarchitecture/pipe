@@ -13,21 +13,24 @@ use function Anarchitecture\pipe\iterable_any;
 
 final class EqualsTest extends TestCase
 {
-    public function test_returns_a_closure() : void {
+    public function test_returns_a_closure(): void
+    {
 
         $stage = equals(123);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_matches_identical_scalar() : void {
+    public function test_matches_identical_scalar(): void
+    {
         $stage = equals("hello");
 
         self::assertTrue($stage("hello"));
         self::assertFalse($stage("Hello"));
     }
 
-    public function test_is_strict_not_loose() : void {
+    public function test_is_strict_not_loose(): void
+    {
 
         self::assertFalse(equals(1)("1"));
         self::assertFalse(equals(true)(1));
@@ -35,7 +38,8 @@ final class EqualsTest extends TestCase
         self::assertFalse(equals(null)(0));
     }
 
-    public function test_matches_arrays_strictly() : void {
+    public function test_matches_arrays_strictly(): void
+    {
 
         $pred = equals([1, "2", 3]);
 
@@ -44,7 +48,8 @@ final class EqualsTest extends TestCase
         self::assertFalse($pred([1, "2"]));
     }
 
-    public function test_matches_objects_by_identity() : void {
+    public function test_matches_objects_by_identity(): void
+    {
 
         $o1 = new stdClass();
         $o2 = new stdClass();
@@ -55,7 +60,8 @@ final class EqualsTest extends TestCase
         self::assertFalse($pred($o2));
     }
 
-    public function test_composes_with_iterable_any() : void {
+    public function test_composes_with_iterable_any(): void
+    {
         $stage = [1, 2, 3];
 
 

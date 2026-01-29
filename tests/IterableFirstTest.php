@@ -8,9 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\iterable_first;
 
-final class IterableFirstTest extends TestCase {
-
-    public function test_returns_first_value_from_array() : void {
+final class IterableFirstTest extends TestCase
+{
+    public function test_returns_first_value_from_array(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -19,7 +20,8 @@ final class IterableFirstTest extends TestCase {
         self::assertSame(1, $result);
     }
 
-    public function test_ignores_keys_and_returns_first_value() : void {
+    public function test_ignores_keys_and_returns_first_value(): void
+    {
 
         $stage = [
             'a' => 10,
@@ -31,7 +33,8 @@ final class IterableFirstTest extends TestCase {
         self::assertSame(10, $result);
     }
 
-    public function test_returns_null_for_empty_iterable() : void {
+    public function test_returns_null_for_empty_iterable(): void
+    {
 
         $stage = [];
 
@@ -40,9 +43,10 @@ final class IterableFirstTest extends TestCase {
         self::assertNull($result);
     }
 
-    public function test_returns_first_value_from_generator_and_consumes_one_element() : void {
+    public function test_returns_first_value_from_generator_and_consumes_one_element(): void
+    {
 
-        $stage = (function () : \Generator {
+        $stage = (function (): \Generator {
             for ($i = 1; $i <= 5; $i++) {
                 yield $i;
             }
@@ -57,9 +61,10 @@ final class IterableFirstTest extends TestCase {
     }
 
 
-    public function test_returns_null_for_empty_generator() : void {
+    public function test_returns_null_for_empty_generator(): void
+    {
 
-        $stage = (function () : \Generator {
+        $stage = (function (): \Generator {
             /** @phpstan-ignore-next-line */
             if (false) {
                 yield 1;

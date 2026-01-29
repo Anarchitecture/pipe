@@ -11,14 +11,14 @@ use function Anarchitecture\pipe\array_dissoc;
 
 final class ArrayDissocTest extends TestCase
 {
-    public function test_returns_a_closure() : void
+    public function test_returns_a_closure(): void
     {
         $stage = array_dissoc('a');
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_removes_a_string_key() : void
+    public function test_removes_a_string_key(): void
     {
         $stage = ['a' => 1, 'b' => 2];
 
@@ -28,7 +28,7 @@ final class ArrayDissocTest extends TestCase
         self::assertSame(['b' => 2], $result);
     }
 
-    public function test_removes_an_int_key() : void
+    public function test_removes_an_int_key(): void
     {
         $stage = [10 => 'x', 20 => 'y', 30 => 'z'];
 
@@ -38,7 +38,7 @@ final class ArrayDissocTest extends TestCase
         self::assertSame([10 => 'x', 30 => 'z'], $result);
     }
 
-    public function test_removes_multiple_keys() : void
+    public function test_removes_multiple_keys(): void
     {
         $stage = ['a' => 1, 'b' => 2, 'c' => 3];
 
@@ -48,7 +48,7 @@ final class ArrayDissocTest extends TestCase
         self::assertSame(['b' => 2], $result);
     }
 
-    public function test_ignores_missing_keys() : void
+    public function test_ignores_missing_keys(): void
     {
         $stage = ['a' => 1, 'b' => 2];
 
@@ -58,7 +58,7 @@ final class ArrayDissocTest extends TestCase
         self::assertSame(['a' => 1, 'b' => 2], $result);
     }
 
-    public function test_does_not_mutate_the_original_array() : void
+    public function test_does_not_mutate_the_original_array(): void
     {
         $stage = ['a' => 1, 'b' => 2];
 

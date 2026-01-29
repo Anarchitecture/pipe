@@ -8,9 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\preg_match_all;
 
-final class PregMatchAllTest extends TestCase {
-
-    public function testItReturnsMatchesInPatternOrderByDefault() : void {
+final class PregMatchAllTest extends TestCase
+{
+    public function testItReturnsMatchesInPatternOrderByDefault(): void
+    {
 
         $stage = 'a-1 b-22';
 
@@ -21,23 +22,25 @@ final class PregMatchAllTest extends TestCase {
             0 => ['a-1', 'b-22'],
             1 => ['a', 'b'],
             2 => ['1', '22'],
-        ],$result);
+        ], $result);
     }
 
-    public function testItSupportsSetOrder() : void {
+    public function testItSupportsSetOrder(): void
+    {
 
         $stage = 'a-1 b-22';
 
         $result = $stage
             |> preg_match_all('/(\w+)-(\d+)/', flags: PREG_SET_ORDER);
 
-    self::assertSame([
+        self::assertSame([
             [0 => 'a-1', 1 => 'a', 2 => '1'],
             [0 => 'b-22', 1 => 'b', 2 => '22'],
         ], $result);
     }
 
-    public function testItSupportsOffsetArgument()  : void {
+    public function testItSupportsOffsetArgument(): void
+    {
 
         $stage = 'x-3 a-1 b-2';
 
@@ -51,7 +54,8 @@ final class PregMatchAllTest extends TestCase {
         ], $result);
     }
 
-    public function testItSupportsOffsetCaptureFlag() : void {
+    public function testItSupportsOffsetCaptureFlag(): void
+    {
 
         $stage = 'a-1 b-22';
 
@@ -63,10 +67,11 @@ final class PregMatchAllTest extends TestCase {
                 0 => ['1', 2],
                 1 => ['22', 6],
             ],
-        ],$result);
+        ], $result);
     }
 
-    public function testItReturnsEmptyMatchArraysWhenNothingMatches() : void  {
+    public function testItReturnsEmptyMatchArraysWhenNothingMatches(): void
+    {
 
         $stage = 'abc';
 

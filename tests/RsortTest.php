@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\rsort;
 
-final class RsortTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class RsortTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = rsort();
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_sorts_descending() : void {
+    public function test_sorts_descending(): void
+    {
 
         $stage = [3, 1, 2];
 
@@ -28,7 +30,8 @@ final class RsortTest extends TestCase {
         self::assertSame([3, 2, 1], $result);
     }
 
-    public function test_reindexes_numeric_keys() : void {
+    public function test_reindexes_numeric_keys(): void
+    {
 
         $stage = [
             10 => 'b',
@@ -42,7 +45,8 @@ final class RsortTest extends TestCase {
         self::assertSame(['c', 'b', 'a'], $result);
     }
 
-    public function test_does_not_mutate_original_array_variable() : void {
+    public function test_does_not_mutate_original_array_variable(): void
+    {
 
         $stage = [2, 1, 3];
 
@@ -53,7 +57,8 @@ final class RsortTest extends TestCase {
         self::assertSame([3, 2, 1], $result);
     }
 
-    public function test_forwards_sort_flags() : void {
+    public function test_forwards_sort_flags(): void
+    {
 
         $stage = ['2', '10', '1'];
 

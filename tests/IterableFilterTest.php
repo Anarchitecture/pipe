@@ -11,16 +11,18 @@ use PHPUnit\Framework\TestCase;
 use function Anarchitecture\pipe\collect;
 use function Anarchitecture\pipe\iterable_filter;
 
-final class IterableFilterTest extends TestCase {
+final class IterableFilterTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
-    public function test_returns_a_closure() : void {
-
-        $stage = iterable_filter(static fn (mixed $_v, mixed $_k) : bool => true);
+        $stage = iterable_filter(static fn(mixed $_v, mixed $_k): bool => true);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_filters_values_and_preserves_keys() : void {
+    public function test_filters_values_and_preserves_keys(): void
+    {
 
         $stage = [
             10  => 1,
@@ -29,7 +31,7 @@ final class IterableFilterTest extends TestCase {
         ];
 
         $result = $stage
-                |> iterable_filter(static fn (int $v, int|string $k) : bool => $v > 0)
+                |> iterable_filter(static fn(int $v, int|string $k): bool => $v > 0)
                 |> collect(...);
 
         self::assertSame([
@@ -38,7 +40,8 @@ final class IterableFilterTest extends TestCase {
         ], $result);
     }
 
-    public function test_predicate_receives_key_and_can_filter_by_key() : void {
+    public function test_predicate_receives_key_and_can_filter_by_key(): void
+    {
 
         $stage = [
             'keep' => 1,
@@ -46,7 +49,7 @@ final class IterableFilterTest extends TestCase {
         ];
 
         $result = $stage
-            |> iterable_filter(static fn (int $_v, string $k) : bool => $k === 'keep')
+            |> iterable_filter(static fn(int $_v, string $k): bool => $k === 'keep')
             |> collect(...);
 
         self::assertSame([
@@ -54,16 +57,17 @@ final class IterableFilterTest extends TestCase {
         ], $result);
     }
 
-    public function test_works_with_generators_and_preserves_keys() : void {
+    public function test_works_with_generators_and_preserves_keys(): void
+    {
 
-        $stage = (function () : Generator {
+        $stage = (function (): Generator {
             yield 'a' => 1;
             yield 'b' => 2;
             yield 'c' => 3;
         })();
 
         $result = $stage
-            |> iterable_filter(static fn (int $v, string $_k) : bool => $v % 2 === 1)
+            |> iterable_filter(static fn(int $v, string $_k): bool => $v % 2 === 1)
             |> collect(...);
 
         self::assertSame([
@@ -72,11 +76,12 @@ final class IterableFilterTest extends TestCase {
         ], $result);
     }
 
-    public function test_is_lazy_and_does_not_call_predicate_until_iterated() : void {
+    public function test_is_lazy_and_does_not_call_predicate_until_iterated(): void
+    {
 
         $calls = 0;
 
-        $predicate = static function (mixed $_v, mixed $_k) use (&$calls) : bool {
+        $predicate = static function (mixed $_v, mixed $_k) use (&$calls): bool {
             $calls++;
             return true;
         };
@@ -93,11 +98,12 @@ final class IterableFilterTest extends TestCase {
         self::assertSame(3, $calls);
     }
 
-    public function test_empty_iterable_yields_empty_and_does_not_call_predicate() : void {
+    public function test_empty_iterable_yields_empty_and_does_not_call_predicate(): void
+    {
 
         $calls = 0;
 
-        $predicate = static function (mixed $_v, mixed $_k) use (&$calls) : bool {
+        $predicate = static function (mixed $_v, mixed $_k) use (&$calls): bool {
             $calls++;
             return true;
         };
@@ -110,7 +116,8 @@ final class IterableFilterTest extends TestCase {
         self::assertSame(0, $calls);
     }
 
-    public function test_preserves_sparse_numeric_keys() : void {
+    public function test_preserves_sparse_numeric_keys(): void
+    {
 
         $stage = [
             2  => 'a',
@@ -119,7 +126,7 @@ final class IterableFilterTest extends TestCase {
         ];
 
         $result = $stage
-                |> iterable_filter(static fn (string $v, int $_k) : bool => $v !== 'b')
+                |> iterable_filter(static fn(string $v, int $_k): bool => $v !== 'b')
                 |> collect(...);
 
         self::assertSame([

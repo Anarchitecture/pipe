@@ -11,14 +11,16 @@ use function Anarchitecture\pipe\zip_map;
 
 final class ZipMapTest extends TestCase
 {
-    public function test_returns_a_closure() : void {
+    public function test_returns_a_closure(): void
+    {
 
-        $stage = zip_map(static fn () => null);
+        $stage = zip_map(static fn() => null);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_maps_over_multiple_arrays_with_callback() : void {
+    public function test_maps_over_multiple_arrays_with_callback(): void
+    {
 
         $stage = [
             [1, 2, 3],
@@ -26,12 +28,13 @@ final class ZipMapTest extends TestCase
         ];
 
         $result = $stage
-            |> zip_map(static fn (int $a, int $b) : int => $a + $b);
+            |> zip_map(static fn(int $a, int $b): int => $a + $b);
 
         self::assertSame([11, 22, 33], $result);
     }
 
-    public function test_zips_when_callback_is_null() : void {
+    public function test_zips_when_callback_is_null(): void
+    {
         $stage = [
             [1, 2, 3],
             [10, 20, 30],
@@ -47,7 +50,8 @@ final class ZipMapTest extends TestCase
         ], $result);
     }
 
-    public function test_uneven_lengths_are_padded_with_null() : void {
+    public function test_uneven_lengths_are_padded_with_null(): void
+    {
 
         $stage = [
             [1, 2, 3],
@@ -64,7 +68,8 @@ final class ZipMapTest extends TestCase
         ], $result);
     }
 
-    public function test_empty_input_list_returns_empty_array() : void {
+    public function test_empty_input_list_returns_empty_array(): void
+    {
 
         $stage = [];
 
@@ -74,7 +79,8 @@ final class ZipMapTest extends TestCase
         self::assertSame([], $result);
     }
 
-    public function test_reindexes_keys() : void {
+    public function test_reindexes_keys(): void
+    {
 
         $stage = [
             ['a' => 1, 'b' => 2],

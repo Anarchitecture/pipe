@@ -10,16 +10,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\iterable_reduce;
 
-final class IterableReduceTest extends TestCase {
+final class IterableReduceTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
-    public function test_returns_a_closure() : void {
-
-        $stage = iterable_reduce(static fn (mixed $carry, mixed $value, mixed $key) => $carry, null);
+        $stage = iterable_reduce(static fn(mixed $carry, mixed $value, mixed $key) => $carry, null);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_reduces_iterable_with_initial_value() : void {
+    public function test_reduces_iterable_with_initial_value(): void
+    {
 
         $stage = [1, 2, 3, 4];
 
@@ -31,7 +33,8 @@ final class IterableReduceTest extends TestCase {
         self::assertSame(10, $result);
     }
 
-    public function test_reducer_receives_key() : void {
+    public function test_reducer_receives_key(): void
+    {
 
         $stage = [
             'a' => 10,
@@ -47,11 +50,12 @@ final class IterableReduceTest extends TestCase {
         self::assertSame('abc', $result);
     }
 
-    public function test_empty_iterable_returns_initial_and_does_not_call_reducer() : void {
+    public function test_empty_iterable_returns_initial_and_does_not_call_reducer(): void
+    {
 
         $calls = 0;
 
-        $reducer = static function (mixed $carry) use (&$calls) : mixed {
+        $reducer = static function (mixed $carry) use (&$calls): mixed {
             $calls++;
             return $carry;
         };
@@ -63,9 +67,10 @@ final class IterableReduceTest extends TestCase {
         self::assertSame(0, $calls);
     }
 
-    public function test_works_with_generators() : void {
+    public function test_works_with_generators(): void
+    {
 
-        $stage = (function () : Generator {
+        $stage = (function (): Generator {
             yield 'x' => 2;
             yield 'y' => 3;
             yield 'z' => 5;
@@ -79,7 +84,8 @@ final class IterableReduceTest extends TestCase {
         self::assertSame(30, $result);
     }
 
-    public function test_initial_defaults_to_null_when_omitted() : void {
+    public function test_initial_defaults_to_null_when_omitted(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -95,14 +101,15 @@ final class IterableReduceTest extends TestCase {
         self::assertSame([1, 2, 3], $result);
     }
 
-    public function test_reducer_is_called_with_three_arguments() : void {
+    public function test_reducer_is_called_with_three_arguments(): void
+    {
 
         $stage = [
             'a' => 1,
             'b' => 2,
         ];
 
-        $reducer = static function (string $carry, int $value, string $key) : string {
+        $reducer = static function (string $carry, int $value, string $key): string {
             return $carry . $key . '=' . $value . ';';
         };
 

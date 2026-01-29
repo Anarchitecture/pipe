@@ -11,16 +11,18 @@ use PHPUnit\Framework\TestCase;
 use function Anarchitecture\pipe\collect;
 use function Anarchitecture\pipe\iterable_take;
 
-final class IterableTakeTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class IterableTakeTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = iterable_take(1);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_takes_first_n_items_and_preserves_keys() : void {
+    public function test_takes_first_n_items_and_preserves_keys(): void
+    {
 
         $stage = [
             10  => 'a',
@@ -38,7 +40,8 @@ final class IterableTakeTest extends TestCase {
         ], $result);
     }
 
-    public function test_when_count_exceeds_length_it_returns_all_items() : void {
+    public function test_when_count_exceeds_length_it_returns_all_items(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -49,11 +52,12 @@ final class IterableTakeTest extends TestCase {
         self::assertSame([1, 2, 3], $result);
     }
 
-    public function test_take_zero_yields_empty_and_does_not_consume_input() : void {
+    public function test_take_zero_yields_empty_and_does_not_consume_input(): void
+    {
 
         $calls = 0;
 
-        $stage = (function () use (&$calls) : Generator {
+        $stage = (function () use (&$calls): Generator {
             $calls++;
             yield 1;
             $calls++;
@@ -68,11 +72,12 @@ final class IterableTakeTest extends TestCase {
         self::assertSame(0, $calls);
     }
 
-    public function test_short_circuits_and_does_not_consume_more_than_count() : void {
+    public function test_short_circuits_and_does_not_consume_more_than_count(): void
+    {
 
         $calls = 0;
 
-        $stage = (function () use (&$calls) : Generator {
+        $stage = (function () use (&$calls): Generator {
             for ($i = 1; $i <= 5; $i++) {
                 $calls++;
                 yield $i;
@@ -87,7 +92,8 @@ final class IterableTakeTest extends TestCase {
         self::assertSame(2, $calls);
     }
 
-    public function test_preserves_sparse_numeric_keys() : void {
+    public function test_preserves_sparse_numeric_keys(): void
+    {
 
         $stage = [
             2  => 'a',
@@ -105,7 +111,8 @@ final class IterableTakeTest extends TestCase {
         ], $result);
     }
 
-    public function test_take_negative_throws_invalid_argument_exception() : void {
+    public function test_take_negative_throws_invalid_argument_exception(): void
+    {
 
         $this->expectException(\InvalidArgumentException::class);
         iterable_take(-1);

@@ -32,12 +32,12 @@ final class IterableStringTest extends TestCase
             |> \iterator_to_array(...);
 
         self::assertSame([
-                0 => 'a',
-                1 => 'b',
-                2 => 'c',
-                3 => 'd',
-                4 => 'e',
-                5 => 'f'
+            0 => 'a',
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+            4 => 'e',
+            5 => 'f',
         ], $result);
     }
 

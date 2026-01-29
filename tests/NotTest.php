@@ -8,9 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\not;
 
-final class NotTest extends TestCase {
-
-    public function test_that_it_correctly_inverts_the_result() : void {
+final class NotTest extends TestCase
+{
+    public function test_that_it_correctly_inverts_the_result(): void
+    {
         $notNull = not(is_null(...));
 
         self::assertTrue($notNull(3));

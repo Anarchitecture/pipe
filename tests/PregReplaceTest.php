@@ -6,20 +6,22 @@ namespace Anarchitecture\pipe\Tests;
 
 use Closure;
 use PHPUnit\Framework\TestCase;
-
 use PHPUnit\Framework\TestStatus\Warning;
+
 use function Anarchitecture\pipe\preg_replace;
 
-final class PregReplaceTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class PregReplaceTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = preg_replace('/x/', 'y');
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_replaces_in_a_string_subject() : void {
+    public function test_replaces_in_a_string_subject(): void
+    {
 
         $stage = 'axbxc';
 
@@ -29,7 +31,8 @@ final class PregReplaceTest extends TestCase {
         self::assertSame('aZbZc', $result);
     }
 
-    public function test_respects_limit() : void {
+    public function test_respects_limit(): void
+    {
 
         $stage = 'axbxcxd';
 
@@ -39,7 +42,8 @@ final class PregReplaceTest extends TestCase {
         self::assertSame('aZbZcxd', $result);
     }
 
-    public function test_replaces_in_an_array_subject() : void {
+    public function test_replaces_in_an_array_subject(): void
+    {
 
         $stage = ['a1', 'b2', 'c3'];
 
@@ -49,7 +53,8 @@ final class PregReplaceTest extends TestCase {
         self::assertSame(['aX', 'bX', 'cX'], $result);
     }
 
-    public function test_supports_array_patterns_and_replacements() : void {
+    public function test_supports_array_patterns_and_replacements(): void
+    {
 
         $stage = 'foo 123 bar';
 

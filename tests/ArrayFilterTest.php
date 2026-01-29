@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\array_filter;
 
-final class ArrayFilterTest extends TestCase {
+final class ArrayFilterTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
-    public function test_returns_a_closure() : void {
-
-        $stage = array_filter(static fn (mixed $_) : bool => true);
+        $stage = array_filter(static fn(mixed $_): bool => true);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_filters_values_and_preserves_keys() : void {
+    public function test_filters_values_and_preserves_keys(): void
+    {
 
         $stage = [
             10  => 1,
@@ -27,7 +29,7 @@ final class ArrayFilterTest extends TestCase {
         ];
 
         $result = $stage
-            |> array_filter(static fn (int $v) : bool => $v > 0);
+            |> array_filter(static fn(int $v): bool => $v > 0);
 
         self::assertSame([
             10  => 1,
@@ -35,7 +37,8 @@ final class ArrayFilterTest extends TestCase {
         ], $result);
     }
 
-    public function test_empty_array_returns_empty_and_does_not_call_predicate() : void {
+    public function test_empty_array_returns_empty_and_does_not_call_predicate(): void
+    {
 
         $calls = 0;
 
@@ -51,13 +54,14 @@ final class ArrayFilterTest extends TestCase {
         self::assertSame(0, $calls);
     }
 
-    public function test_does_not_mutate_the_input_array() : void {
+    public function test_does_not_mutate_the_input_array(): void
+    {
 
         $stage = [1, 0, 2];
         $before = $stage;
 
         $result = $stage
-            |> array_filter(static fn (int $v) : bool => $v > 0);
+            |> array_filter(static fn(int $v): bool => $v > 0);
 
         self::assertSame([0 => 1, 2 => 2], $result);
         self::assertSame($before, $stage);

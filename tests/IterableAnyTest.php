@@ -8,42 +8,46 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\iterable_any;
 
-final class IterableAnyTest extends TestCase {
-
-    public function test_returns_false_for_empty_iterable() : void {
+final class IterableAnyTest extends TestCase
+{
+    public function test_returns_false_for_empty_iterable(): void
+    {
 
         $stage = [];
 
         $result = $stage
-            |> iterable_any(static fn ($v) : bool => true);
+            |> iterable_any(static fn($v): bool => true);
 
         self::assertFalse($result);
     }
 
-    public function test_returns_true_when_predicate_matches() : void {
+    public function test_returns_true_when_predicate_matches(): void
+    {
 
         $stage = [1, 2, 3];
 
         /** @var bool $result */
         $result = $stage
-            |> iterable_any(static fn (int $v) : bool => $v === 2);
+            |> iterable_any(static fn(int $v): bool => $v === 2);
 
         self::assertTrue($result);
     }
 
-    public function test_returns_false_when_predicate_never_matches(): void {
+    public function test_returns_false_when_predicate_never_matches(): void
+    {
 
         $stage = [1, 2, 3];
 
         $result = $stage
-            |> iterable_any(static fn (int $v) : bool => $v === 99);
+            |> iterable_any(static fn(int $v): bool => $v === 99);
 
         self::assertFalse($result);
     }
 
-    public function test_short_circuits_on_first_match(): void {
+    public function test_short_circuits_on_first_match(): void
+    {
 
-        $stage = (function () : \Generator {
+        $stage = (function (): \Generator {
             for ($i = 1; $i <= 5; $i++) {
                 yield $i;
             }
@@ -59,7 +63,8 @@ final class IterableAnyTest extends TestCase {
         self::assertSame(4, $stage->current());
     }
 
-    public function test_null_predicate_checks_strict() : void {
+    public function test_null_predicate_checks_strict(): void
+    {
 
         $stage = [0, 0, 1];
 

@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\str_starts_with;
 
-final class StrStartsWithTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class StrStartsWithTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = str_starts_with('foo');
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_returns_true_when_string_starts_with_needle() : void {
+    public function test_returns_true_when_string_starts_with_needle(): void
+    {
 
         $stage = 'foobar';
 
@@ -29,7 +31,8 @@ final class StrStartsWithTest extends TestCase {
         self::assertTrue($result);
     }
 
-    public function test_returns_false_when_string_does_not_start_with_needle() : void {
+    public function test_returns_false_when_string_does_not_start_with_needle(): void
+    {
 
         $stage = 'foobar';
 
@@ -40,7 +43,8 @@ final class StrStartsWithTest extends TestCase {
         self::assertFalse($result);
     }
 
-    public function test_is_case_sensitive() : void {
+    public function test_is_case_sensitive(): void
+    {
 
         $stage = 'Foobar';
 
@@ -51,7 +55,8 @@ final class StrStartsWithTest extends TestCase {
         self::assertFalse($result);
     }
 
-    public function test_empty_needle_always_returns_true() : void {
+    public function test_empty_needle_always_returns_true(): void
+    {
 
         $stage = 'anything';
 

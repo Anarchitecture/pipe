@@ -18,14 +18,18 @@
   },
   "require-dev": {
     "phpstan/phpstan": "^2.1",
-    "phpunit/phpunit": "^12.5"
+    "phpunit/phpunit": "^12.5",
+    "friendsofphp/php-cs-fixer": "^3.93"
   },
   "scripts": {
     "analyse": "php -d memory_limit=256M vendor/bin/phpstan analyse -l 10 src tests",
     "test": "phpunit",
+    "cs:check": "php -d memory_limit=256M vendor/bin/php-cs-fixer fix --dry-run --diff --ansi",
+    "cs:fix": "php -d memory_limit=256M vendor/bin/php-cs-fixer fix --ansi",
     "check": [
       "@analyse",
-      "@test"
+      "@test",
+      "@cs:check"
     ]
   }
 }

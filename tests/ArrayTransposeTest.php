@@ -9,13 +9,15 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\array_transpose;
 
-final class ArrayTransposeTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class ArrayTransposeTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
         self::assertInstanceOf(Closure::class, array_transpose());
     }
 
-    public function test_transposes_a_matrix() : void {
+    public function test_transposes_a_matrix(): void
+    {
 
         $stage = [
             [1, 2, 3],
@@ -32,7 +34,8 @@ final class ArrayTransposeTest extends TestCase {
         ], $result);
     }
 
-    public function test_empty_input_returns_empty_array() : void {
+    public function test_empty_input_returns_empty_array(): void
+    {
 
         $stage = [];
 
@@ -42,7 +45,8 @@ final class ArrayTransposeTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function test_single_row_becomes_column_vectors() : void {
+    public function test_single_row_becomes_column_vectors(): void
+    {
 
         $stage = [
             [10, 20, 30],
@@ -58,7 +62,8 @@ final class ArrayTransposeTest extends TestCase {
         ], $result);
     }
 
-    public function test_ragged_rows_are_padded_with_null() : void {
+    public function test_ragged_rows_are_padded_with_null(): void
+    {
 
         $stage = [
             [1, 2],
@@ -74,7 +79,8 @@ final class ArrayTransposeTest extends TestCase {
         ], $result);
     }
 
-    public function test_preserves_row_and_column_keys() : void {
+    public function test_preserves_row_and_column_keys(): void
+    {
 
         $stage = [
             'r1' => ['a' => 1, 'b' => 2],
@@ -91,7 +97,8 @@ final class ArrayTransposeTest extends TestCase {
         ], $result);
     }
 
-    public function test_single_row_preserves_column_keys_and_maps_to_row_keys() : void {
+    public function test_single_row_preserves_column_keys_and_maps_to_row_keys(): void
+    {
 
         $stage = [
             'r1' => ['a' => 10, 'b' => 20, 'c' => 30],
@@ -107,7 +114,8 @@ final class ArrayTransposeTest extends TestCase {
         ], $result);
     }
 
-    public function test_ragged_rows_are_padded_with_null_and_keys_preserved() : void {
+    public function test_ragged_rows_are_padded_with_null_and_keys_preserved(): void
+    {
 
         $stage = [
             10 => [0 => 1, 1 => 2],
@@ -123,7 +131,8 @@ final class ArrayTransposeTest extends TestCase {
         ], $result);
     }
 
-    public function test_column_key_order_is_first_seen_order() : void {
+    public function test_column_key_order_is_first_seen_order(): void
+    {
 
         $stage = [
             'r1' => ['b' => 2, 'a' => 1],

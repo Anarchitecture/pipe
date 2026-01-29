@@ -12,16 +12,18 @@ use function Anarchitecture\pipe\if_else;
 use function Anarchitecture\pipe\value;
 use function Anarchitecture\pipe\when;
 
-final class IfElseTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class IfElseTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = if_else(equals(1), value(2), value(3));
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_applies_then_when_predicate_is_true() : void {
+    public function test_applies_then_when_predicate_is_true(): void
+    {
 
         $stage = "  Hello  ";
 
@@ -31,7 +33,8 @@ final class IfElseTest extends TestCase {
         self::assertSame("Hello", $result);
     }
 
-    public function test_applies_else_when_predicate_is_false() : void {
+    public function test_applies_else_when_predicate_is_false(): void
+    {
 
         $stage = 123;
 
@@ -41,7 +44,8 @@ final class IfElseTest extends TestCase {
         self::assertSame("nope", $result);
     }
 
-    public function test_predicate_must_return_true_strictly() : void {
+    public function test_predicate_must_return_true_strictly(): void
+    {
 
         $stage = "x";
 
@@ -51,32 +55,34 @@ final class IfElseTest extends TestCase {
         self::assertSame("else", $result);
     }
 
-    public function test_composes_with_when() : void {
+    public function test_composes_with_when(): void
+    {
 
         $stage = "Hello";
 
         $result = $stage
             |> when(
-                    is_string(...),
-                    if_else(equals("Hello"), value("bye"), value("unknown"))
-                );
+                is_string(...),
+                if_else(equals("Hello"), value("bye"), value("unknown"))
+            );
 
         self::assertSame("bye", $result);
     }
 
-    public function test_passes_value_into_branches() : void {
+    public function test_passes_value_into_branches(): void
+    {
 
         $stage = "x";
 
-        $result_then = $stage |>
-            if_else(
+        $result_then = $stage
+            |> if_else(
                 equals("x"),
                 fn(string $v) => $v . "1",
                 fn(string $v) => $v . "2",
             );
 
-        $result_else = $stage |>
-            if_else(
+        $result_else = $stage
+            |> if_else(
                 equals("y"),
                 fn(string $v) => $v . "1",
                 fn(string $v) => $v . "2",

@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\array_unique;
 
-final class ArrayUniqueTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class ArrayUniqueTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = array_unique();
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_removes_duplicates_and_preserves_first_occurrence_keys() : void {
+    public function test_removes_duplicates_and_preserves_first_occurrence_keys(): void
+    {
 
         $stage = [
             10 => 'a',
@@ -38,7 +40,8 @@ final class ArrayUniqueTest extends TestCase {
         ], $result);
     }
 
-    public function test_default_flags_sort_string_means_string_cast_comparison() : void {
+    public function test_default_flags_sort_string_means_string_cast_comparison(): void
+    {
 
 
         $stage = [
@@ -56,7 +59,8 @@ final class ArrayUniqueTest extends TestCase {
         ], $result);
     }
 
-    public function test_can_use_numeric_comparison_when_flags_sort_numeric() : void {
+    public function test_can_use_numeric_comparison_when_flags_sort_numeric(): void
+    {
 
         $stage = [
             'a' => '01',
@@ -74,7 +78,8 @@ final class ArrayUniqueTest extends TestCase {
         ], $result);
     }
 
-    public function test_empty_array_returns_empty() : void {
+    public function test_empty_array_returns_empty(): void
+    {
 
         $result = []
             |> array_unique();
@@ -82,7 +87,8 @@ final class ArrayUniqueTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function test_does_not_mutate_the_input_array() : void {
+    public function test_does_not_mutate_the_input_array(): void
+    {
 
         $stage = [1, 1, 2, 2, 3];
         $before = $stage;
@@ -94,7 +100,8 @@ final class ArrayUniqueTest extends TestCase {
         self::assertSame($before, $stage);
     }
 
-    public function test_throws_value_error_for_invalid_flags() : void {
+    public function test_throws_value_error_for_invalid_flags(): void
+    {
 
         $this->expectException(\ValueError::class);
 

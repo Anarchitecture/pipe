@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\implode;
 
-final class ImplodeTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class ImplodeTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = implode(',');
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_joins_an_array_with_separator() : void {
+    public function test_joins_an_array_with_separator(): void
+    {
 
         $stage = ['a', 'b', 'c'];
 
@@ -28,7 +30,8 @@ final class ImplodeTest extends TestCase {
         self::assertSame('a,b,c', $result);
     }
 
-    public function test_empty_separator_concatenates() : void {
+    public function test_empty_separator_concatenates(): void
+    {
 
         $stage = ['a', 'b', 'c'];
 
@@ -38,7 +41,8 @@ final class ImplodeTest extends TestCase {
         self::assertSame('abc', $result);
     }
 
-    public function test_preserves_empty_strings() : void {
+    public function test_preserves_empty_strings(): void
+    {
 
         $stage = ['a', '', 'c', ''];
 
@@ -48,7 +52,8 @@ final class ImplodeTest extends TestCase {
         self::assertSame('a,,c,', $result);
     }
 
-    public function test_uses_values_in_iteration_order_for_associative_arrays() : void {
+    public function test_uses_values_in_iteration_order_for_associative_arrays(): void
+    {
 
         $stage = [
             'x' => 'a',

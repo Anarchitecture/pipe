@@ -11,13 +11,15 @@ use function Anarchitecture\pipe\value;
 use function Anarchitecture\pipe\when;
 use function Anarchitecture\pipe\array_map;
 
-final class ValueTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class ValueTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
         self::assertInstanceOf(Closure::class, value(123));
     }
 
-    public function test_returns_constant_ignoring_input() : void {
+    public function test_returns_constant_ignoring_input(): void
+    {
 
         $stage = value("x");
 
@@ -27,7 +29,8 @@ final class ValueTest extends TestCase {
         self::assertSame("x", $stage((object) ["a" => 1]));
     }
 
-    public function test_captures_value_at_creation_time() : void {
+    public function test_captures_value_at_creation_time(): void
+    {
 
         $stage = 1;
         $callable = value($stage);
@@ -36,7 +39,8 @@ final class ValueTest extends TestCase {
         self::assertSame(1, $callable("ignored"));
     }
 
-    public function test_composes_with_when() : void {
+    public function test_composes_with_when(): void
+    {
 
         $stage = "hello";
 
@@ -46,7 +50,8 @@ final class ValueTest extends TestCase {
         self::assertSame("world", $result);
     }
 
-    public function test_composes_with_array_map() : void {
+    public function test_composes_with_array_map(): void
+    {
 
         $result = [1, 2, 3]
             |> array_map(value(9));

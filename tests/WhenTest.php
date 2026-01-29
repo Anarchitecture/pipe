@@ -8,9 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\when;
 
-final class WhenTest extends TestCase {
-
-    public function test_applies_callback_when_predicate_true() : void {
+final class WhenTest extends TestCase
+{
+    public function test_applies_callback_when_predicate_true(): void
+    {
 
         $stage = "  hello  ";
 
@@ -20,7 +21,8 @@ final class WhenTest extends TestCase {
         self::assertSame("hello", $result);
     }
 
-    public function test_returns_input_unchanged_when_predicate_false() : void {
+    public function test_returns_input_unchanged_when_predicate_false(): void
+    {
 
         $stage = (object) ['x' => 1];
 
@@ -30,12 +32,13 @@ final class WhenTest extends TestCase {
         self::assertSame($stage, $result);
     }
 
-    public function test_does_not_call_callback_when_predicate_false() : void {
+    public function test_does_not_call_callback_when_predicate_false(): void
+    {
 
         $stage = 123;
 
         $called = false;
-        $call = function ($_) use (&$called) : string {
+        $call = function ($_) use (&$called): string {
             $called = true;
             return "should-not-happen";
         };
@@ -47,7 +50,8 @@ final class WhenTest extends TestCase {
         self::assertSame(123, $result);
     }
 
-    public function test_accepts_callable_strings() : void {
+    public function test_accepts_callable_strings(): void
+    {
 
         $stage = "  hi  ";
 
@@ -57,12 +61,13 @@ final class WhenTest extends TestCase {
         self::assertSame('hi', $result);
     }
 
-    public function test_predicate_is_called_once_per_invocation() : void {
+    public function test_predicate_is_called_once_per_invocation(): void
+    {
 
         $stage = "x ";
 
         $calls = 0;
-        $call = function ($_) use (&$calls) : bool {
+        $call = function ($_) use (&$calls): bool {
             $calls++;
             return true;
         };
@@ -75,7 +80,8 @@ final class WhenTest extends TestCase {
         self::assertSame(2, $calls);
     }
 
-    public function test_callback_receives_original_value() : void {
+    public function test_callback_receives_original_value(): void
+    {
 
         $stage = "  hi  ";
 

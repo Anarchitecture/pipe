@@ -9,9 +9,10 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\collect;
 
-final class CollectTest extends TestCase {
-
-    public function test_collects_array_and_preserves_keys(): void {
+final class CollectTest extends TestCase
+{
+    public function test_collects_array_and_preserves_keys(): void
+    {
 
         $stage = [10 => 'a', 20 => 'b', 'x' => 'y'];
 
@@ -20,7 +21,8 @@ final class CollectTest extends TestCase {
         self::assertSame($stage, $result);
     }
 
-    public function test_collects_generator_and_preserves_keys(): void {
+    public function test_collects_generator_and_preserves_keys(): void
+    {
 
         $stage = (function (): \Generator {
             yield 'a' => 1;
@@ -33,7 +35,8 @@ final class CollectTest extends TestCase {
         self::assertSame(['a' => 1, 10 => 2, 'z' => 3], $result);
     }
 
-    public function test_collects_iterator(): void {
+    public function test_collects_iterator(): void
+    {
 
         $stage = new ArrayIterator(['k1' => 'v1', 'k2' => 'v2']);
 

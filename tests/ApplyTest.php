@@ -11,7 +11,8 @@ use function Anarchitecture\pipe\apply;
 
 final class ApplyTest extends TestCase
 {
-    public function test_numeric_keys_are_applied_positionally_in_iteration_order() : void {
+    public function test_numeric_keys_are_applied_positionally_in_iteration_order(): void
+    {
 
         $stage = [
             20 => 'b',
@@ -20,16 +21,17 @@ final class ApplyTest extends TestCase
         ];
 
         $result = $stage
-            |> apply(static fn (string $a, string $b, string $c) => $a . $b . $c);
+            |> apply(static fn(string $a, string $b, string $c) => $a . $b . $c);
 
         self::assertSame('bac', $result);
     }
 
-    public function test_list_is_applied_positionally() : void {
+    public function test_list_is_applied_positionally(): void
+    {
 
         $stage = [
             1,
-            2
+            2,
         ];
 
         $result = $stage
@@ -38,11 +40,12 @@ final class ApplyTest extends TestCase
         self::assertSame(3, $result);
     }
 
-    public function test_string_keys_are_applied_as_named_arguments() : void {
+    public function test_string_keys_are_applied_as_named_arguments(): void
+    {
 
         $stage = [
             "b" => 2,
-            "a" => 1
+            "a" => 1,
         ];
 
         $result = $stage
@@ -56,7 +59,7 @@ final class ApplyTest extends TestCase
     {
         $stage = [
             0 => 'x',
-            'b' => 'y'
+            'b' => 'y',
         ];
 
         $this->expectException(InvalidArgumentException::class);
@@ -64,7 +67,8 @@ final class ApplyTest extends TestCase
             |> apply(static fn(string $a, string $b) => $a . $b);
     }
 
-    public function test_empty_array_calls_callback_with_no_arguments() : void {
+    public function test_empty_array_calls_callback_with_no_arguments(): void
+    {
 
         $stage = [];
 
@@ -74,11 +78,12 @@ final class ApplyTest extends TestCase
         self::assertSame([], $result);
     }
 
-    public function test_unknown_named_parameter_errors_are_propagated() : void {
+    public function test_unknown_named_parameter_errors_are_propagated(): void
+    {
 
         $stage = [
             'a' => '1',
-            'b' => '2'
+            'b' => '2',
         ];
 
         $this->expectException(\Error::class);

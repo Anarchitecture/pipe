@@ -10,14 +10,15 @@ use PHPUnit\Framework\TestCase;
 use function Anarchitecture\pipe\iterable_take;
 use function Anarchitecture\pipe\iterate;
 
-final class IterateTest extends TestCase {
-
-    public function test_iterate_includes_seed_by_default() : void {
+final class IterateTest extends TestCase
+{
+    public function test_iterate_includes_seed_by_default(): void
+    {
 
         $stage = 0;
 
         $result = $stage
-            |> iterate(static fn(int $x) : int => $x + 1)
+            |> iterate(static fn(int $x): int => $x + 1)
             |> iterable_take(4)
             |> iterator_to_array(...);
 
@@ -29,12 +30,13 @@ final class IterateTest extends TestCase {
         ], $result);
     }
 
-    public function test_iterate_can_exclude_seed() : void {
+    public function test_iterate_can_exclude_seed(): void
+    {
 
         $stage = 0;
 
         $result = $stage
-            |> iterate(static fn(int $x) : int => $x + 1, false)
+            |> iterate(static fn(int $x): int => $x + 1, false)
             |> iterable_take(4)
             |> iterator_to_array(...);
 
@@ -46,13 +48,14 @@ final class IterateTest extends TestCase {
         ], $result);
     }
 
-    public function test_iterate_is_lazy_and_only_calls_callback_for_values_consumed() : void {
+    public function test_iterate_is_lazy_and_only_calls_callback_for_values_consumed(): void
+    {
 
         $stage = "a";
 
         /** @var Generator $iterator */
         $iterator = $stage
-            |> iterate(static fn (string $a) : string => $a . $a);
+            |> iterate(static fn(string $a): string => $a . $a);
 
         $result = $iterator
             |> iterable_take(3)

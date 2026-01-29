@@ -11,13 +11,14 @@ use function Anarchitecture\pipe\array_sum;
 
 final class ParraySumTest extends TestCase
 {
-    public function test_returns_a_closure() : void {
+    public function test_returns_a_closure(): void
+    {
         $stage = array_sum(static fn($x) => $x);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_sums_identity_mapping() : void
+    public function test_sums_identity_mapping(): void
     {
         $stage = [1, 2, 3];
 
@@ -29,7 +30,8 @@ final class ParraySumTest extends TestCase
         self::assertSame(6, $result);
     }
 
-    public function test_maps_then_sums() : void {
+    public function test_maps_then_sums(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -41,7 +43,8 @@ final class ParraySumTest extends TestCase
         self::assertSame(14, $result);
     }
 
-    public function test_empty_array_returns_zero() : void {
+    public function test_empty_array_returns_zero(): void
+    {
 
         $stage = [];
 
@@ -53,7 +56,7 @@ final class ParraySumTest extends TestCase
         self::assertSame(0, $result);
     }
 
-    public function test_supports_float_results() : void
+    public function test_supports_float_results(): void
     {
         $stage = [1, 2];
 

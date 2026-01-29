@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Anarchitecture\pipe\Tests;
@@ -9,23 +10,26 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\iterable_window;
 
-final class IterableWindowTest extends TestCase {
-
-    public function testItThrowsWhenSizeIsNegative() : void {
+final class IterableWindowTest extends TestCase
+{
+    public function testItThrowsWhenSizeIsNegative(): void
+    {
 
         $this->expectException(InvalidArgumentException::class);
 
         iterable_window(-1);
     }
 
-    public function testItThrowsWhenSizeIsZero() : void {
+    public function testItThrowsWhenSizeIsZero(): void
+    {
 
         $this->expectException(InvalidArgumentException::class);
 
         iterable_window(0);
     }
 
-    public function testItYieldsFullWindowsOnlyFromArray() : void {
+    public function testItYieldsFullWindowsOnlyFromArray(): void
+    {
 
         $stage = [1, 2, 3, 4, 5, 6];
 
@@ -37,17 +41,18 @@ final class IterableWindowTest extends TestCase {
             [1, 2, 3],
             [2, 3, 4],
             [3, 4, 5],
-            [4, 5, 6]
+            [4, 5, 6],
         ], $result);
     }
 
-    public function testItIgnoresInputKeys(): void {
+    public function testItIgnoresInputKeys(): void
+    {
 
         $stage = [
             'a' => 10,
             'b' => 20,
             'c' => 30,
-            "d" => 40
+            "d" => 40,
         ];
 
         $result = $stage
@@ -57,13 +62,14 @@ final class IterableWindowTest extends TestCase {
         self::assertSame([
             0 => [10, 20],
             1 => [20, 30],
-            2 => [30, 40]
+            2 => [30, 40],
         ], $result);
     }
 
-    public function testItWorksWithGenerators() : void {
+    public function testItWorksWithGenerators(): void
+    {
 
-        $stage = function () : Generator {
+        $stage = function (): Generator {
             yield 1;
             yield 2;
             yield 3;
@@ -76,13 +82,14 @@ final class IterableWindowTest extends TestCase {
         self::assertSame(
             [
                 0 => [1, 2],
-                1 => [2, 3]
+                1 => [2, 3],
             ],
             $result
         );
     }
 
-    public function testItYieldsNothingWhenInputShorterThanWindow() : void {
+    public function testItYieldsNothingWhenInputShorterThanWindow(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -93,7 +100,8 @@ final class IterableWindowTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function testItYieldsCircularWindowsFromArray() : void {
+    public function testItYieldsCircularWindowsFromArray(): void
+    {
 
         $stage = [0, 1, 2, -2, -1];
 
@@ -110,7 +118,8 @@ final class IterableWindowTest extends TestCase {
         ], $result);
     }
 
-    public function testItYieldsCircularWindowsWhenInputLengthEqualsWindowSize() : void {
+    public function testItYieldsCircularWindowsWhenInputLengthEqualsWindowSize(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -125,7 +134,8 @@ final class IterableWindowTest extends TestCase {
         ], $result);
     }
 
-    public function testItYieldsNothingWhenCircularInputShorterThanWindow() : void {
+    public function testItYieldsNothingWhenCircularInputShorterThanWindow(): void
+    {
 
         $stage = [1, 2, 3];
 
@@ -136,7 +146,8 @@ final class IterableWindowTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function testCircularWindowSizeOneBehavesAsExpected() : void {
+    public function testCircularWindowSizeOneBehavesAsExpected(): void
+    {
 
         $stage = [10, 20, 30];
 
@@ -151,7 +162,8 @@ final class IterableWindowTest extends TestCase {
         ], $result);
     }
 
-    public function testCircularIgnoresInputKeys() : void {
+    public function testCircularIgnoresInputKeys(): void
+    {
         $stage = [
             'a' => 10,
             'b' => 20,
@@ -171,7 +183,8 @@ final class IterableWindowTest extends TestCase {
         ], $result);
     }
 
-    public function testCircularDoesNotOverwriteEarlierWindowsInIteratorToArray() : void {
+    public function testCircularDoesNotOverwriteEarlierWindowsInIteratorToArray(): void
+    {
 
         $stage = [0, 1, 2, -2, -1];
 

@@ -13,8 +13,8 @@ use function Anarchitecture\pipe\array_reduce_until;
 
 final class ArrayReduceUntilTest extends TestCase
 {
-
-    public function test_returns_a_closure() : void {
+    public function test_returns_a_closure(): void
+    {
 
         $stage = array_reduce_until(
             static fn(int $carry, int $v, int|string $k): int => $carry + $v,
@@ -25,7 +25,8 @@ final class ArrayReduceUntilTest extends TestCase
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_reduces_until_predicate_matches_and_returns_carry_key_value() : void {
+    public function test_reduces_until_predicate_matches_and_returns_carry_key_value(): void
+    {
 
         $stage = ['a' => 2, 'b' => 3, 'c' => 4];
 
@@ -43,7 +44,7 @@ final class ArrayReduceUntilTest extends TestCase
         };
 
         [$carry, $key, $value] = $stage
-            |> array_reduce_until($reducer, $predicate,0);
+            |> array_reduce_until($reducer, $predicate, 0);
 
         self::assertSame(5, $carry);
         self::assertSame('b', $key);
@@ -57,7 +58,8 @@ final class ArrayReduceUntilTest extends TestCase
         ], $seen);
     }
 
-    public function test_when_never_triggered_returns_carry_and_null_key_value() : void {
+    public function test_when_never_triggered_returns_carry_and_null_key_value(): void
+    {
 
         $input = ['a' => 2, 'b' => 3];
 
@@ -73,7 +75,8 @@ final class ArrayReduceUntilTest extends TestCase
         self::assertNull($value);
     }
 
-    public function test_empty_array_returns_initial_and_does_not_call_reducer_or_until() : void {
+    public function test_empty_array_returns_initial_and_does_not_call_reducer_or_until(): void
+    {
 
         $reduce_calls = 0;
         $until_calls = 0;
@@ -89,7 +92,7 @@ final class ArrayReduceUntilTest extends TestCase
         };
 
         [$carry, $key, $value] = []
-            |> array_reduce_until($reducer, $predicate,123);
+            |> array_reduce_until($reducer, $predicate, 123);
 
         self::assertSame(123, $carry);
         self::assertNull($key);
@@ -98,7 +101,8 @@ final class ArrayReduceUntilTest extends TestCase
         self::assertSame(0, $until_calls);
     }
 
-    public function test_does_not_mutate_the_input_array() : void {
+    public function test_does_not_mutate_the_input_array(): void
+    {
 
         $stage = ['a' => 2, 'b' => 3, 'c' => 4];
         $before = $stage;
@@ -114,28 +118,30 @@ final class ArrayReduceUntilTest extends TestCase
         self::assertSame($before, $stage);
     }
 
-    public function test_throws_when_reducer_expects_too_many_arguments() : void {
+    public function test_throws_when_reducer_expects_too_many_arguments(): void
+    {
 
         $this->expectException(ArgumentCountError::class);
 
         $stage = [1, 2, 3];
 
         $stage |> array_reduce_until(
-            fn ($carry, $v, $k, $extra) => $carry,
-            fn ($carry, $v, $k): bool => false,
+            fn($carry, $v, $k, $extra) => $carry,
+            fn($carry, $v, $k): bool => false,
             0,
         );
     }
 
-    public function test_throws_when_until_expects_too_many_arguments() : void {
+    public function test_throws_when_until_expects_too_many_arguments(): void
+    {
 
         $this->expectException(ArgumentCountError::class);
 
         $input = [1, 2, 3];
 
         $input |> array_reduce_until(
-            fn ($carry, $v, $k, $extra) => $carry,
-            fn ($carry, $v, $k): bool => false,
+            fn($carry, $v, $k, $extra) => $carry,
+            fn($carry, $v, $k): bool => false,
             0,
         );
     }

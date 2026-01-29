@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\tap;
 
-final class TapTest extends TestCase {
+final class TapTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
-    public function test_returns_a_closure() : void {
-
-        $stage = tap(static fn (mixed $_) => null);
+        $stage = tap(static fn(mixed $_) => null);
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_calls_callback_and_returns_original_value() : void {
+    public function test_calls_callback_and_returns_original_value(): void
+    {
 
         $seen = null;
 
@@ -35,7 +37,8 @@ final class TapTest extends TestCase {
         self::assertSame($value, $seen);
     }
 
-    public function test_can_be_used_for_side_effects_without_changing_type() : void {
+    public function test_can_be_used_for_side_effects_without_changing_type(): void
+    {
 
         $calls = 0;
 

@@ -11,9 +11,10 @@ use function Anarchitecture\pipe\collect;
 use function Anarchitecture\pipe\iterable_take;
 use function Anarchitecture\pipe\iterable_ticker;
 
-final class IterableTickerTest extends TestCase {
-
-    public function test_default_starts_at_zero_and_increments_by_one() : void {
+final class IterableTickerTest extends TestCase
+{
+    public function test_default_starts_at_zero_and_increments_by_one(): void
+    {
 
         $result = iterable_ticker()
             |> iterable_take(5)
@@ -28,7 +29,8 @@ final class IterableTickerTest extends TestCase {
         ], $result);
     }
 
-    public function test_custom_start_affects_values_but_keys_still_start_at_zero() : void {
+    public function test_custom_start_affects_values_but_keys_still_start_at_zero(): void
+    {
 
         $result = iterable_ticker(5)
             |> iterable_take(3)
@@ -41,7 +43,8 @@ final class IterableTickerTest extends TestCase {
         ], $result);
     }
 
-    public function test_can_be_advanced_manually() : void {
+    public function test_can_be_advanced_manually(): void
+    {
 
         $ticker = iterable_ticker(10);
 

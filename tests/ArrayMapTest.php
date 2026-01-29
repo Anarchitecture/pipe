@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\array_map;
 
-final class ArrayMapTest extends TestCase {
+final class ArrayMapTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
-    public function test_returns_a_closure() : void {
-
-        $stage = array_map(static fn ($v) => $v);
+        $stage = array_map(static fn($v) => $v);
 
         self::assertInstanceOf(Closure::class, $stage) ;
     }
 
-    public function test_maps_values_and_preserves_keys_for_single_array() : void {
+    public function test_maps_values_and_preserves_keys_for_single_array(): void
+    {
 
         $input = [
             10 => 1,
@@ -27,7 +29,7 @@ final class ArrayMapTest extends TestCase {
         ];
 
         $result = $input
-            |> array_map(static fn (int $v) => $v * 2);
+            |> array_map(static fn(int $v) => $v * 2);
 
         self::assertSame([
             10 => 2,
@@ -36,19 +38,21 @@ final class ArrayMapTest extends TestCase {
         ], $result);
     }
 
-    public function test_does_not_mutate_the_input_array() : void {
+    public function test_does_not_mutate_the_input_array(): void
+    {
 
         $input = [1, 2, 3];
         $before = $input;
 
         $result = $input
-            |> array_map(static fn (int $v) => $v + 10);
+            |> array_map(static fn(int $v) => $v + 10);
 
         self::assertSame([11, 12, 13], $result);
         self::assertSame($before, $input);
     }
 
-    public function test_empty_array_returns_empty_and_does_not_call_mapper() : void {
+    public function test_empty_array_returns_empty_and_does_not_call_mapper(): void
+    {
 
         $calls = 0;
 

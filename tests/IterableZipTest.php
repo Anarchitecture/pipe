@@ -10,14 +10,16 @@ use PHPUnit\Framework\TestCase;
 use function Anarchitecture\pipe\iterable_map;
 use function Anarchitecture\pipe\iterable_zip;
 
-final class IterableZipTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class IterableZipTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         self::assertInstanceOf(Closure::class, iterable_zip());
     }
 
-    public function test_zips_left_with_one_right_iterable() : void {
+    public function test_zips_left_with_one_right_iterable(): void
+    {
 
         $left = [1, 2, 3];
         $right = [10, 20, 30];
@@ -33,7 +35,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_preserves_left_keys() : void {
+    public function test_preserves_left_keys(): void
+    {
 
         $left = ['a' => 1, 'b' => 2];
         $right = [10, 20];
@@ -48,7 +51,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_stops_at_shortest_right_iterable() : void {
+    public function test_stops_at_shortest_right_iterable(): void
+    {
 
         $left = [1, 2, 3];
         $right = [10];
@@ -62,7 +66,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_zips_with_multiple_right_iterables() : void {
+    public function test_zips_with_multiple_right_iterables(): void
+    {
 
         $left = [1, 2];
         $right1 = [10, 20];
@@ -78,7 +83,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_no_right_iterables_wraps_left_values() : void {
+    public function test_no_right_iterables_wraps_left_values(): void
+    {
 
         $left = [1, 2];
 
@@ -92,9 +98,10 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_accepts_generator_as_left_iterable() : void {
+    public function test_accepts_generator_as_left_iterable(): void
+    {
 
-        $left = (static function () : \Generator {
+        $left = (static function (): \Generator {
             yield 10;
             yield 20;
         })();
@@ -110,10 +117,11 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_accepts_generator_as_right_iterable() : void {
+    public function test_accepts_generator_as_right_iterable(): void
+    {
 
         $left = [1, 2];
-        $right = (static function () : \Generator {
+        $right = (static function (): \Generator {
             yield 10;
             yield 20;
         })();
@@ -128,7 +136,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_accepts_iterator_as_left_iterable() : void {
+    public function test_accepts_iterator_as_left_iterable(): void
+    {
 
         $left = new \ArrayIterator([10, 20]);
         $right  = [1, 2];
@@ -143,7 +152,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_accepts_iterator_as_right_iterable() : void {
+    public function test_accepts_iterator_as_right_iterable(): void
+    {
 
         $left  = [1, 2];
         $right = new \ArrayIterator([10, 20]);
@@ -158,16 +168,17 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_accepts_mixed_iterator_types_as_right_iterables() : void {
+    public function test_accepts_mixed_iterator_types_as_right_iterables(): void
+    {
 
         $left  = [1, 2];
         $right = [
             new \ArrayIterator([10, 20]),
-            (static function () : \Generator {
+            (static function (): \Generator {
                 yield 100;
                 yield 200;
             })(),
-            [1000, 2000]
+            [1000, 2000],
         ];
 
 
@@ -181,7 +192,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_stops_at_shortest_left_iterable() : void {
+    public function test_stops_at_shortest_left_iterable(): void
+    {
 
         $left = [1, 2];
         $right = [10, 20, 30, 40];
@@ -196,7 +208,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_stops_when_any_right_is_exhausted() : void {
+    public function test_stops_when_any_right_is_exhausted(): void
+    {
 
         $left = [1, 2, 3];
         $right1 = [10, 20, 30, 40];
@@ -211,7 +224,8 @@ final class IterableZipTest extends TestCase {
         ], $result);
     }
 
-    public function test_zips_can_be_piped() : void {
+    public function test_zips_can_be_piped(): void
+    {
 
         $left = ["one" => 1, "two" => 2];
         $right1 = [10, 20];

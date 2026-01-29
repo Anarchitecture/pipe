@@ -9,16 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\preg_match;
 
-final class PregMatchTest extends TestCase {
-
-    public function test_returns_a_closure() : void {
+final class PregMatchTest extends TestCase
+{
+    public function test_returns_a_closure(): void
+    {
 
         $stage = preg_match('/.*/');
 
         self::assertInstanceOf(Closure::class, $stage);
     }
 
-    public function test_returns_matches_for_basic_match() : void {
+    public function test_returns_matches_for_basic_match(): void
+    {
 
         $stage = 'hello123world';
 
@@ -30,7 +32,8 @@ final class PregMatchTest extends TestCase {
         ], $result);
     }
 
-    public function test_returns_empty_array_when_no_match() : void {
+    public function test_returns_empty_array_when_no_match(): void
+    {
 
         $stage = 'hello world';
 
@@ -40,7 +43,8 @@ final class PregMatchTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function test_includes_capturing_groups() : void {
+    public function test_includes_capturing_groups(): void
+    {
 
         $stage = '123abc';
 
@@ -54,7 +58,8 @@ final class PregMatchTest extends TestCase {
         ], $result);
     }
 
-    public function test_preserves_named_captures() : void {
+    public function test_preserves_named_captures(): void
+    {
 
         $stage = 'hello';
 
@@ -68,7 +73,8 @@ final class PregMatchTest extends TestCase {
         ], $result);
     }
 
-    public function test_respects_offset() : void {
+    public function test_respects_offset(): void
+    {
 
         $stage = 'abc123';
 
@@ -80,7 +86,8 @@ final class PregMatchTest extends TestCase {
         ], $result);
     }
 
-    public function test_supports_offset_capture_and_unmatched_as_null() : void {
+    public function test_supports_offset_capture_and_unmatched_as_null(): void
+    {
 
         $stage = 'ab';
 

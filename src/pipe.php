@@ -19,8 +19,9 @@ use OutOfBoundsException;
  * @param callable $callback
  * @return Closure(array<int, mixed>|array<string, mixed>): mixed
  */
-function apply(callable $callback) : Closure {
-    return static function (array $array) use ($callback) : mixed {
+function apply(callable $callback): Closure
+{
+    return static function (array $array) use ($callback): mixed {
 
         $has_int = false;
         $has_string = false;
@@ -29,9 +30,7 @@ function apply(callable $callback) : Closure {
 
             if (\is_int($k)) {
                 $has_int = true;
-            }
-
-            else {
+            } else {
                 $has_string = true;
             }
 
@@ -50,8 +49,9 @@ function apply(callable $callback) : Closure {
  * @param callable $callback
  * @return Closure(array<array-key, mixed>) : bool
  */
-function array_all(callable $callback) : Closure {
-    return function (array $array) use ($callback) : bool {
+function array_all(callable $callback): Closure
+{
+    return function (array $array) use ($callback): bool {
         return \array_all($array, $callback);
     };
 }
@@ -62,8 +62,9 @@ function array_all(callable $callback) : Closure {
  * @param callable $callback
  * @return Closure(array<array-key, mixed>) : bool
  */
-function array_any(callable $callback) : Closure {
-    return function (array $array) use ($callback) : bool {
+function array_any(callable $callback): Closure
+{
+    return function (array $array) use ($callback): bool {
         return \array_any($array, $callback);
     };
 }
@@ -75,8 +76,9 @@ function array_any(callable $callback) : Closure {
  * @param bool $preserve_keys
  * @return Closure(array<array-key, mixed>): list<array<array-key, mixed>>
  */
-function array_chunk(int $length, bool $preserve_keys = false) : Closure {
-    return function (array $array) use ($length, $preserve_keys) : array {
+function array_chunk(int $length, bool $preserve_keys = false): Closure
+{
+    return function (array $array) use ($length, $preserve_keys): array {
         return \array_chunk($array, $length, $preserve_keys);
     };
 }
@@ -90,8 +92,9 @@ function array_chunk(int $length, bool $preserve_keys = false) : Closure {
  * @param array-key ...$keys
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  */
-function array_dissoc(string|int ...$keys) : Closure {
-    return static function (array $array) use ($keys) : array {
+function array_dissoc(string|int ...$keys): Closure
+{
+    return static function (array $array) use ($keys): array {
         foreach ($keys as $key) {
             unset($array[$key]);
         }
@@ -106,8 +109,9 @@ function array_dissoc(string|int ...$keys) : Closure {
  * @param int $mode
  * @return Closure(array<array-key, mixed>) : array<array-key, mixed>
  */
-function array_filter(callable $callback, int $mode = 0) : Closure {
-    return function (array $array) use ($callback, $mode) : array {
+function array_filter(callable $callback, int $mode = 0): Closure
+{
+    return function (array $array) use ($callback, $mode): array {
         return \array_filter($array, $callback, $mode);
     };
 }
@@ -124,7 +128,8 @@ function array_filter(callable $callback, int $mode = 0) : Closure {
  * @param array<array<array-key, mixed>> $array
  * @return array<array-key, mixed>
  */
-function array_flatten(array $array) : array {
+function array_flatten(array $array): array
+{
     return $array === [] ? [] : \array_merge(...$array);
 }
 
@@ -134,8 +139,9 @@ function array_flatten(array $array) : array {
  * @param callable $callback
  * @return Closure(array<array-key, mixed>) : array<array-key, mixed>
  */
-function array_map(callable $callback) : Closure {
-    return function (array $array) use ($callback) : array {
+function array_map(callable $callback): Closure
+{
+    return function (array $array) use ($callback): array {
         return \array_map($callback, $array);
     };
 }
@@ -149,13 +155,14 @@ function array_map(callable $callback) : Closure {
  * @param callable $callback
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  */
-function array_map_recursive(callable $callback) : Closure {
+function array_map_recursive(callable $callback): Closure
+{
 
-    return static function (array $array) use ($callback) : array {
+    return static function (array $array) use ($callback): array {
 
-        $array_map_recursive = static function (array $array) use ($callback, &$array_map_recursive) : array {
+        $array_map_recursive = static function (array $array) use ($callback, &$array_map_recursive): array {
 
-            return \array_map(fn ($value) => \is_array($value) ? $array_map_recursive($value) : $callback($value), $array);
+            return \array_map(fn($value) => \is_array($value) ? $array_map_recursive($value) : $callback($value), $array);
 
         };
 
@@ -175,11 +182,12 @@ function array_map_recursive(callable $callback) : Closure {
  * @param callable $callback
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  */
-function array_map_recursive_with_path(callable $callback) : Closure {
+function array_map_recursive_with_path(callable $callback): Closure
+{
 
-    return static function (array $array) use ($callback) : array {
+    return static function (array $array) use ($callback): array {
 
-        $array_map_recursive_with_path = static function (array $array, array $path = []) use ($callback, &$array_map_recursive_with_path) : array {
+        $array_map_recursive_with_path = static function (array $array, array $path = []) use ($callback, &$array_map_recursive_with_path): array {
 
             $out = [];
 
@@ -209,8 +217,9 @@ function array_map_recursive_with_path(callable $callback) : Closure {
  * @param int $i
  * @return Closure(array<array-key, mixed>): (mixed|null)
  */
-function array_nth(int $i) : Closure {
-    return function (array $array) use ($i) : mixed {
+function array_nth(int $i): Closure
+{
+    return function (array $array) use ($i): mixed {
         return $array
             |> array_slice($i, 1)
             |> \array_first(...);
@@ -228,8 +237,9 @@ function array_nth(int $i) : Closure {
  * @param mixed $initial
  * @return Closure(array<array-key, mixed>): (mixed|null)
  */
-function array_reduce(callable $callback, mixed $initial = null) : Closure {
-    return function (array $array) use ($callback, $initial) : mixed {
+function array_reduce(callable $callback, mixed $initial = null): Closure
+{
+    return function (array $array) use ($callback, $initial): mixed {
         return \array_reduce($array, $callback, $initial);
     };
 }
@@ -250,8 +260,9 @@ function array_reduce(callable $callback, mixed $initial = null) : Closure {
  * @param mixed $initial
  * @return Closure(array<array-key, mixed>): array{0:mixed, 1:array-key|null, 2:mixed|null}
  */
-function array_reduce_until(callable $callback, callable $until, mixed $initial = null) : Closure {
-    return function (array $array) use ($callback, $until, $initial) : array {
+function array_reduce_until(callable $callback, callable $until, mixed $initial = null): Closure
+{
+    return function (array $array) use ($callback, $until, $initial): array {
         $carry = $initial;
 
         foreach ($array as $key => $value) {
@@ -274,8 +285,9 @@ function array_reduce_until(callable $callback, callable $until, mixed $initial 
  * @param bool $preserve_keys
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  */
-function array_slice(int $offset, ?int $length = null, bool $preserve_keys = false) : Closure {
-    return function (array $array) use ($offset, $length, $preserve_keys) : array {
+function array_slice(int $offset, ?int $length = null, bool $preserve_keys = false): Closure
+{
+    return function (array $array) use ($offset, $length, $preserve_keys): array {
         return \array_slice($array, $offset, $length, $preserve_keys);
     };
 }
@@ -289,7 +301,8 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
  * @param callable $callback
  * @return Closure
  */
-function array_sum(callable $callback) : Closure {
+function array_sum(callable $callback): Closure
+{
     return function (array $array) use ($callback) {
         $sum = 0;
 
@@ -316,9 +329,10 @@ function array_sum(callable $callback) : Closure {
  *
  * @return Closure(array<array-key, array<array-key, mixed>>): array<array-key, array<array-key, mixed>>
  */
-function array_transpose() : Closure {
+function array_transpose(): Closure
+{
 
-    return static function (array $arrays) : array {
+    return static function (array $arrays): array {
         /** @var array<array-key, array<array-key, mixed>> $arrays */
 
         if ($arrays === []) {
@@ -370,7 +384,8 @@ function array_transpose() : Closure {
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  * @throws \ValueError when $flags is not a supported SORT_* mode for array_unique
  */
-function array_unique(int $flags = \SORT_STRING) : Closure {
+function array_unique(int $flags = \SORT_STRING): Closure
+{
     $allowed = [
         \SORT_STRING,
         \SORT_REGULAR,
@@ -382,7 +397,7 @@ function array_unique(int $flags = \SORT_STRING) : Closure {
         throw new \ValueError('Invalid $flags for array_unique');
     }
 
-    return function (array $array) use ($flags) : array {
+    return function (array $array) use ($flags): array {
         return \array_unique($array, $flags);
     };
 }
@@ -399,7 +414,8 @@ function array_unique(int $flags = \SORT_STRING) : Closure {
  * @param iterable<array-key, mixed> $iterable
  * @return array<array-key, mixed>
  */
-function collect(iterable $iterable) : array {
+function collect(iterable $iterable): array
+{
     return is_array($iterable) ? $iterable : iterator_to_array($iterable, true);
 }
 
@@ -410,8 +426,9 @@ function collect(iterable $iterable) : array {
  * @param int $limit
  * @return Closure(string): list<string>
  */
-function explode(string $separator, int $limit = PHP_INT_MAX) : Closure {
-    return function (string $string) use ($separator, $limit) : array {
+function explode(string $separator, int $limit = PHP_INT_MAX): Closure
+{
+    return function (string $string) use ($separator, $limit): array {
         return \explode($separator, $string, $limit);
     };
 }
@@ -422,8 +439,9 @@ function explode(string $separator, int $limit = PHP_INT_MAX) : Closure {
  * @param mixed $value
  * @return Closure(mixed) : bool
  */
-function equals(mixed $value)  : Closure {
-    return function (mixed $x) use ($value) : bool {
+function equals(mixed $value): Closure
+{
+    return function (mixed $x) use ($value): bool {
         return $x === $value;
     };
 }
@@ -439,8 +457,9 @@ function equals(mixed $value)  : Closure {
  * @param callable $else
  * @return Closure(mixed) : mixed
  */
-function if_else(callable $predicate, callable $then, callable $else) : Closure {
-    return static function (mixed $value) use ($predicate, $then, $else) : mixed {
+function if_else(callable $predicate, callable $then, callable $else): Closure
+{
+    return static function (mixed $value) use ($predicate, $then, $else): mixed {
         return $predicate($value) === true ? $then($value) : $else($value);
     };
 }
@@ -450,8 +469,9 @@ function if_else(callable $predicate, callable $then, callable $else) : Closure 
  *
  * @return Closure(array<array-key, string>): string
  */
-function implode(string $separator = "") : Closure {
-    return function (array $array) use ($separator) : string {
+function implode(string $separator = ""): Closure
+{
+    return function (array $array) use ($separator): string {
         return \implode($separator, $array);
     };
 }
@@ -460,8 +480,9 @@ function implode(string $separator = "") : Closure {
  * Return unary callable that increments by $by (default 1).
  * @return Closure(int|float): (int|float)
  */
-function increment(int|float $by = 1) : Closure {
-    return function (int|float $number) use ($by) : int|float {
+function increment(int|float $by = 1): Closure
+{
+    return function (int|float $number) use ($by): int|float {
         return $number + $by;
     };
 }
@@ -475,8 +496,9 @@ function increment(int|float $by = 1) : Closure {
  * @param callable|null $callback
  * @return Closure(iterable<array-key, mixed>) : bool
  */
-function iterable_all(?callable $callback = null) : Closure {
-    return static function (iterable $iterable) use ($callback) : bool {
+function iterable_all(?callable $callback = null): Closure
+{
+    return static function (iterable $iterable) use ($callback): bool {
 
         if ($callback === null) {
             foreach ($iterable as $value) {
@@ -484,9 +506,7 @@ function iterable_all(?callable $callback = null) : Closure {
                     return false;
                 }
             }
-        }
-
-        else {
+        } else {
             foreach ($iterable as $value) {
                 if ($callback($value) !== true) {
                     return false;
@@ -507,8 +527,9 @@ function iterable_all(?callable $callback = null) : Closure {
  * @param callable|null $callback
  * @return Closure(iterable<array-key, mixed>) : bool
  */
-function iterable_any(?callable $callback = null) : Closure {
-    return static function (iterable $iterable) use ($callback) : bool {
+function iterable_any(?callable $callback = null): Closure
+{
+    return static function (iterable $iterable) use ($callback): bool {
 
         if ($callback === null) {
             foreach ($iterable as $value) {
@@ -516,9 +537,7 @@ function iterable_any(?callable $callback = null) : Closure {
                     return true;
                 }
             }
-        }
-
-        else {
+        } else {
             foreach ($iterable as $value) {
                 if ($callback($value) === true) {
                     return true;
@@ -536,8 +555,9 @@ function iterable_any(?callable $callback = null) : Closure {
  * @param callable $callback
  * @return Closure(iterable<array-key, mixed>) : Generator
  */
-function iterable_filter(callable $callback) : Closure {
-    return function (iterable $iterable) use ($callback) : Generator {
+function iterable_filter(callable $callback): Closure
+{
+    return function (iterable $iterable) use ($callback): Generator {
         foreach ($iterable as $key => $value) {
             if ($callback($value, $key)) {
                 yield $key => $value;
@@ -554,7 +574,8 @@ function iterable_filter(callable $callback) : Closure {
  * @param iterable<array-key, mixed> $iterable
  * @return mixed
  */
-function iterable_first(iterable $iterable): mixed {
+function iterable_first(iterable $iterable): mixed
+{
     foreach ($iterable as $value) {
         return $value;
     }
@@ -568,8 +589,9 @@ function iterable_first(iterable $iterable): mixed {
  *
  * @return Closure(iterable<array-key, iterable<array-key, mixed>>) : Generator
  */
-function iterable_flatten(bool $preserve_keys = true) : Closure {
-    return function (iterable $iterable) use ($preserve_keys) : Generator {
+function iterable_flatten(bool $preserve_keys = true): Closure
+{
+    return function (iterable $iterable) use ($preserve_keys): Generator {
         /** @var iterable<array-key, mixed> $value */
         foreach ($iterable as $value) {
             if ($preserve_keys) {
@@ -589,8 +611,9 @@ function iterable_flatten(bool $preserve_keys = true) : Closure {
  * @param callable $callback
  * @return Closure(iterable<array-key, mixed>) : Generator
  */
-function iterable_map(callable $callback) : Closure {
-    return function (iterable $iterable) use ($callback) : Generator {
+function iterable_map(callable $callback): Closure
+{
+    return function (iterable $iterable) use ($callback): Generator {
         foreach ($iterable as $key => $value) {
             yield $key => $callback($value);
         }
@@ -633,8 +656,9 @@ function iterable_nth(int $n): \Closure
  * @param mixed $initial
  * @return Closure(iterable<array-key, mixed>) : mixed
  */
-function iterable_reduce(callable $callback, mixed $initial = null) : Closure {
-    return function (iterable $iterable) use ($callback, $initial) : mixed {
+function iterable_reduce(callable $callback, mixed $initial = null): Closure
+{
+    return function (iterable $iterable) use ($callback, $initial): mixed {
         $carry = $initial;
         foreach ($iterable as $key => $value) {
             $carry = $callback($carry, $value, $key);
@@ -648,12 +672,13 @@ function iterable_reduce(callable $callback, mixed $initial = null) : Closure {
  *
  * @return Closure(string) : Generator<int, string>
  */
-function iterable_string(int $size = 1) : Closure {
+function iterable_string(int $size = 1): Closure
+{
     if ($size < 1) {
         throw new InvalidArgumentException('size must be >= 1');
     }
 
-    return static function (string $string) use ($size) : Generator {
+    return static function (string $string) use ($size): Generator {
 
         $length = \strlen($string);
 
@@ -661,9 +686,7 @@ function iterable_string(int $size = 1) : Closure {
             for ($i = 0; $i < $length; $i++) {
                 yield $i => $string[$i];
             }
-        }
-
-        else {
+        } else {
             for ($i = 0; $i < $length; $i += $size) {
                 yield $i => \substr($string, $i, $size);
             }
@@ -680,13 +703,14 @@ function iterable_string(int $size = 1) : Closure {
  * @return Closure(iterable<array-key, mixed>): Generator<array-key, mixed>
  * @throws InvalidArgumentException when $count < 0
  */
-function iterable_take(int $count) : Closure {
+function iterable_take(int $count): Closure
+{
 
     if ($count < 0) {
         throw new \InvalidArgumentException('n must be >= 0');
     }
 
-    return static function (iterable $iterable) use ($count) : Generator {
+    return static function (iterable $iterable) use ($count): Generator {
         if ($count <= 0) {
             return;
         }
@@ -709,7 +733,8 @@ function iterable_take(int $count) : Closure {
  *
  * @return Generator<int, int>
  */
-function iterable_ticker(int $start = 0) : Generator {
+function iterable_ticker(int $start = 0): Generator
+{
     for ($i = $start; ; $i++) {
         yield $i;
     }
@@ -725,13 +750,14 @@ function iterable_ticker(int $start = 0) : Generator {
  * @param bool $circular Whether to yield circular (wraparound) windows
  * @return Closure(iterable<array-key, mixed>): Generator<int, list<mixed>>
  */
-function iterable_window(int $size, bool $circular = false) : Closure {
+function iterable_window(int $size, bool $circular = false): Closure
+{
 
     if ($size <= 0) {
         throw new InvalidArgumentException('$size must be > 0');
     }
 
-    return static function (iterable $iterable) use ($size, $circular) : Generator {
+    return static function (iterable $iterable) use ($size, $circular): Generator {
 
         $buffer = [];
 
@@ -777,7 +803,8 @@ function iterable_window(int $size, bool $circular = false) : Closure {
  * @param iterable<array-key, mixed> ...$right
  * @return Closure(iterable<array-key, mixed>) : iterable<array-key, array<int, mixed>>
  */
-function iterable_zip(iterable ...$right) : \Closure {
+function iterable_zip(iterable ...$right): \Closure
+{
 
     $mapper = static function (iterable $iterable): \Iterator {
 
@@ -793,7 +820,7 @@ function iterable_zip(iterable ...$right) : \Closure {
         return new \IteratorIterator($iterable);
     };
 
-    return static function(iterable $left) use ($right, $mapper) : Generator {
+    return static function (iterable $left) use ($right, $mapper): Generator {
 
         $right = \array_map($mapper, $right);
 
@@ -832,9 +859,9 @@ function iterable_zip(iterable ...$right) : \Closure {
  * @param callable(T) : T $callback
  * @return Closure(T) : Generator<int, T>
  */
-function iterate(callable $callback, bool $include_seed = true) : Closure
+function iterate(callable $callback, bool $include_seed = true): Closure
 {
-    return static function (mixed $value) use ($callback, $include_seed) : Generator {
+    return static function (mixed $value) use ($callback, $include_seed): Generator {
         if ($include_seed) {
             yield $value;
         }
@@ -856,7 +883,8 @@ function iterate(callable $callback, bool $include_seed = true) : Closure
  * @param int $offset
  * @return Closure(string): array<array{string|null, int<-1, max>}|string|null>
  */
-function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure {
+function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure
+{
     return function (string $subject) use ($pattern, $flags, $offset) {
         \preg_match($pattern, $subject, $matches, $flags, $offset);
         return $matches;
@@ -870,7 +898,8 @@ function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure {
  * @param int $offset
  * @return Closure(string) : array<array-key, mixed>
  */
-function preg_match_all(string $pattern, int $flags = 0, int $offset = 0): Closure {
+function preg_match_all(string $pattern, int $flags = 0, int $offset = 0): Closure
+{
     return function (string $subject) use ($pattern, $flags, $offset) {
         \preg_match_all($pattern, $subject, $matches, $flags, $offset);
         return $matches;
@@ -887,8 +916,9 @@ function preg_match_all(string $pattern, int $flags = 0, int $offset = 0): Closu
  * @param int $limit
  * @return Closure(array<float|int|string>|string) : (array<string>|string|null)
  */
-function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1) : Closure {
-    return function (string|array $subject) use ($pattern, $replacement, $limit) : string|array|null {
+function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1): Closure
+{
+    return function (string|array $subject) use ($pattern, $replacement, $limit): string|array|null {
         /** @var array<float|int|string>|string $subject */
         return \preg_replace($pattern, $replacement, $subject, $limit);
     };
@@ -900,8 +930,9 @@ function preg_replace(string|array $pattern, string|array $replacement, int $lim
  * @param int $flags
  * @return Closure(array<array-key, mixed>): list<mixed>
  */
-function rsort(int $flags = SORT_REGULAR) : Closure {
-    return function (array $array) use ($flags) : array {
+function rsort(int $flags = SORT_REGULAR): Closure
+{
+    return function (array $array) use ($flags): array {
         \rsort($array, $flags);
         return $array;
     };
@@ -913,8 +944,9 @@ function rsort(int $flags = SORT_REGULAR) : Closure {
  * @param int $flags
  * @return Closure(array<array-key, mixed>): list<mixed>
  */
-function sort(int $flags = SORT_REGULAR) : Closure {
-    return function (array $array) use ($flags) : array {
+function sort(int $flags = SORT_REGULAR): Closure
+{
+    return function (array $array) use ($flags): array {
         \sort($array, $flags);
         return $array;
     };
@@ -926,8 +958,9 @@ function sort(int $flags = SORT_REGULAR) : Closure {
  * @param string|array<string> $replace
  * @return Closure(array<string>|string): (string|array<string>)
  */
-function str_replace(string|array $search, string|array $replace) : Closure {
-    return function (string|array $subject) use ($search, $replace) : string|array {
+function str_replace(string|array $search, string|array $replace): Closure
+{
+    return function (string|array $subject) use ($search, $replace): string|array {
         /** @var array<string>|string $subject */
         return \str_replace($search, $replace, $subject);
     };
@@ -939,8 +972,9 @@ function str_replace(string|array $search, string|array $replace) : Closure {
  * @param string $prefix
  * @return Closure(string): bool
  */
-function str_starts_with(string $prefix) : Closure {
-    return function (string $haystack) use ($prefix) : bool {
+function str_starts_with(string $prefix): Closure
+{
+    return function (string $haystack) use ($prefix): bool {
         return \str_starts_with($haystack, $prefix);
     };
 }
@@ -956,8 +990,9 @@ function str_starts_with(string $prefix) : Closure {
  * @param callable(T): mixed $callback Side effect function to run on the value.
  * @return Closure(T): T Unary pipeline stage that returns the original value.
  */
-function tap(callable $callback) : Closure {
-    return static function (mixed $value) use ($callback) : mixed {
+function tap(callable $callback): Closure
+{
+    return static function (mixed $value) use ($callback): mixed {
         $callback($value);
         return $value;
     };
@@ -975,8 +1010,9 @@ function tap(callable $callback) : Closure {
  * @param callable $callback
  * @return Closure(mixed) : mixed
  */
-function unless(callable $predicate, callable $callback) : Closure {
-    return static function (mixed $value) use ($predicate, $callback) : mixed {
+function unless(callable $predicate, callable $callback): Closure
+{
+    return static function (mixed $value) use ($predicate, $callback): mixed {
         return $predicate($value) !== true ? $callback($value) : $value;
     };
 }
@@ -988,8 +1024,9 @@ function unless(callable $predicate, callable $callback) : Closure {
  * @param callable $callback
  * @return Closure(array<array-key, mixed>): list<mixed>
  */
-function usort(callable $callback) : Closure {
-    return function (array $array) use ($callback) : array {
+function usort(callable $callback): Closure
+{
+    return function (array $array) use ($callback): array {
         \usort($array, $callback);
         return $array;
     };
@@ -1002,8 +1039,9 @@ function usort(callable $callback) : Closure {
  * @param callable(mixed, mixed): int $callback
  * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  */
-function uasort(callable $callback) : Closure {
-    return function (array $array) use ($callback) : array {
+function uasort(callable $callback): Closure
+{
+    return function (array $array) use ($callback): array {
         \uasort($array, $callback);
         return $array;
     };
@@ -1016,7 +1054,8 @@ function uasort(callable $callback) : Closure {
  * @param T $value
  * @return Closure(mixed) : T
  */
-function value(mixed $value) : Closure {
+function value(mixed $value): Closure
+{
     return function ($_) use ($value) {
         return $value;
     };
@@ -1032,8 +1071,9 @@ function value(mixed $value) : Closure {
  * @param callable $callback
  * @return Closure(mixed) : mixed
  */
-function when(callable $predicate, callable $callback) : Closure {
-    return static function (mixed $value) use ($predicate, $callback) : mixed {
+function when(callable $predicate, callable $callback): Closure
+{
+    return static function (mixed $value) use ($predicate, $callback): mixed {
         return $predicate($value) === true ? $callback($value) : $value;
     };
 }
@@ -1044,8 +1084,9 @@ function when(callable $predicate, callable $callback) : Closure {
  * @param callable|null $callback
  * @return Closure(array<array<array-key, mixed>>): array<array-key, mixed>
  */
-function zip_map(?callable $callback) : Closure {
-    return function (array $arrays) use ($callback) : array {
+function zip_map(?callable $callback): Closure
+{
+    return function (array $arrays) use ($callback): array {
         /** @var array<array<array-key, mixed>> $arrays */
         return $arrays === [] ? [] : \array_map($callback, ...$arrays);
     };
@@ -1057,8 +1098,9 @@ function zip_map(?callable $callback) : Closure {
  * @param callable(mixed): bool $callback
  * @return Closure(mixed): bool
  */
-function not(callable $callback) : Closure {
-    return static function ($value) use ($callback) : bool {
+function not(callable $callback): Closure
+{
+    return static function ($value) use ($callback): bool {
         return true !== $callback($value);
     };
 }

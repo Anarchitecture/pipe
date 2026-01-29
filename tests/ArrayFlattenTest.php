@@ -8,9 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 use function Anarchitecture\pipe\array_flatten;
 
-final class ArrayFlattenTest extends TestCase {
-
-    public function test_flattens_one_level() : void {
+final class ArrayFlattenTest extends TestCase
+{
+    public function test_flattens_one_level(): void
+    {
 
         $stage = [
             [1, 2],
@@ -24,7 +25,8 @@ final class ArrayFlattenTest extends TestCase {
         self::assertSame([1, 2, 3, 4, 5], $result);
     }
 
-    public function test_empty_outer_array_returns_empty_array() : void {
+    public function test_empty_outer_array_returns_empty_array(): void
+    {
 
         $result = []
             |> array_flatten(...);
@@ -32,7 +34,8 @@ final class ArrayFlattenTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function test_reindexes_numeric_keys() : void {
+    public function test_reindexes_numeric_keys(): void
+    {
 
         $stage = [
             [10 => 'a'],
@@ -42,10 +45,11 @@ final class ArrayFlattenTest extends TestCase {
         $result = $stage
             |> array_flatten(...);
 
-        self::assertSame([0 => 'a', 1 =>'b'], $result);
+        self::assertSame([0 => 'a', 1 => 'b'], $result);
     }
 
-    public function test_preserves_string_keys() : void {
+    public function test_preserves_string_keys(): void
+    {
 
         $stage = [
             ['a' => 1, 'b' => 2],
@@ -62,7 +66,8 @@ final class ArrayFlattenTest extends TestCase {
         ], $result);
     }
 
-    public function test_does_not_mutate_the_original_array() : void {
+    public function test_does_not_mutate_the_original_array(): void
+    {
 
         $stage = [[1], [2, 3]];
         $before = $stage;
@@ -74,7 +79,8 @@ final class ArrayFlattenTest extends TestCase {
         self::assertSame($before, $stage);
     }
 
-    public function test_throws_type_error_when_any_element_is_not_an_array() : void {
+    public function test_throws_type_error_when_any_element_is_not_an_array(): void
+    {
 
         $this->expectException(\TypeError::class);
 
@@ -87,7 +93,8 @@ final class ArrayFlattenTest extends TestCase {
         $stage |> array_flatten(...);
     }
 
-    public function test_throws_type_error_when_any_element_is_null() : void {
+    public function test_throws_type_error_when_any_element_is_null(): void
+    {
 
         $this->expectException(\TypeError::class);
 
@@ -100,7 +107,8 @@ final class ArrayFlattenTest extends TestCase {
         $stage |> array_flatten(...);
     }
 
-    public function test_when_string_keys_clash_later_values_win() : void {
+    public function test_when_string_keys_clash_later_values_win(): void
+    {
 
         $stage = [
             ['a' => 1, 'b' => 2],
@@ -118,7 +126,8 @@ final class ArrayFlattenTest extends TestCase {
         ], $result);
     }
 
-    public function test_mixed_keys_preserve_string_keys_and_reindex_numeric_keys() : void {
+    public function test_mixed_keys_preserve_string_keys_and_reindex_numeric_keys(): void
+    {
 
         $stage = [
             ['a' => 1, 10 => 'x'],
