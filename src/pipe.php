@@ -550,6 +550,54 @@ function iterable_any(?callable $callback = null): Closure
 }
 
 /**
+ * Return unary callable for lazily chunking an iterable into arrays of a fixed size.
+ *
+ * Yields arrays of up to $size items. Full chunks are yielded as soon as they are filled.
+ * The final chunk (if any) may be smaller than $size.
+ *
+ * - If $preserve_keys is false (default), input keys are ignored and each yielded chunk is a list.
+ * - If $preserve_keys is true, keys from the input iterable are preserved within each chunk.
+ *
+ * @param int $size
+ * @param bool $preserve_keys
+ * @return Closure(iterable<array-key, mixed>): Generator<int, array<array-key, mixed>>
+ * @throws InvalidArgumentException when $size < 1
+*/
+function iterable_chunk(int $size, bool $preserve_keys = false): Closure
+{
+    if ($size < 1) {
+        throw new InvalidArgumentException('size must be >= 1');
+    }
+
+    return static function (iterable $iterable) use ($size, $preserve_keys): Generator {
+        $chunk = [];
+        $i = 0;
+
+        /** @var array-key $key */
+        foreach ($iterable as $key => $value) {
+            if ($preserve_keys) {
+                $chunk[$key] = $value;
+            } else {
+                $chunk[] = $value;
+            }
+
+            $i++;
+
+            if ($i === $size) {
+                yield $chunk;
+                $chunk = [];
+                $i = 0;
+            }
+        }
+
+        if ($i !== 0) {
+            yield $chunk;
+        }
+    };
+}
+
+
+/**
  * Return unary callable for filtering over an iterable
  *
  * @param callable $callback
