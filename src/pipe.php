@@ -715,6 +715,41 @@ function iterable_reduce(callable $callback, mixed $initial = null): Closure
     };
 }
 
+
+/**
+ * Return unary callable for reducing an iterable to a single value until a predicate is satisfied.
+ *
+ * Applies `$callback` to each item in iteration order, updating the accumulator (`$carry`).
+ * After each reduction step, `$until($carry, $value, $key)` is evaluated.
+ *
+ * When `$until(...)` returns `true`, the function short-circuits and returns:
+ *   `[$carry, $key, $value]`
+ *
+ * If the predicate never matches, returns:
+ *   `[$carry, null, null]`
+ *
+ * @param callable $callback
+ * @param callable $until
+ * @param mixed $initial
+ * @return Closure(iterable<array-key, mixed>): array{0:mixed, 1:mixed, 2:mixed}
+ */
+function iterable_reduce_until(callable $callback, callable $until, mixed $initial = null): Closure
+{
+    return function (iterable $iterable) use ($callback, $until, $initial): array {
+        $carry = $initial;
+
+        foreach ($iterable as $key => $value) {
+            $carry = $callback($carry, $value, $key);
+
+            if ($until($carry, $value, $key) === true) {
+                return [$carry, $key, $value];
+            }
+        }
+
+        return [$carry, null, null];
+    };
+}
+
 /**
  * Lazily iterate over a string as bytes or byte-chunks of the provided size.
  *
