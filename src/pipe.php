@@ -751,6 +751,28 @@ function iterable_reduce_until(callable $callback, callable $until, mixed $initi
 }
 
 /**
+ * Return unary callable for lazily scanning an iterable.
+ *
+ * This is like iterable_reduce(), but yields the intermediate state after each
+ * iteration instead of returning only the final state.
+ *
+ * @param callable $callback fn(mixed $state, mixed $value, array-key $key): mixed
+ * @param mixed $initial
+ * @return Closure(iterable<array-key, mixed>): Generator<array-key, mixed>
+ */
+function iterable_scan(callable $callback, mixed $initial = null): Closure
+{
+    return function (iterable $iterable) use ($callback, $initial): Generator {
+        $state = $initial;
+
+        foreach ($iterable as $key => $value) {
+            $state = $callback($state, $value, $key);
+            yield $key => $state;
+        }
+    };
+}
+
+/**
  * Lazily iterate over a string as bytes or byte-chunks of the provided size.
  *
  * @return Closure(string) : Generator<int, string>

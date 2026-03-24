@@ -83,6 +83,7 @@ p\array_map(fn ($x) => $x * 2);
 - `p\iterable_nth(int $n)` — returns the nth item (0-based); consumes up to n+1 items; returns `null` if out of range 
 - `p\iterable_reduce(callable $callback, $initial = null)` — reduces an iterable to a single value
 - `p\iterable_reduce_until(callable $reducer, callable $until, mixed $initial = null)` — reduces an iterable; returns `[$carry, $key, $value]` when triggered, or `[$carry, null, null]` if never triggered (short-circuits)
+- `p\iterable_scan(callable $callback, mixed $initial = null)` — lazily yields the intermediate state after each iteration, like iterable_reduce() but streaming every step instead of only returning the final state.
 - `p\iterable_string(int $size = 1)` — lazily iterate over a string as **bytes** (`$size = 1`) or **byte-chunks** (`$size > 1`).
 - `p\iterable_take(int $count)` — yields first `$count` items
 - `p\iterable_ticker(int $start = 0)` — infinite counter generator
