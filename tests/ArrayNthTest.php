@@ -59,7 +59,10 @@ final class ArrayNthTest extends TestCase
     public function test_returns_null_for_empty_array(): void
     {
 
-        $result = []
+        /** @var array<int, int> $stage */
+        $stage = [];
+
+        $result = $stage
             |> array_nth(0);
 
         self::assertNull($result);

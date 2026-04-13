@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Anarchitecture\pipe;
+
+use Closure;
+use Generator;
+
+/**
+ * @template TValue
+ * @template TResult
+ * @param callable(TValue): TResult $callback
+ * @return Closure<TKey of array-key>(array<TKey, TValue>): array<TKey, TResult>
+ */
+function array_map(callable $callback): Closure
+{
+}
+
+/**
+ * @template TKey of array-key = array-key
+ * @template TValue = mixed
+ * @param iterable<TKey, TValue> $iterable
+ * @return array<TKey, TValue>
+ */
+function collect(iterable $iterable): array
+{
+}
+
+/**
+ * @template TValue = mixed
+ * @template TKey of array-key = array-key
+ * @param callable(TValue, TKey): bool $callback
+ * @return Closure(iterable<TKey, TValue>): Generator<TKey, TValue, mixed, mixed>
+ */
+function iterable_filter(callable $callback): Closure
+{
+}
+
+/**
+ * @template TValue
+ * @template TResult
+ * @param callable(TValue): TResult $callback
+ * @return Closure<TKey of array-key>(iterable<TKey, TValue>): Generator<TKey, TResult, mixed, mixed>
+ */
+function iterable_map(callable $callback): Closure
+{
+}
+
+/**
+ * @return Closure<TKey of array-key, TValue>(array<TKey, TValue>): (TValue|null)
+ */
+function array_nth(int $i): Closure
+{
+}
+
+/**
+ * @return Closure<TKey of array-key, TValue>(iterable<TKey, TValue>): (TValue|null)
+ */
+function iterable_nth(int $n): Closure
+{
+}

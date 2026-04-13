@@ -36,6 +36,7 @@ final class IterableFirstTest extends TestCase
     public function test_returns_null_for_empty_iterable(): void
     {
 
+        /** @var array<int, int> $stage */
         $stage = [];
 
         $result = iterable_first($stage);

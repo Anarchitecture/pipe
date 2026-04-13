@@ -46,8 +46,9 @@ function apply(callable $callback): Closure
 /**
  * Return unary callable for array_all
  *
- * @param callable $callback
- * @return Closure(array<array-key, mixed>) : bool
+ * @template TValue
+ * @param callable(TValue, array-key): bool $callback
+ * @return Closure(array<array-key, TValue>): bool
  */
 function array_all(callable $callback): Closure
 {
@@ -59,8 +60,9 @@ function array_all(callable $callback): Closure
 /**
  * Return unary callable for array_any
  *
- * @param callable $callback
- * @return Closure(array<array-key, mixed>) : bool
+ * @template TValue
+ * @param callable(TValue, array-key): bool $callback
+ * @return Closure(array<array-key, TValue>): bool
  */
 function array_any(callable $callback): Closure
 {
@@ -107,7 +109,7 @@ function array_dissoc(string|int ...$keys): Closure
  *
  * @param callable $callback
  * @param int $mode
- * @return Closure(array<array-key, mixed>) : array<array-key, mixed>
+ * @return Closure(array<array-key, mixed>): array<array-key, mixed>
  */
 function array_filter(callable $callback, int $mode = 0): Closure
 {
@@ -136,8 +138,10 @@ function array_flatten(array $array): array
 /**
  * Return unary callable for array_map
  *
- * @param callable $callback
- * @return Closure(array<array-key, mixed>) : array<array-key, mixed>
+ * @template TValue
+ * @template TResult
+ * @param callable(TValue): TResult $callback
+ * @return Closure(array<array-key, TValue>): array<array-key, TResult>
  */
 function array_map(callable $callback): Closure
 {
@@ -230,9 +234,6 @@ function array_nth(int $i): Closure
 /**
  * Return unary callable for array_reduce
  *
- * The reducer is called as: $callback($carry, $value) (no array key is provided).
- * For an empty array, the result is $initial (or null if omitted).
- *
  * @param callable $callback
  * @param mixed $initial
  * @return Closure(array<array-key, mixed>): (mixed|null)
@@ -298,8 +299,8 @@ function array_slice(int $offset, ?int $length = null, bool $preserve_keys = fal
  * Equivalent to:
  *   fn(array $xs) => array_reduce($xs, fn($sum, $x) => $sum + $callback($x), 0)
  *
- * @param callable $callback
- * @return Closure
+ * @param callable $callback Callback that returns a numeric value (int|float)
+ * @return Closure(array<array-key, mixed>): (int|float)
  */
 function array_sum(callable $callback): Closure
 {
@@ -398,7 +399,7 @@ function array_unique(int $flags = \SORT_STRING): Closure
     }
 
     return function (array $array) use ($flags): array {
-        /** @phpstan-ignore-next-line */
+        /** @var array<array-key, string|float|int> $array */
         return \array_unique($array, $flags);
     };
 }
@@ -438,7 +439,7 @@ function explode(string $separator, int $limit = PHP_INT_MAX): Closure
  * Returns a predicate: $x === $value
  *
  * @param mixed $value
- * @return Closure(mixed) : bool
+ * @return Closure(mixed): bool
  */
 function equals(mixed $value): Closure
 {
@@ -473,7 +474,7 @@ function if_else(callable $predicate, callable $then, callable $else): Closure
 function implode(string $separator = ""): Closure
 {
     return function (array $array) use ($separator): string {
-        /** @phpstan-ignore-next-line */
+        /** @var array<array-key, string> $array */
         return \implode($separator, $array);
     };
 }
@@ -496,7 +497,7 @@ function increment(int|float $by = 1): Closure
  * Short-circuits: stops iterating as soon as false (or actually !== true) is found.
  *
  * @param callable|null $callback
- * @return Closure(iterable<array-key, mixed>) : bool
+ * @return Closure(iterable<array-key, mixed>): bool
  */
 function iterable_all(?callable $callback = null): Closure
 {
@@ -527,7 +528,7 @@ function iterable_all(?callable $callback = null): Closure
  * Short-circuits: stops iterating as soon as a match is found.
  *
  * @param callable|null $callback
- * @return Closure(iterable<array-key, mixed>) : bool
+ * @return Closure(iterable<array-key, mixed>): bool
  */
 function iterable_any(?callable $callback = null): Closure
 {
@@ -564,7 +565,7 @@ function iterable_any(?callable $callback = null): Closure
  * @param bool $preserve_keys
  * @return Closure(iterable<array-key, mixed>): Generator<int, array<array-key, mixed>>
  * @throws InvalidArgumentException when $size < 1
-*/
+ */
 function iterable_chunk(int $size, bool $preserve_keys = false): Closure
 {
     if ($size < 1) {
@@ -602,13 +603,15 @@ function iterable_chunk(int $size, bool $preserve_keys = false): Closure
 /**
  * Return unary callable for filtering over an iterable
  *
- * @param callable $callback
- * @return Closure(iterable<array-key, mixed>) : Generator
+ * @template TValue
+ * @param callable(TValue, array-key): bool $callback
+ * @return Closure(iterable<array-key, TValue>): Generator<array-key, TValue>
  */
 function iterable_filter(callable $callback): Closure
 {
     return function (iterable $iterable) use ($callback): Generator {
         foreach ($iterable as $key => $value) {
+            /** @var array-key $key */
             if ($callback($value, $key)) {
                 yield $key => $value;
             }
@@ -621,8 +624,9 @@ function iterable_filter(callable $callback): Closure
  *
  * Warning: for Generators/Iterators, this consumes one element.
  *
- * @param iterable<array-key, mixed> $iterable
- * @return mixed
+ * @template TValue
+ * @param iterable<array-key, TValue> $iterable
+ * @return TValue|null
  */
 function iterable_first(iterable $iterable): mixed
 {
@@ -658,13 +662,16 @@ function iterable_flatten(bool $preserve_keys = true): Closure
 /**
  * Return unary callable for mapping over an iterable
  *
- * @param callable $callback
- * @return Closure(iterable<array-key, mixed>) : Generator
+ * @template TValue
+ * @template TResult
+ * @param callable(TValue): TResult $callback
+ * @return Closure(iterable<array-key, TValue>): Generator<array-key, TResult>
  */
 function iterable_map(callable $callback): Closure
 {
     return function (iterable $iterable) use ($callback): Generator {
         foreach ($iterable as $key => $value) {
+            /** @var array-key $key */
             yield $key => $callback($value);
         }
     };
@@ -672,10 +679,10 @@ function iterable_map(callable $callback): Closure
 
 /**
  * Return unary callable that returns the nth element (0-based) from an iterable.
- * Returns 0 if n is out of bounds
+ * Returns null if n is out of bounds
  *
  * @param int $n 0-based index
- * @return Closure(iterable<array-key, mixed>) : (mixed|null)
+ * @return Closure(iterable<array-key, mixed>): (mixed|null)
  * @throws InvalidArgumentException if $n < 0
  */
 function iterable_nth(int $n): \Closure
@@ -704,12 +711,13 @@ function iterable_nth(int $n): \Closure
  *
  * @param callable $callback
  * @param mixed $initial
- * @return Closure(iterable<array-key, mixed>) : mixed
+ * @return Closure(iterable<array-key, mixed>): mixed
  */
 function iterable_reduce(callable $callback, mixed $initial = null): Closure
 {
     return function (iterable $iterable) use ($callback, $initial): mixed {
         $carry = $initial;
+        /** @var array-key $key */
         foreach ($iterable as $key => $value) {
             $carry = $callback($carry, $value, $key);
         }
@@ -733,13 +741,14 @@ function iterable_reduce(callable $callback, mixed $initial = null): Closure
  * @param callable $callback
  * @param callable $until
  * @param mixed $initial
- * @return Closure(iterable<array-key, mixed>): array{0:mixed, 1:mixed, 2:mixed}
+ * @return Closure(iterable<array-key, mixed>): array{0:mixed, 1:array-key|null, 2:mixed|null}
  */
 function iterable_reduce_until(callable $callback, callable $until, mixed $initial = null): Closure
 {
     return function (iterable $iterable) use ($callback, $until, $initial): array {
         $carry = $initial;
 
+        /** @var array-key $key */
         foreach ($iterable as $key => $value) {
             $carry = $callback($carry, $value, $key);
 
@@ -800,7 +809,6 @@ function iterable_string(int $size = 1): Closure
         }
     };
 }
-
 
 
 /**
@@ -981,14 +989,12 @@ function iterate(callable $callback, bool $include_seed = true): Closure
 }
 
 /**
- * Return unary callable for preg_replace
+ * Return unary callable for preg_match
  *
- * @template TFlags of 0|256|512|768
- * @template TFlags of int
  * @param string $pattern
- * @param TFlags $flags
+ * @param int-mask<0, 256, 512> $flags Bitmask of `PREG_OFFSET_CAPTURE` (256), `PREG_UNMATCHED_AS_NULL` (512)
  * @param int $offset
- * @return Closure(string): array<array{string|null, int<-1, max>}|string|null>
+ * @return Closure(string): array<int|string, string|null|array{string|null, int<-1, max>}>
  */
 function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure
 {
@@ -999,11 +1005,12 @@ function preg_match(string $pattern, int $flags = 0, int $offset = 0): Closure
 }
 
 /**
- * @template TFlags of int
+ * Return unary callable for preg_match_all
+ *
  * @param string $pattern
- * @param TFlags $flags
+ * @param int-mask<0, 1, 2, 256, 512> $flags Combination of `PREG_PATTERN_ORDER` (1), `PREG_SET_ORDER` (2), `PREG_OFFSET_CAPTURE` (256), `PREG_UNMATCHED_AS_NULL` (512)
  * @param int $offset
- * @return Closure(string) : array<array-key, mixed>
+ * @return Closure(string): array<array-key, mixed>
  */
 function preg_match_all(string $pattern, int $flags = 0, int $offset = 0): Closure
 {
@@ -1018,10 +1025,13 @@ function preg_match_all(string $pattern, int $flags = 0, int $offset = 0): Closu
  * Return unary callable for preg_replace
  * $count is ignored
  *
+ * When the subject is a `string`, the return is `string|null`.
+ * When the subject is an `array`, the return is `array<string>|null`.
+ *
  * @param string|array<string> $pattern
  * @param string|array<string> $replacement
  * @param int $limit
- * @return Closure(array<float|int|string>|string) : (array<string>|string|null)
+ * @return Closure<TSubject of string|array<string>>(TSubject): (TSubject|null)
  */
 function preg_replace(string|array $pattern, string|array $replacement, int $limit = -1): Closure
 {
@@ -1040,7 +1050,7 @@ function preg_replace(string|array $pattern, string|array $replacement, int $lim
 function rsort(int $flags = SORT_REGULAR): Closure
 {
     return function (array $array) use ($flags): array {
-        /** @phpstan-ignore-next-line */
+        /** @var array<array-key, string|float|int> $array */
         \rsort($array, $flags);
         return $array;
     };
@@ -1055,7 +1065,7 @@ function rsort(int $flags = SORT_REGULAR): Closure
 function sort(int $flags = SORT_REGULAR): Closure
 {
     return function (array $array) use ($flags): array {
-        /** @phpstan-ignore-next-line */
+        /** @var array<array-key, string|float|int> $array */
         \sort($array, $flags);
         return $array;
     };
@@ -1063,9 +1073,13 @@ function sort(int $flags = SORT_REGULAR): Closure
 
 /**
  * Return unary callable for str_replace
+ *
+ * When the subject is a `string`, the return is a string.
+ * When the subject is an `array` of `strings`, the return is an `array` of `strings`.
+ *
  * @param string|array<string> $search
  * @param string|array<string> $replace
- * @return Closure(array<string>|string): (string|array<string>)
+ * @return Closure<TSubject of string|array<string>>(TSubject): TSubject
  */
 function str_replace(string|array $search, string|array $replace): Closure
 {
@@ -1130,8 +1144,9 @@ function unless(callable $predicate, callable $callback): Closure
  * Return unary callable for usort
  * Reindexes keys
  *
- * @param callable $callback
- * @return Closure(array<array-key, mixed>): list<mixed>
+ * @template TValue
+ * @param callable(TValue, TValue): int $callback
+ * @return Closure(array<array-key, TValue>): list<TValue>
  */
 function usort(callable $callback): Closure
 {
@@ -1145,8 +1160,9 @@ function usort(callable $callback): Closure
  * Return unary callable for uasort
  * Preserves keys
  *
- * @param callable(mixed, mixed): int $callback
- * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ * @template TValue
+ * @param callable(TValue, TValue): int $callback
+ * @return Closure(array<array-key, TValue>): array<array-key, TValue>
  */
 function uasort(callable $callback): Closure
 {
