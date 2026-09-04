@@ -599,6 +599,33 @@ function iterable_chunk(int $size, bool $preserve_keys = false): Closure
     };
 }
 
+/**
+ * Return unary callable for lazily yielding duplicate values from an iterable.
+ *
+ * A value is yielded when a strictly identical value (`===`) has already been seen.
+ * Every occurrence after the first is yielded. Input keys are preserved.
+ *
+ * Values are compared directly, so arrays are supported without hashing; objects compare by identity.
+ * Previously seen unique values are retained in memory and scanned linearly.
+ *
+ * @return Closure(iterable<array-key, mixed>): Generator<array-key, mixed>
+ */
+function iterable_duplicates(): Closure
+{
+    return static function (iterable $iterable): Generator {
+        $seen = [];
+
+        foreach ($iterable as $key => $value) {
+            /** @var array-key $key */
+            if (\in_array($value, $seen, true)) {
+                yield $key => $value;
+                continue;
+            }
+
+            $seen[] = $value;
+        }
+    };
+}
 
 /**
  * Return unary callable for filtering over an iterable
