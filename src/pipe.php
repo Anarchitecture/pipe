@@ -72,6 +72,29 @@ function array_any(callable $callback): Closure
 }
 
 /**
+ * Return unary callable for appending one or more values to an array.
+ *
+ * Semantics match \array_push():
+ * - Values are appended in the order given.
+ * - Numeric keys already present are preserved.
+ * - New values receive numeric keys continuing from the highest numeric key.
+ * - String keys already present are preserved.
+ *
+ * Unlike \array_push(), returns the modified array instead of its new size.
+ *
+ * @param mixed ...$values
+ * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ */
+function array_append(mixed ...$values): Closure
+{
+    return static function (array $array) use ($values): array {
+        \array_push($array, ...$values);
+
+        return $array;
+    };
+}
+
+/**
  * Return unary callable for array_chunk
  *
  * @param int<1, max> $length
@@ -227,6 +250,28 @@ function array_nth(int $i): Closure
         return $array
             |> array_slice($i, 1)
             |> \array_first(...);
+    };
+}
+
+/**
+ * Return unary callable for prepending one or more values to an array.
+ *
+ * Semantics match \array_unshift():
+ * - Values are prepended in the order given.
+ * - Numeric keys are reindexed starting from zero.
+ * - String keys are preserved.
+ *
+ * Unlike \array_unshift(), returns the modified array instead of its new size.
+ *
+ * @param mixed ...$values
+ * @return Closure(array<array-key, mixed>): array<array-key, mixed>
+ */
+function array_prepend(mixed ...$values): Closure
+{
+    return static function (array $array) use ($values): array {
+        \array_unshift($array, ...$values);
+
+        return $array;
     };
 }
 
